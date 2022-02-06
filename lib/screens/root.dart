@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dashboard.dart';
 import 'home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class RootScreen extends StatefulWidget {
@@ -66,18 +68,6 @@ class _RootScreenState extends State<RootScreen> {
             ),
             label: 'Qibla',
           ),
-
-          /* BottomNavigationBarItem(
-            icon: Padding(
-              padding: EdgeInsets.only(bottom: 4),
-              child: Icon(FontAwesomeIcons.compass),
-            ),
-            label: 'Qibla',
-          ),*/
-
-
-
-
 
         ],
       ),

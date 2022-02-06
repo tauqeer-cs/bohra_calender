@@ -170,14 +170,15 @@ class ExtraNamazItem extends StatelessWidget {
 
         ],
 
-        for (Files currentFile in data.files) ...[
+        for (int i = 0 ; i < data.files.length ; i ++) ...[
           FileItem(
-            name: currentFile.title,
+            name: data.files[i].title,
             onTap: () {},
-            hasPDF: currentFile.pdfUr.isNotEmpty,
-            hasAudio: currentFile.audioUrl.isNotEmpty,
-            fileItem: currentFile,
-            verticalGap: 6,
+            hasPDF: data.files[i].pdfUr.isNotEmpty,
+            hasAudio: data.files[i].audioUrl.isNotEmpty,
+            fileItem: data.files[i],
+            verticalGap: 3,
+            otherColor: i % 2 == 0,
           ),
         ],
         const SizedBox(height: 8,),

@@ -33,7 +33,11 @@ class MonthlyData {
 
     if (color_tag.isEmpty) {
       backgroundColor = CColors.blue_inside;
-    } else if (color_tag == 'green' || color_tag == 'orange') {
+    }
+    else if (color_tag == 'white') {
+      backgroundColor = CColors.light_gray_color;
+    }
+    else if (color_tag == 'green' || color_tag == 'orange') {
       //light_red
       backgroundColor = CColors.light_red;
     } else if (color_tag == 'yellow') {
@@ -41,6 +45,7 @@ class MonthlyData {
     } else if (color_tag == 'blue') {
       backgroundColor = CColors.blue_inside;
     }
+
 
     if (json['files'] != null) {
       files = [];
@@ -152,7 +157,7 @@ class Files {
       fileUrl = fileUrl.replaceRange(0, 'http://localhost:3000'.length,
           'https://merrycode.com/node/bohra-calendar');
     }
-    if (fileUrl.contains('.pdf')) {
+    if (fileUrl.contains('.pdf') || fileUrl.contains('.png') || fileUrl.contains('.jpg') ) {
       pdfUr = fileUrl;
     } else if (fileUrl.contains('mp3') ||
         fileUrl.contains('m4a') ||

@@ -36,7 +36,7 @@ class DayDetail extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(
-                height: 24,
+                height: 16,
               ),
               Align(
                 alignment: Alignment.center,
@@ -57,7 +57,7 @@ class DayDetail extends StatelessWidget {
                 for (MonthlyData currentMonth in calenderItem.data!)
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12),
+                        horizontal: 16, vertical: 8),
                     child: Container(
                       decoration: const BoxDecoration(
                         color: Colors.blue,
@@ -72,6 +72,7 @@ class DayDetail extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           currentMonth.title,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -87,25 +88,33 @@ class DayDetail extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              if (calenderItem.data != null) ...[
-                for (MonthlyData current in calenderItem.data!) ...[
-                  for (Files currentFile in current.files) ...[
-                    FileItem(
-                      name: currentFile.title,
-                      onTap: () {},
-                      hasPDF: currentFile.pdfUr.isNotEmpty,
-                      hasAudio: currentFile.audioUrl.isNotEmpty,
-                      fileItem: currentFile,
-                    ),
-                  ],
-                ],
-              ],
-              const SizedBox(
-                height: 16,
-              ),
+
+
               Expanded(
-                child: Container(),
+                child: SingleChildScrollView(
+
+                  child: Column(
+                    children: [
+                      if (calenderItem.data != null) ...[
+                        for (MonthlyData current in calenderItem.data!) ...[
+
+                          for (Files currentFile in current.files) ...[
+                            FileItem(
+                              name: currentFile.title,
+                              onTap: () {},
+                              hasPDF: currentFile.pdfUr.isNotEmpty,
+                              hasAudio: currentFile.audioUrl.isNotEmpty,
+                              fileItem: currentFile,
+
+                            ),
+                          ],
+                        ],
+                      ],
+                    ],
+                  ),
+                ),
               ),
+              SizedBox(height: 16,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(
@@ -140,6 +149,7 @@ class DayDetail extends StatelessWidget {
                           );
 
                           bool check = await Add2Calendar.addEvent2Cal(event);
+
                         },
                         child: Container(
                           decoration: const BoxDecoration(
@@ -224,6 +234,10 @@ class FileItem extends StatelessWidget {
 
   final Files fileItem;
 
+  final bool noGap;
+
+  final bool otherColor;
+
   const FileItem({
     Key? key,
     required this.name,
@@ -231,7 +245,9 @@ class FileItem extends StatelessWidget {
     required this.hasAudio,
     required this.hasPDF,
     required this.fileItem,
-    this.verticalGap = 12,
+    this.verticalGap = 8,
+    this.noGap = false,
+    this.otherColor = false,
   }) : super(key: key);
 
   @override
@@ -265,14 +281,14 @@ class FileItem extends StatelessWidget {
         },
         child: Row(
           children: [
-            const SizedBox(
-              width: 24,
+             SizedBox(
+              width: noGap ? 2 : 16,
             ),
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.blueGrey,
-                  borderRadius: BorderRadius.all(
+                decoration:  BoxDecoration(
+                  color: otherColor ? Colors.blueAccent : Colors.blueGrey,
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(10.0),
                   ),
                 ),
@@ -318,6 +334,7 @@ class FileItem extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           name,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -336,8 +353,8 @@ class FileItem extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              width: 24,
+            SizedBox(
+              width: noGap ? 2 : 16,
             ),
           ],
         ),

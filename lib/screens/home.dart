@@ -4,15 +4,9 @@ import 'package:bohra_calender/model/calender_item_info.dart';
 import 'package:bohra_calender/model/monthly_data.dart';
 import 'package:bohra_calender/services/data_service.dart';
 import 'package:flutter/material.dart';
-import 'package:hijri_picker/hijri_picker.dart';
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:hijri/hijri_calendar.dart';
-import 'package:hijri_picker/hijri_picker.dart';
-import 'package:hijri/digits_converter.dart';
-import 'package:hijri/hijri_array.dart';
-import 'package:hijri/hijri_calendar.dart';
 import 'day_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class CalenderHomeScreen extends StatefulWidget {
   const CalenderHomeScreen({Key? key}) : super(key: key);
@@ -74,8 +68,9 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      const SizedBox(height: 8,),
                       Transform(
-                        transform: Matrix4.translationValues(0, 16.0, 0.0),
+                        transform: Matrix4.translationValues(0, 4.0, 0.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -100,6 +95,7 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                             ),
                             onPressed: () {
                               monthIndex = monthIndex - 1;
+
                               if (monthIndex == 0) {
                                 calenderInfoItem =
                                     ClassItemInfo.makeCurrentMonthObject(
@@ -111,8 +107,27 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                         calenderInfoItem!.monthItems;
                                   });
                                 }
-                              } else {
+                              } else if(monthIndex > 0) {
                                 if (calenderInfoItem != null) {
+
+
+
+                                  calenderInfoItem =
+                                      ClassItemInfo.makeMonthData(monthIndex,monthData);
+
+
+                                  setState(() {
+                                    calssItemInfo =
+                                        calenderInfoItem!.monthItems;
+                                  });
+                                }
+                              }
+                              else {
+                                if (calenderInfoItem != null) {
+                                  monthIndex = 0;
+
+                                  return;
+
                                   calenderInfoItem =
                                       ClassItemInfo.previousMonth(
                                           calenderInfoItem!.monthItems
@@ -125,6 +140,7 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                   });
                                 }
                               }
+
                             },
                             child: const Icon(
                               Icons.arrow_back_ios,
@@ -177,11 +193,12 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                 }
                               } else {
                                 if (calenderInfoItem != null) {
+
+
+
                                   calenderInfoItem =
-                                      ClassItemInfo.previousMonth(
-                                          calenderInfoItem!.monthItems
-                                              .firstWhere(
-                                                  (e) => e.dayNo == '1'));
+                                      ClassItemInfo.makeMonthData(monthIndex,monthData);
+
 
                                   setState(() {
                                     calssItemInfo =
@@ -509,6 +526,8 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+
+
       onTap: () {
         //calenderItem
         if (calenderItem != null) {

@@ -13,7 +13,6 @@ import 'dart:async';
 class FileViewer extends StatefulWidget {
   final Files fileItem;
 
-
   FileViewer({Key? key, required this.fileItem}) : super(key: key);
 
   @override
@@ -21,7 +20,7 @@ class FileViewer extends StatefulWidget {
 }
 
 class _FileViewerState extends State<FileViewer> {
-  String? kUrl1 = 'https://download.samplelib.com/mp3/sample-15s.mp3';
+ // String? kUrl1 = 'https://download.samplelib.com/mp3/sample-15s.mp3';
   String? localFilePath;
 
   var audio = AudioPlayer();
@@ -41,27 +40,23 @@ class _FileViewerState extends State<FileViewer> {
   }
 
   void startTimer(int totalSeconds) {
-
-    if(_timer != null) {
+    if (_timer != null) {
       _timer!.cancel();
     }
 
-    _timer =  Timer.periodic(Duration(seconds: 1 ,), (timer) {
+    _timer = Timer.periodic(
+        Duration(
+          seconds: 1,
+        ), (timer) {
       print("Yeah, this line is printed after 3 seconds");
       setState(() {
-
         progressDuration = audio.position;
 
-        if(audio.position.inSeconds == audio.duration!.inSeconds) {
-
+        if (audio.position.inSeconds == audio.duration!.inSeconds) {
           isPlaying = false;
-
         }
       });
     });
-
-
-
   }
 
   @override
@@ -80,7 +75,7 @@ class _FileViewerState extends State<FileViewer> {
   bool isPlaying = false;
 
   Future _loadFile() async {
-    final bytes = await readBytes(Uri.parse(kUrl1!));
+    final bytes = await readBytes(Uri.parse(widget.fileItem.audioUrl));
     final dir = await getApplicationDocumentsDirectory();
     final file = File('${dir.path}/audio.mp3');
 
@@ -98,24 +93,22 @@ class _FileViewerState extends State<FileViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(widget.fileItem.title),
+        title: Text(widget.fileItem.title),
         actions: [
-          if(widget.fileItem.audioUrl.isEmpty) ... [
+          if (widget.fileItem.audioUrl.isEmpty) ...[
             Container(),
-          ] else
-          if(isLoadingAudio) ... [
+          ] else if (isLoadingAudio) ...[
             const Padding(
               padding: EdgeInsets.only(right: 8),
               child: Center(
                 child: SizedBox(
                   height: 20.0,
                   width: 20.0,
-                  child:  CircularProgressIndicator(
-                  ),
+                  child: CircularProgressIndicator(),
                 ),
               ),
             ),
-          ] else ... [
+          ] else ...[
             IconButton(
               icon: Image.asset(
                 isPlaying
@@ -131,12 +124,11 @@ class _FileViewerState extends State<FileViewer> {
 
                   audio.pause();
                 } else {
-
                   setState(() {
                     isLoadingAudio = true;
                   });
 
-                  totalDuration ??= await audio.setUrl(kUrl1!);
+                  totalDuration ??= await audio.setUrl(widget.fileItem.audioUrl);
 
                   setState(() {
                     isLoadingAudio = false;
@@ -159,26 +151,26 @@ class _FileViewerState extends State<FileViewer> {
               },
             ),
           ],
-
         ],
       ),
       body: SafeArea(
         child: Column(
           children: [
-            if(totalDuration != null) ... [
+            if (totalDuration != null) ...[
               Container(
                 color: Colors.grey.shade700,
                 width: double.infinity,
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Column(
                     children: [
                       const SizedBox(
                         height: 8,
                       ),
                       ProgressBar(
-                        timeLabelTextStyle: const TextStyle(color: Colors.white),
+                        timeLabelTextStyle:
+                            const TextStyle(color: Colors.white),
                         progress: progressDuration != null
                             ? progressDuration!
                             : const Duration(milliseconds: 0),
@@ -193,14 +185,12 @@ class _FileViewerState extends State<FileViewer> {
                         barHeight: 3.0,
                         thumbRadius: 5.0,
                         onSeek: (duration) {
-
                           audio.seek(duration);
 
-                          if(audio.playing) {
+                          if (audio.playing) {
                             setState(() {
                               isPlaying = true;
                             });
-
                           }
                         },
                       ),
@@ -209,16 +199,21 @@ class _FileViewerState extends State<FileViewer> {
                 ),
               ),
             ],
-
-            Expanded(
-              child: const PDF().cachedFromUrl(
-                widget.fileItem.pdfUr,
-                placeholder: (double progress) =>
-                    Center(child: Text('$progress %')),
-                errorWidget: (dynamic error) =>
-                    Center(child: Text(error.toString())),
+            if (widget.fileItem.pdfUr.contains('.pdf')) ...[
+              Expanded(
+                child: const PDF().cachedFromUrl(
+                  widget.fileItem.pdfUr,
+                  placeholder: (double progress) =>
+                      Center(child: Text('$progress %')),
+                  errorWidget: (dynamic error) =>
+                      Center(child: Text(error.toString())),
+                ),
               ),
-            ),
+            ] else ...[
+              Expanded(
+                child: Image.network(widget.fileItem.pdfUr),
+              ),
+            ],
             const SizedBox(
               height: 20,
             ),

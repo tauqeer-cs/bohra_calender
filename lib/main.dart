@@ -1,9 +1,30 @@
-import 'package:bohra_calender/screens/home.dart';
+import 'dart:async';
+import 'dart:io';
 import 'package:bohra_calender/screens/root.dart';
+import 'package:bohra_calender/services/objectbox_service.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+
+
+
+
+
+ // await Hive.openBox<PersonalEvent>('personal_event');
+
+
+
+  runZoned(() async {
+    await objectBoxService.initialize();
+
+     runApp(const MyApp());
+  });
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -16,15 +37,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
         appBarTheme: AppBarTheme(color: Colors.green.withOpacity(0.5)),
       ),

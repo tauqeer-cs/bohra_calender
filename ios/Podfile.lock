@@ -6,6 +6,10 @@ PODS:
   - Flutter (1.0.0)
   - flutter_compass (0.0.1):
     - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - flutter_native_timezone (0.0.1):
+    - Flutter
   - flutter_pdfview (1.0.2):
     - Flutter
   - flutter_qiblah (0.0.1):
@@ -19,6 +23,10 @@ PODS:
     - Flutter
   - location (0.0.1):
     - Flutter
+  - ObjectBox (1.6.0)
+  - objectbox_flutter_libs (0.0.1):
+    - Flutter
+    - ObjectBox (= 1.6.0)
   - path_provider_ios (0.0.1):
     - Flutter
   - shared_preferences_ios (0.0.1):
@@ -32,11 +40,14 @@ DEPENDENCIES:
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - Flutter (from `Flutter`)
   - flutter_compass (from `.symlinks/plugins/flutter_compass/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
   - flutter_qiblah (from `.symlinks/plugins/flutter_qiblah/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - location (from `.symlinks/plugins/location/ios`)
+  - objectbox_flutter_libs (from `.symlinks/plugins/objectbox_flutter_libs/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -44,6 +55,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
+    - ObjectBox
 
 EXTERNAL SOURCES:
   add_2_calendar:
@@ -54,6 +66,10 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_compass:
     :path: ".symlinks/plugins/flutter_compass/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_native_timezone:
+    :path: ".symlinks/plugins/flutter_native_timezone/ios"
   flutter_pdfview:
     :path: ".symlinks/plugins/flutter_pdfview/ios"
   flutter_qiblah:
@@ -64,6 +80,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/just_audio/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
+  objectbox_flutter_libs:
+    :path: ".symlinks/plugins/objectbox_flutter_libs/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   shared_preferences_ios:
@@ -72,20 +90,24 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
-  add_2_calendar: e9d68636aed37fb18e12f5a3d74c2e0589487af0
-  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  add_2_calendar: 5b9b16d776adc0797a4d5e6acc55510d447aa9ab
+  audio_session: 7f73f390c62f0bddd99f52e5ece24285ff5e7881
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
-  flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
-  flutter_qiblah: f69eeb708d127a2634073ab1f27771c979928f50
+  flutter_compass: 2ca3af071360bb111aaf6c4c6e05683323b2ecdd
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
+  flutter_pdfview: 83a970556086f3a10b016a0a8b8c985c2ed81fcc
+  flutter_qiblah: 234ce8bf10cd757d5ed9a018697ee2d9c4b48ecc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
-  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
-  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
-  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
-  shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
-  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  geolocator_apple: e61d3b8c05c1dfb6179831ae5a5b8d7d30acea6b
+  just_audio: c02e59fbd5e2181f596e5c071fab66f92a384be9
+  location: 58dc209799aab814008404266ae8842fb45614b9
+  ObjectBox: a181cc5fb47e0a6ec60754d34dc49f40dc17829e
+  objectbox_flutter_libs: 511c59b863bc45abc7f6f338499e4a50e9aa5f1d
+  path_provider_ios: e4d0ed98e16c71b7fc346ba25969409c72827f7b
+  shared_preferences_ios: ec396169c3d08363afce8607853835fdc83e5ecb
+  sqflite: 75d2b724889f8d9251c4fbbcbccccca33863c0c0
 
 PODFILE CHECKSUM: 1a012ce3db1c1a5aff66d98fb075c09f5165b574
 
-COCOAPODS: 1.11.0
+COCOAPODS: 1.11.2

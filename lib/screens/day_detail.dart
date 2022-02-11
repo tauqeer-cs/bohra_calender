@@ -4,11 +4,12 @@ import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/model/calender_item_info.dart';
 import 'package:bohra_calender/model/monthly_data.dart';
 import 'package:bohra_calender/screens/tasbeeh_view.dart';
+import 'package:bohra_calender/screens/washeq_counter.dart';
 import 'package:flutter/material.dart';
 import 'counter_screen.dart';
 import 'file_viewer.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'mini_player_view.dart';
 
 class DayDetail extends StatelessWidget {
@@ -56,8 +57,8 @@ class DayDetail extends StatelessWidget {
                 ),
                 for (MonthlyData currentMonth in calenderItem.data!)
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Container(
                       decoration: const BoxDecoration(
                         color: Colors.blue,
@@ -88,24 +89,20 @@ class DayDetail extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-
-
               Expanded(
                 child: SingleChildScrollView(
-
                   child: Column(
                     children: [
                       if (calenderItem.data != null) ...[
                         for (MonthlyData current in calenderItem.data!) ...[
-
                           for (Files currentFile in current.files) ...[
                             FileItem(
+                              verticalGap: calenderItem.isWasheqDay ? 4 : 8,
                               name: currentFile.title,
                               onTap: () {},
                               hasPDF: currentFile.pdfUr.isNotEmpty,
                               hasAudio: currentFile.audioUrl.isNotEmpty,
                               fileItem: currentFile,
-
                             ),
                           ],
                         ],
@@ -114,7 +111,46 @@ class DayDetail extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 16,),
+              const SizedBox(
+                height: 16,
+              ),
+              if (calenderItem.isWasheqDay) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  WasheqCounterView(calenderItem: calenderItem,),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Washeq counter',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8,),
+              ],
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(
@@ -149,7 +185,6 @@ class DayDetail extends StatelessWidget {
                           );
 
                           bool check = await Add2Calendar.addEvent2Cal(event);
-
                         },
                         child: Container(
                           decoration: const BoxDecoration(
@@ -183,7 +218,7 @@ class DayDetail extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => TasbeehView(),
+                              builder: (context) => const TasbeehView(),
                             ),
                           );
                         },
@@ -253,18 +288,19 @@ class FileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: verticalGap),
+      padding: EdgeInsets.symmetric(vertical: verticalGap),
       child: GestureDetector(
         onTap: () {
-
-          if(hasAudio && !hasPDF) {
+          if (hasAudio && !hasPDF) {
             showModalBottomSheet(
               isScrollControlled: true,
               elevation: 0,
               backgroundColor: Colors.transparent,
               context: context,
               builder: (BuildContext context) {
-                return  MiniPlayerView(fileItem: fileItem,);
+                return MiniPlayerView(
+                  fileItem: fileItem,
+                );
               },
             );
             return;
@@ -281,12 +317,12 @@ class FileItem extends StatelessWidget {
         },
         child: Row(
           children: [
-             SizedBox(
+            SizedBox(
               width: noGap ? 2 : 16,
             ),
             Expanded(
               child: Container(
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   color: otherColor ? Colors.blueAccent : Colors.blueGrey,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(10.0),

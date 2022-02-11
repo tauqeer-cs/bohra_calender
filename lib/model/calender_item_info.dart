@@ -17,14 +17,50 @@ class CalenderMonthItem {
 class ClassItemInfo {
   late String dayNo;
   late String normalDayNo;
+  final int monthNo;
+
   late bool hasDua;
   late String dayString;
   String islamicYear;
   String islamicMonth;
 
+  int washerLimit = 0;
+
+  bool get isWasheqDay {
+    int day = int.parse(dayNo);
+
+    if (monthNo == 6 && day == 29) {
+      washerLimit = 22;
+
+      return true;
+    } else if (monthNo == 7 && day == 26) {
+      washerLimit = 22;
+
+      return true;
+    } else if (monthNo == 8 && day == 14) {
+      washerLimit = 14;
+
+      return true;
+    } else if ((monthNo == 9 && day == 16) ||
+        (monthNo == 9 && day == 18) ||
+        (monthNo == 9 && day == 20) ||
+        (monthNo == 9 && day == 22) ||
+        (monthNo == 9 && day == 30)) {
+      washerLimit = 24;
+
+      return true;
+    }
+    else if (monthNo == 9 && day == 10) {
+      washerLimit = 24;
+      return true;
+    }
+    return false;
+  }
+
   String normalDayFullString = '';
+
   String get islamicDayFullString {
-  return '$dayNo $islamicMonth, $islamicYear';
+    return '$dayNo $islamicMonth, $islamicYear';
   }
 
   late bool isEmpty;
@@ -34,19 +70,17 @@ class ClassItemInfo {
 
   late DateTime normalDate;
 
-  ClassItemInfo({
-    this.dayNo = '',
-    this.normalDayNo = '',
-    this.hasDua = false,
-    this.isEmpty = false,
-    required this.islamicYear,
-    required this.islamicMonth
-  });
+  ClassItemInfo(
+      {this.dayNo = '',
+      this.normalDayNo = '',
+      this.hasDua = false,
+      this.isEmpty = false,
+      required this.islamicYear,
+      required this.islamicMonth,
+      required this.monthNo});
 
-
-
-
-  static CalenderMonthItem makeMonthData(int monthDifference , List<MonthlyData> monthData )  {
+  static CalenderMonthItem makeMonthData(
+      int monthDifference, List<MonthlyData> monthData) {
     CalenderMonthItem calenderMonthItem = CalenderMonthItem();
 
     List<ClassItemInfo> calenderDays = [];
@@ -55,7 +89,6 @@ class ClassItemInfo {
     int difference = 0;
 
     var _today1 = _today;
-
 
     DateTime objectToUse;
 
@@ -77,7 +110,7 @@ class ClassItemInfo {
       for (int i = -2; i >= monthDifference; i--) {
         objectToUse = DateTime.now().add(Duration(days: difference));
         _today = HijriCalendar.fromDate(objectToUse);
-         _today1 =
+        _today1 =
             HijriCalendar.fromDate(objectToUse.add(const Duration(days: -1)));
 
         if (_today.lengthOfMonth < _today1.lengthOfMonth) {
@@ -106,19 +139,19 @@ class ClassItemInfo {
 
     calenderMonthItem.monthName = islamicMonthName[_today.hMonth];
 
-
     monthData = monthData.where((e) => e.month == _today.hMonth).toList();
     String islamicMonth = ClassItemInfo.islamicMonthName[_today.hMonth];
     String islamicYear = _today.hYear.toString();
 
-
     for (int i = 1; i <= _today.lengthOfMonth; i++) {
-      ClassItemInfo calenderObject = ClassItemInfo(islamicMonth: islamicMonth, islamicYear: islamicYear);
+      ClassItemInfo calenderObject = ClassItemInfo(
+          islamicMonth: islamicMonth,
+          islamicYear: islamicYear,
+          monthNo: _today.hMonth);
 
       if (i == 1) {
         emptyToAddInEnd = objectToUse.weekday - 1;
       }
-
 
       calenderObject.normalDayNo = objectToUse.day.toString();
       calenderObject.dayString = listDayString[objectToUse.weekday];
@@ -190,17 +223,14 @@ class ClassItemInfo {
          */
       }
 
-
       _today1 = HijriCalendar.fromDate(objectToUse);
 
-      String formattedDate = DateFormat('dd MMM, yyyy').format(objectToUse.add(const Duration(days: -1)));
-
+      String formattedDate = DateFormat('dd MMM, yyyy')
+          .format(objectToUse.add(const Duration(days: -1)));
 
       calenderObject.normalDayFullString = formattedDate;
 
-
       calenderObject.normalDate = objectToUse;
-
 
       calenderDays.add(calenderObject);
     }
@@ -208,11 +238,21 @@ class ClassItemInfo {
     calenderMonthItem.nextMonthName = nextMonthName(objectToUse);
 
     for (int i = 0; i < emptyToAddInEnd; i++) {
-      calenderDays.insert(0, ClassItemInfo(isEmpty: true, islamicMonth: islamicMonth, islamicYear: islamicYear));
+      calenderDays.insert(
+          0,
+          ClassItemInfo(
+              isEmpty: true,
+              islamicMonth: islamicMonth,
+              islamicYear: islamicYear,
+              monthNo: _today.hMonth));
     }
     int check = calenderDays.length % 7;
     for (int i = 0; i < 7 - check; i++) {
-      calenderDays.add(ClassItemInfo(isEmpty: true, islamicMonth: islamicMonth, islamicYear: islamicYear));
+      calenderDays.add(ClassItemInfo(
+          isEmpty: true,
+          islamicMonth: islamicMonth,
+          islamicYear: islamicYear,
+          monthNo: _today.hMonth));
     }
     calenderMonthItem.monthItems = calenderDays;
 
@@ -255,10 +295,11 @@ class ClassItemInfo {
     String islamicMonth = ClassItemInfo.islamicMonthName[_today.hMonth];
     String islamicYear = _today.hYear.toString();
 
-
     for (int i = 1; i <= _today.lengthOfMonth; i++) {
-
-      ClassItemInfo calenderObject = ClassItemInfo(islamicMonth: islamicMonth, islamicYear: islamicYear);
+      ClassItemInfo calenderObject = ClassItemInfo(
+          islamicMonth: islamicMonth,
+          islamicYear: islamicYear,
+          monthNo: _today.hMonth);
 
       if (i == 1) {
         emptyToAddInEnd = objectToUse.weekday - 1;
@@ -294,11 +335,21 @@ class ClassItemInfo {
     calenderMonthItem.nextMonthName = nextMonthName(objectToUse);
 
     for (int i = 0; i < emptyToAddInEnd; i++) {
-      calenderDays.insert(0, ClassItemInfo(isEmpty: true, islamicMonth: islamicMonth, islamicYear: islamicYear));
+      calenderDays.insert(
+          0,
+          ClassItemInfo(
+              isEmpty: true,
+              islamicMonth: islamicMonth,
+              islamicYear: islamicYear,
+              monthNo: _today.hMonth));
     }
     int check = calenderDays.length % 7;
     for (int i = 0; i < 7 - check; i++) {
-      calenderDays.add(ClassItemInfo(isEmpty: true, islamicYear: islamicMonth, islamicMonth: islamicYear));
+      calenderDays.add(ClassItemInfo(
+          isEmpty: true,
+          islamicYear: islamicMonth,
+          islamicMonth: islamicYear,
+          monthNo: _today.hMonth));
     }
     calenderMonthItem.monthItems = calenderDays;
 
@@ -323,9 +374,11 @@ class ClassItemInfo {
     String islamicMonth = ClassItemInfo.islamicMonthName[_today.hMonth];
     String islamicYear = _today.hYear.toString();
 
-
     for (int i = 1; i <= _today.lengthOfMonth; i++) {
-      ClassItemInfo calenderObject = ClassItemInfo(islamicYear: islamicYear, islamicMonth: islamicMonth);
+      ClassItemInfo calenderObject = ClassItemInfo(
+          islamicYear: islamicYear,
+          islamicMonth: islamicMonth,
+          monthNo: _today.hMonth);
 
       objectToUse = objectToUse.add(const Duration(days: 1));
 
@@ -413,21 +466,30 @@ class ClassItemInfo {
 
       calenderObject.normalDayFullString = formattedDate;
 
-
       calenderObject.normalDate = objectToUse;
-      
+
       calenderDays.add(calenderObject);
     }
     calenderMonthItem.nextMonthName = nextMonthName(objectToUse);
 
     for (int i = 0; i < emptyToAddInEnd; i++) {
-      calenderDays.insert(0, ClassItemInfo(isEmpty: true, islamicMonth: '', islamicYear: ''));
+      calenderDays.insert(
+          0,
+          ClassItemInfo(
+              isEmpty: true,
+              islamicMonth: '',
+              islamicYear: '',
+              monthNo: _today.hMonth));
     }
 
     int check = calenderDays.length % 7;
 
     for (int i = 0; i < 7 - check; i++) {
-      calenderDays.add(ClassItemInfo(isEmpty: true, islamicYear: '', islamicMonth: ''));
+      calenderDays.add(ClassItemInfo(
+          isEmpty: true,
+          islamicYear: '',
+          islamicMonth: '',
+          monthNo: _today.hMonth));
     }
 
     calenderMonthItem.monthItems = calenderDays;
@@ -473,7 +535,6 @@ class ClassItemInfo {
       'December'
     ];
   }
-
 
   static List<String> islamicMonthName = [
     '',

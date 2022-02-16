@@ -7,11 +7,24 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-      if #available(iOS 10.0, *) {
-        UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
-      }
       
+  UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+
+
+      requestAuthorization { b in
+          
+      }
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+    
+    
+    func requestAuthorization(completion: @escaping  (Bool) -> Void) {
+      UNUserNotificationCenter.current()
+        .requestAuthorization(options: [.alert, .sound, .badge]) { granted, _  in
+          // TODO: Fetch notification settings
+          completion(granted)
+        }
+    }
+    
 }

@@ -60,6 +60,9 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   daylight: ^2.0.0
   flutter_local_notifications: ^9.2.0
+  timezone: ^0.8.0
+  flutter_filereader: ^3.0.0
+  scroll_to_index: ^2.1.1
 
 
 dev_dependencies:

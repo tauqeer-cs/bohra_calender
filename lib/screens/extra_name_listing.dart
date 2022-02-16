@@ -20,8 +20,12 @@ class _ExtraNamazListingState extends State<ExtraNamazListing> {
 
   MonthlyData? bihoriNamaz;
 
+  bool isLoading = true;
+
   void loadData() async {
     data = await dataService.getExtraData();
+
+    isLoading = false;
 
     if (data != null) {
       bihoriNamaz = data!.firstWhere((e) => e.title == 'Bihori Namaz');
@@ -42,115 +46,117 @@ class _ExtraNamazListingState extends State<ExtraNamazListing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Bihori Namaz'),
+      ),
       body: SafeArea(
         child: Container(
           decoration: Constants.backgroundPAttern,
           child: Container(
             color: Constants.backgroundPatternTopColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(
-                  height: 16,
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      if (data![index].title == 'Ramadan Namaz') {
-                        return ExtraNamazItem(
-                          data: data![index],
-                        );
-                      }
+            child: isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            if (data![index].title == 'Ramadan Namaz') {
+                              return ExtraNamazItem(
+                                data: data![index],
+                              );
+                            }
 
-                      return ExtraNamazItem(data: data![index]);
-                    },
-                    itemCount: data == null ? 0 : data!.length,
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 24,
+                            return ExtraNamazItem(data: data![index]);
+                          },
+                          itemCount: data == null ? 0 : data!.length,
                         ),
-                        Expanded(
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.blueGrey,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: 24,
                               ),
-                            ),
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            child: GestureDetector(
-                              onTap: (){
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>  BihoriNamazView(data: bihoriNamaz!,),
-                                  ),
-                                );
-
-
-
-
-                              },
-                              child: Row(
-                                children: const [
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Icon(
-                                    Icons.navigate_next,
-                                    color: Colors.transparent,
-                                  ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Bihori Namaz',
-
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 20),
-                                      ),
+                              Expanded(
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blueGrey,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.navigate_next,
-                                    color: Colors.white,
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => BihoriNamazView(
+                                            data: bihoriNamaz!,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
+                                      children: const [
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Icon(
+                                          Icons.navigate_next,
+                                          color: Colors.transparent,
+                                        ),
+                                        Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              'Bihori Namaz',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20),
+                                            ),
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.navigate_next,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                              const SizedBox(
+                                width: 24,
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(
-                          width: 24,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -159,12 +165,12 @@ class _ExtraNamazListingState extends State<ExtraNamazListing> {
 }
 
 class ExtraNamazItem extends StatelessWidget {
-
   final bool hideTitle;
 
   const ExtraNamazItem({
     Key? key,
-    required this.data, this.hideTitle = false,
+    required this.data,
+    this.hideTitle = false,
   }) : super(key: key);
 
   final MonthlyData data;
@@ -174,20 +180,21 @@ class ExtraNamazItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if(!hideTitle) ... [
+        if (!hideTitle) ...[
           Align(
             alignment: Alignment.center,
             child: Text(
               data.title,
               style: const TextStyle(
-                  color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800),
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800),
             ),
           ),
           const SizedBox(
             height: 8,
           ),
         ],
-
         for (int i = 0; i < data.files.length; i++) ...[
           FileItem(
             name: data.files[i].title,

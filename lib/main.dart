@@ -4,12 +4,14 @@ import 'package:bohra_calender/screens/root.dart';
 import 'package:bohra_calender/services/objectbox_service.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 
+  tz.initializeTimeZones();
 
 
 

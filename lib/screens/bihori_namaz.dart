@@ -53,7 +53,7 @@ class _BihoriNamazViewState extends State<BihoriNamazView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>  WasheqCounterView(),
+                          builder: (context) =>  WasheqCounterView(files: [],),
                         ),
                       );
                     },

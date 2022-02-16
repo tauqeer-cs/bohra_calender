@@ -14,9 +14,22 @@ import 'mini_player_view.dart';
 
 class DayDetail extends StatelessWidget {
   final ClassItemInfo calenderItem;
+  final List<String> possibleWasheq = [
+    '11-Salam/22',
+    '7-Salam/14',
+    '12Salam/24',
+    '12-Salam/24',
+    '10Salam/20',
+    '10-Salam/20',
+    '5Salam/10',
+    '5-Salam/10',
+    '12Salam/24',
+    '12-Salam/24',
+    '12 Salam/24'
+  ];
 
   //  ClassItemInfo? calenderItem;
-  const DayDetail({Key? key, required this.calenderItem}) : super(key: key);
+  DayDetail({Key? key, required this.calenderItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +50,7 @@ class DayDetail extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(
-                height: 16,
+                height: 12,
               ),
               Align(
                 alignment: Alignment.center,
@@ -49,61 +62,83 @@ class DayDetail extends StatelessWidget {
                       fontSize: 22),
                 ),
               ),
-              if (calenderItem.data == null) ...[
-                const NoHijriEvent(),
-              ] else ...[
-                const SizedBox(
-                  height: 12,
-                ),
-                for (MonthlyData currentMonth in calenderItem.data!)
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          currentMonth.title,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(
-                  color: Colors.white,
-                ),
-              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      if (calenderItem.data == null) ...[
+                        const NoHijriEvent(),
+                      ] else ...[
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        for (MonthlyData currentMonth in calenderItem.data!)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  currentMonth.title,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Divider(
+                          color: Colors.white,
+                        ),
+                      ),
                       if (calenderItem.data != null) ...[
                         for (MonthlyData current in calenderItem.data!) ...[
-                          for (Files currentFile in current.files) ...[
-                            FileItem(
-                              verticalGap: calenderItem.isWasheqDay ? 4 : 8,
-                              name: currentFile.title,
-                              onTap: () {},
-                              hasPDF: currentFile.pdfUr.isNotEmpty,
-                              hasAudio: currentFile.audioUrl.isNotEmpty,
-                              fileItem: currentFile,
-                            ),
+                          /*
+                                                var files = calenderItem.data!
+                          .firstWhere((e) =>
+
+
+                          .files;
+                          * */
+                          if (current.title.contains(possibleWasheq.first) ||
+                              current.title.contains(possibleWasheq.last) ||
+                              current.title.contains(possibleWasheq[1]) ||
+                              current.title.contains(possibleWasheq[2]) ||
+                              current.title.contains(possibleWasheq[3]) ||
+                              current.title.contains(possibleWasheq[4]) ||
+                              current.title.contains(possibleWasheq[5]) ||
+                              current.title.contains(possibleWasheq[6]) ||
+                              current.title.contains(possibleWasheq[7]) ||
+                              current.title.contains(possibleWasheq[8]) ||
+                              current.title.contains(possibleWasheq[9])
+                          )
+                            ...[]
+                          else ...[
+                            for (Files currentFile in current.files) ...[
+                              FileItem(
+                                verticalGap: calenderItem.isWasheqDay ? 4 : 8,
+                                name: currentFile.title,
+                                onTap: () {},
+                                hasPDF: currentFile.pdfUr.isNotEmpty,
+                                hasAudio: currentFile.audioUrl.isNotEmpty,
+                                fileItem: currentFile,
+                              ),
+                            ],
                           ],
                         ],
                       ],
@@ -114,15 +149,25 @@ class DayDetail extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              if (calenderItem.isWasheqDay) ...[
+              if (calenderItem.isWasheqDay &&
+                  calenderItem.dayNo == '30' &&
+                  calenderItem.monthNo == 9) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: GestureDetector(
                     onTap: () {
+                      var files = calenderItem.data!
+                          .firstWhere((e) => e.title.contains('Washeq'))
+                          .files;
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>  WasheqCounterView(calenderItem: calenderItem,),
+                          builder: (context) => WasheqCounterView(
+                            calenderItem: calenderItem,
+                            isRamadanLast: true,
+                            files: files,
+                          ),
                         ),
                       );
                     },
@@ -139,7 +184,7 @@ class DayDetail extends StatelessWidget {
                       child: const Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Washeq counter',
+                          'Washeq Counter 10 Rakat',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -149,7 +194,109 @@ class DayDetail extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8,),
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: GestureDetector(
+                    onTap: () {
+                      var files = calenderItem.data!
+                          .firstWhere((e) => e.title.contains('Washeq'))
+                          .files;
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WasheqCounterView(
+                            calenderItem: calenderItem,
+                            files: files,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Washeq Counter 24 Rakat',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+              ] else if (calenderItem.isWasheqDay) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: GestureDetector(
+                    onTap: () {
+                      var files = calenderItem.data!
+                          .firstWhere((e) =>
+                              e.title.contains(possibleWasheq.first) ||
+                              e.title.contains(possibleWasheq.last) ||
+                              e.title.contains(possibleWasheq[1]) ||
+                              e.title.contains(possibleWasheq[2]) ||
+                              e.title.contains(possibleWasheq[3]) ||
+                              e.title.contains(possibleWasheq[4]) ||
+                              e.title.contains(possibleWasheq[5]) ||
+                              e.title.contains(possibleWasheq[6]) ||
+                              e.title.contains(possibleWasheq[7]) ||
+                              e.title.contains(possibleWasheq[8]) ||
+                              e.title.contains(possibleWasheq[9]))
+                          .files;
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WasheqCounterView(
+                            calenderItem: calenderItem,
+                            files: files,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Washeq Counter',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
               ],
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -273,10 +420,15 @@ class FileItem extends StatelessWidget {
 
   final bool otherColor;
 
+  final bool isDisabled;
+  final bool pop;
+
   const FileItem({
     Key? key,
     required this.name,
+    this.pop = false,
     required this.onTap,
+    this.isDisabled = false,
     required this.hasAudio,
     required this.hasPDF,
     required this.fileItem,
@@ -291,6 +443,9 @@ class FileItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: verticalGap),
       child: GestureDetector(
         onTap: () {
+          if (this.isDisabled) {
+            return;
+          }
           if (hasAudio && !hasPDF) {
             showModalBottomSheet(
               isScrollControlled: true,
@@ -371,8 +526,8 @@ class FileItem extends StatelessWidget {
                         child: Text(
                           name,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              color: Colors.white,
+                          style: TextStyle(
+                              color: isDisabled ? Colors.grey : Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: 20),
                         ),

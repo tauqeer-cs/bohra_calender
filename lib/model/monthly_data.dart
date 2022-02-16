@@ -47,6 +47,11 @@ class MonthlyData {
     }
 
 
+
+    if(id == 332){
+      print('');
+
+    }
     if (json['files'] != null) {
       files = [];
       json['files'].forEach((v) {
@@ -54,6 +59,9 @@ class MonthlyData {
       });
 
       for (Files file in files) {
+
+
+
         var firstWhere = files
             .where((e) => file.title == e.title && (e.id != file.id))
             .toList();
@@ -67,6 +75,7 @@ class MonthlyData {
           } else if (firstWhere[0].audioUrl.isEmpty &&
               firstWhere[0].pdfUr.isNotEmpty &&
               file.audioUrl.isNotEmpty) {
+
             file.pdfUr = firstWhere[0].fileUrl;
             firstWhere[0].fileToRemove = true;
           }
@@ -115,6 +124,13 @@ class MonthlyData {
         }
        */
     }
+
+    if(this.files.length > 40){
+      print('');
+
+    }
+    print('');
+
   }
 
   Map<String, dynamic> toJson() {
@@ -163,6 +179,9 @@ class Files {
         fileUrl.contains('m4a') ||
         fileUrl.contains('wav')) {
       audioUrl = fileUrl;
+    }
+    else {
+      pdfUr = fileUrl;
     }
   }
 

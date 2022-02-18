@@ -84,6 +84,7 @@ class _DataServic {
     Dio dio = Dio();
     String url = 'https://merrycode.com/node/bohra-calendar/events/month';
 
+
     var response = await dio.post(url,
       options: Options(headers: {
         HttpHeaders.contentTypeHeader: "application/json",
@@ -91,9 +92,12 @@ class _DataServic {
       data: jsonEncode(queryParameters),
     );
 
+
     var stringEncode = jsonEncode(response.data);
 
     print(stringEncode);
+
+    print(response.data);
 
     List<MonthlyData> monthlyList = [];
     for(var currentItem in response.data) {

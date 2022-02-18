@@ -1,6 +1,7 @@
 import 'package:bohra_calender/core/colors.dart';
 import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/model/calender_item_info.dart';
+import 'package:bohra_calender/model/date_service.dart';
 import 'package:bohra_calender/model/monthly_data.dart';
 import 'package:bohra_calender/model/prayer_time.dart';
 import 'package:bohra_calender/screens/personal_event_listing.dart';
@@ -257,7 +258,8 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
 
     String dayString = "$currentDateString $sohoriTimeString";
 
-    DateTime curentSohoriTime = makeDateFromString(dayString, dateStringFormat);
+    DateTime curentSohoriTime =
+        DateClass.makeDateFromString(dayString, dateStringFormat);
     //NSDate * curentSohoriTime = [DateFormatter makeDataFromString:dayString withDateFormate:dateStringFormat];
 
     if (sunsetRise.sunrise!.toLocal().second > 2) {
@@ -270,7 +272,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     lblSunriseString = "$currentDateString $lblSunriseString";
 
     DateTime lblSunriseTime =
-        makeDateFromString(lblSunriseString, dateStringFormat);
+        DateClass.makeDateFromString(lblSunriseString, dateStringFormat);
 
     /*
     I have to check this logic later
@@ -317,7 +319,8 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
 
     String dayString = "$currentDateString $sohoriTimeString";
 
-    DateTime curentSohoriTime = makeDateFromString(dayString, dateStringFormat);
+    DateTime curentSohoriTime =
+        DateClass.makeDateFromString(dayString, dateStringFormat);
     //NSDate * curentSohoriTime = [DateFormatter makeDataFromString:dayString withDateFormate:dateStringFormat];
 
     if (sunsetRise.sunrise!.toLocal().second > 2) {
@@ -330,7 +333,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     lblSunriseString = "$currentDateString $lblSunriseString";
 
     DateTime lblSunriseTime =
-        makeDateFromString(lblSunriseString, dateStringFormat);
+        DateClass.makeDateFromString(lblSunriseString, dateStringFormat);
 
     curentSohoriTime = lblSunriseTime.subtract(const Duration(minutes: 75));
 
@@ -338,12 +341,14 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
 
     newFajr =
         "$currentDateString $newFajr"; //[NSString stringWithFormat:@"%@ %@",currentDateString,newFajr];
-    DateTime newFajrTime = makeDateFromString(newFajr, dateStringFormat);
+    DateTime newFajrTime =
+        DateClass.makeDateFromString(newFajr, dateStringFormat);
     String zawalString = getZawaaalTimeWithEDSunriseSet(sunsetRise);
 
     zawalString = "$currentDateString $zawalString";
 
-    DateTime zawalDate = makeDateFromString(zawalString, dateStringFormat);
+    DateTime zawalDate =
+        DateClass.makeDateFromString(zawalString, dateStringFormat);
 
     String zoharEndString = getZoharEndTime(sunsetRise, dayGhari);
 
@@ -351,18 +356,19 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
         "$currentDateString $zoharEndString"; //[NSString stringWithFormat:@"%@ %@",currentDateString,zoharEndString];
 
     DateTime zoharEndDate =
-        makeDateFromString(zoharEndString, dateStringFormat);
+        DateClass.makeDateFromString(zoharEndString, dateStringFormat);
 
     String asrEndString = getAsrEndTime(sunsetRise, dayGhari);
     asrEndString = "$currentDateString $asrEndString";
-    DateTime asrEndDate = makeDateFromString(asrEndString,
+    DateTime asrEndDate = DateClass.makeDateFromString(asrEndString,
         dateStringFormat); //[DateFormatter makeDataFromString:asrEndString withDateFormate:dateStringFormat];
 
     String lblSetString =
         "${sunsetRise.sunset!.toLocal().hour}:${sunsetRise.sunset!.toLocal().minute}";
     lblSetString = "$currentDateString $lblSetString";
 
-    DateTime lblSunsetTime = makeDateFromString(lblSetString, dateStringFormat);
+    DateTime lblSunsetTime =
+        DateClass.makeDateFromString(lblSetString, dateStringFormat);
 
     if (sunsetRise.sunset!.toLocal().second > 1) {
       lblSunsetTime = lblSunsetTime.add(Duration(minutes: 1));
@@ -469,19 +475,6 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     int newMinute = (floatMinute).floor();
 
     return newMinute;
-  }
-
-  DateTime makeDateFromString(String givenDate, String format) {
-    if (format.isEmpty) {
-      format = "yyyy-MM-dd HH:mm:ss";
-    }
-
-    if (givenDate.isEmpty) {
-      return DateTime.now();
-    }
-
-    var inputFormat = DateFormat(format);
-    return inputFormat.parse(givenDate);
   }
 
   void setupNot() async {}
@@ -636,544 +629,158 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
         ),
       ),
       body: Container(
-        decoration: Constants.backgroundPAttern,
-        child: Container(
-          color: Constants.backgroundPatternTopColor,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 12,
+        color: Constants.backgroundPatternTopColor,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 12,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  todayIslamicDate,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    todayIslamicDate,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700),
-                  ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  todayNormalDate,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    todayNormalDate,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
+              ),
 
-                const SizedBox(
-                  height: 8,
-                ),
-                if (locationNotFound) ...[
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 4),
-                              child: Text(
-                                'Location Not Found',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(
-                                'Please enable location service so that app can get proper prayer times for you',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ] else ...[
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      nextPrayerText,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            if (showingMore) ...[
-                              PrayerItem(
-                                name: 'Sihori',
-                                time: lblSahori,
-                                icon: WeatherIcons.horizon,
-                                isNotificationOn: sihoriNotification,
-                                onTap: () async {
-                                  setState(() {
-                                    sihoriNotification = !sihoriNotification;
-                                  });
-                                  final prefs =
-                                      await SharedPreferences.getInstance();
 
-                                  if (sihoriNotification) {
-                                    prefs.setBool('sihori', true);
-                                  } else {
-                                    prefs.setBool('sihori', true);
-                                  }
-
-                                  setNoticiationsItems();
-                                },
-                              ),
-                              PrayerItem(
-                                name: 'Fajr',
-                                time: lblFajarTiming,
-                                isNotificationOn: fajrNotification,
-                                icon: WeatherIcons.horizon_alt,
-                                onTap: () {
-                                  fajrNotTapped();
-                                },
-                              ),
-                              PrayerItem(
-                                name: 'Sunrise',
-                                time: lblSunrise,
-                                icon: WeatherIcons.sunrise,
-                                isNotificationOn: sunriseNotification,
-                                onTap: () {
-                                  sunriseTapped();
-                                },
-                              ),
-                              PrayerItem(
-                                name: 'Zawaal',
-                                time: lblZawaal,
-                                icon: WeatherIcons.day_sunny,
-                                isNotificationOn: zawaalNotification,
-                                onTap: () {
-                                  zawaalNotTapped();
-                                },
-                              ),
-                              PrayerItem(
-                                name: 'Zuhr End',
-                                time: lblZoharTiming,
-                                icon: WeatherIcons.day_sunny_overcast,
-                                isNotificationOn: zuhrEndNotification,
-                                onTap: () async {
-                                  zohrEndNot();
-                                },
-                              ),
-                              PrayerItem(
-                                name: 'Magrib',
-                                time: lblMagribTiming,
-                                icon: WeatherIcons.sunset,
-                                isNotificationOn: magribNotification,
-                                onTap: magribNot,
-                              ),
-                              PrayerItem(
-                                name: 'Isha End',
-                                time: lblIshaTime,
-                                icon: WeatherIcons.day_sunny_overcast,
-                                isNotificationOn: ishaEndNotification,
-                                onTap: () async {
-                                  setState(() {
-                                    ishaEndNotification = !ishaEndNotification;
-                                  });
-
-                                  final prefs =
-                                      await SharedPreferences.getInstance();
-
-                                  if (ishaEndNotification) {
-                                    prefs.setBool('isha_end', true);
-                                  } else {
-                                    prefs.setBool('isha_end', true);
-                                  }
-
-                                  setNoticiationsItems();
-                                },
-                              ),
-                            ] else ...[
-                              PrayerItem(
-                                name: 'Fajr',
-                                time: lblFajarTiming,
-                                icon: WeatherIcons.horizon_alt,
-                                isNotificationOn: ishaEndNotification,
-                                onTap: fajrNotTapped,
-                              ),
-                              PrayerItem(
-                                name: 'Sunrise',
-                                time: lblSunrise,
-                                icon: WeatherIcons.sunrise,
-                                isNotificationOn: sunriseNotification,
-                                onTap: sunriseTapped,
-                              ),
-                              PrayerItem(
-                                name: 'Zawaal',
-                                time: lblZawaal,
-                                icon: WeatherIcons.day_sunny,
-                                isNotificationOn: zawaalNotification,
-                                onTap: zawaalNotTapped,
-                              ),
-                              PrayerItem(
-                                name: 'Zuhr End',
-                                time: lblZoharTiming,
-                                icon: WeatherIcons.day_sunny_overcast,
-                                isNotificationOn: zuhrEndNotification,
-                                onTap: zohrEndNot,
-                              ),
-                              PrayerItem(
-                                name: 'Asr End',
-                                time: lblMagribTiming,
-                                icon: WeatherIcons.sunset,
-                                isNotificationOn: asrEndNotification,
-                                onTap: asrNotTapped,
-                              ),
-                            ],
-                            IconButton(
-                              icon: Icon(showingMore
-                                  ? FontAwesomeIcons.angleDown
-                                  : FontAwesomeIcons.angleUp), //angleUp
-                              iconSize: 24,
-                              onPressed: () {
-                                setState(() {
-                                  showingMore = !showingMore;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-
-                if (monthlyData.isEmpty) ...[
-                  Container(
-                    height: 2,
-                  ),
-                ] else ...[
-                  Container(
-                    height: 10,
-                  ),
-                ],
-
-                getTodaysEvent(),
-
-                const SizedBox(
-                  height: 16,
-                ),
-
-                //extra-namaz.png
-                // events-list.png
-
+              if (monthlyData.isEmpty) ...[
                 Container(
-                  color: Colors.white.withOpacity(0.5),
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: PrayerItems(
-                                title: 'Extra Namaz',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ExtraNamazListing(),
-                                    ),
-                                  );
-                                },
-                                imageName: 'extra-namaz',
-                              ),
-                            ),
-                            Expanded(
-                              child: PrayerItems(
-                                title: 'View Event',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EventsListing(
-                                        monthItems: completeMonthData,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                imageName: 'events-list',
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: PrayerItems(
-                                title: 'Personal Events',
-                                onTap: () {
-                                  //const ();
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PersonalEventListing(),
-                                    ),
-                                  );
-                                },
-                                imageName: 'personal-event',
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  height: 2,
                 ),
-
-                const SizedBox(
-                  height: 32,
+              ] else ...[
+                Container(
+                  height: 10,
                 ),
               ],
-            ),
+
+              getTodaysEvent(),
+
+              const SizedBox(
+                height: 16,
+              ),
+
+
+              Container(
+                color: Colors.transparent,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+
+                          Expanded(
+                            child: PrayerItems(
+                              title: 'View Calender',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                    const ExtraNamazListing(),
+                                  ),
+                                );
+                              },
+                              imageName: 'calender-icon',
+                            ),
+                          ),
+
+
+                          Expanded(
+                            child: PrayerItems(
+                              title: 'Extra Namaz',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ExtraNamazListing(),
+                                  ),
+                                );
+                              },
+                              imageName: 'extra-namaz',
+                            ),
+                          ),
+                          Expanded(
+                            child: PrayerItems(
+                              title: 'View Event',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EventsListing(
+                                      monthItems: completeMonthData,
+                                    ),
+                                  ),
+                                );
+                              },
+                              imageName: 'events-list',
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: PrayerItems(
+                              title: 'Personal Events',
+                              onTap: () {
+                                //const ();
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PersonalEventListing(),
+                                  ),
+                                );
+                              },
+                              imageName: 'personal-event',
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 32,
+              ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> magribNot() async {
-    setState(() {
-      magribNotification = !magribNotification;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-
-    if (magribNotification) {
-      prefs.setBool('magrib', true);
-    } else {
-      prefs.setBool('magrib', true);
-    }
-    setNoticiationsItems();
-  }
-
-  Future<void> zohrEndNot() async {
-    setState(() {
-      zuhrEndNotification = !zuhrEndNotification;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-
-    if (zuhrEndNotification) {
-      prefs.setBool('zuhr_end', true);
-    } else {
-      prefs.setBool('zuhr_end', true);
-    }
-
-    setNoticiationsItems();
-  }
-
-  Future<void> zawaalNotTapped() async {
-    setState(() {
-      zawaalNotification = !zawaalNotification;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-
-    if (sihoriNotification) {
-      prefs.setBool('zawaal', true);
-    } else {
-      prefs.setBool('zawaal', true);
-    }
-
-    setNoticiationsItems();
-  }
-
-  Future<void> asrNotTapped() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    if (sunriseNotification) {
-      prefs.setBool('asr', true);
-    } else {
-      prefs.setBool('asr', true);
-    }
-
-    setState(() {
-      sunriseNotification = !sunriseNotification;
-    });
-
-    setNoticiationsItems();
-  }
-
-  Future<void> sunriseTapped() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    if (sunriseNotification) {
-      prefs.setBool('sunrise', true);
-    } else {
-      prefs.setBool('sunrise', true);
-    }
-
-    setState(() {
-      sunriseNotification = !sunriseNotification;
-    });
-
-    setNoticiationsItems();
-  }
-
-  Future<void> fajrNotTapped() async {
-    setState(() {
-      fajrNotification = !fajrNotification;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-
-    if (fajrNotification) {
-      prefs.setBool('fajr', true);
-    } else {
-      prefs.setBool('fajr', true);
-    }
-
-    setNoticiationsItems();
-  }
-
-  void setNoticiationsItems() async {
-    NoticiationApi.cancelAll();
-
-    for (int i = 0; i < 3; i++) {
-      var dateObject = DateTime.now().add(Duration(days: i));
-
-      var result = await getNamazTimesWithLatLong(DateTime.now(), latit, long);
-
-      if (sihoriNotification) {
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(
-              dateObject.year,
-              dateObject.month,
-              dateObject.day,
-              result.first.hour,
-              result.first.minute,
-            ),
-            title: 'Sihori',
-            body: 'Sihori time has started');
-      }
-
-      if (fajrNotification) {
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(dateObject.year, dateObject.month,
-                dateObject.day, result[1].hour, result[1].minute),
-            title: 'Fajr',
-            body: 'Time to pray fajr');
-      }
-
-      if (sunriseNotification) {
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(dateObject.year, dateObject.month,
-                dateObject.day, result[2].hour, result[2].minute),
-            title: 'Sunrise',
-            body: 'Sunrise time , you cant pray fajr anymore');
-      }
-
-      if (zawaalNotification) {
-        NoticiationApi.showTimedNotification(
-          scheduledDate: DateTime(dateObject.year, dateObject.month,
-              dateObject.day, result[3].hour, result[3].minute),
-            title: 'Zawaal',
-            body: 'Its zawaal time now'
-
-        );
-      }
-
-      if (zuhrEndNotification) {
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(dateObject.year, dateObject.month,
-                dateObject.day, result[4].hour, result[4].minute),
-            title: 'Zuhr end',
-            body: 'Zuhr time ended'
-        );
-      }
-
-      if (asrEndNotification) {
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(dateObject.year, dateObject.month,
-                dateObject.day, result[5].hour, result[5].minute),
-            title: 'Asr End',
-            body: 'Asr End');
-      }
-
-      if (magribNotification) {
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(dateObject.year, dateObject.month,
-                dateObject.day, result[6].hour, result[6].minute),
-            title: 'Magrib',
-            body: 'Its magrib time.');
-      }
-
-      if (ishaEndNotification) {
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(dateObject.year, dateObject.month,
-                dateObject.day, result[7].hour, result[7].minute),
-            title: 'Isha End',
-            body: 'Isha Time has ended');
-      }
-    }
-    /*
-    lblSahori = DateFormat('hh:mm a').format(result.first);
-    lblFajarTiming = DateFormat('hh:mm a')
-        .format(result[1]); //formatter stringFromDate:timings[1]];
-    lblSunrise = DateFormat('hh:mm a').format(result[2]);
-    lblZawaal = DateFormat('hh:mm a').format(result[3]);
-    lblZoharTiming = DateFormat('hh:mm a').format(result[4]);
-    lblAsrTiming = DateFormat('hh:mm a').format(result[5]);
-
-    lblIshaTime = DateFormat('hh:mm a').format(result[7]);
-     */
-
-    print('');
   }
 }
 

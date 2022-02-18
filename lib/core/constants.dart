@@ -17,6 +17,7 @@ class Constants {
   fit: BoxFit.cover,
   ));
 
-  static var backgroundPatternTopColor = CColors.green_main.withOpacity(0.9);
+  static var backgroundPatternTopColor = const Color.fromRGBO(237, 243, 217, 1);
 
+  //background: rgba(237, 243, 217, 1);
 }

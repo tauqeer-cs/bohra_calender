@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(color: Colors.green.withOpacity(0.5)),
+        appBarTheme: const AppBarTheme(color:  Color.fromRGBO(162, 200, 177, 1.0)),
       ),
       home: const RootScreen(),
     );

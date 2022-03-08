@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
+  animated_radial_menu:
+    dependency: "direct main"
+    description:
+      name: animated_radial_menu
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   archive:
     dependency: transitive
     description:
@@ -758,13 +765,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.3"
-  scroll_to_index:
-    dependency: "direct main"
-    description:
-      name: scroll_to_index
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   shared_preferences:
     dependency: "direct main"
     description:

@@ -1,7 +1,9 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;import 'dart:math';
+
 
 class NoticiationApi {
+
   static final _notifications = FlutterLocalNotificationsPlugin();
 
   static Future<NotificationDetails> _notificationDetails() async {
@@ -24,8 +26,10 @@ class NoticiationApi {
       required DateTime scheduledDate}) async {
 
 
+
+
     _notifications.zonedSchedule(
-        id,
+      Random().nextInt(9000000),
         title,
         body,
         tz.TZDateTime.from(scheduledDate, tz.local),

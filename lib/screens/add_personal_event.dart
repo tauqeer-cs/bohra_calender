@@ -77,17 +77,17 @@ class _AddPersonalEventState extends State<AddPersonalEvent> {
                   children: [
                     DropdownButton<String>(
                       value: selectedDay,
-                      style: const TextStyle(color: Colors.white, fontSize: 20),
-                      dropdownColor: Colors.grey.shade900,
+                      style:  TextStyle(color: Constants.inkBlack, fontSize: 20),
+                      dropdownColor: Colors.lightBlueAccent,
                       iconEnabledColor: Colors.transparent,
-                      hint: const Text(
+                      hint:  Text(
                         'Select Hijri Day',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(color: Constants.inkBlack, fontSize: 20),
                       ),
                       items: days.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(value ,   ),
                         );
                       }).toList(),
                       onChanged: (newValue) {
@@ -101,12 +101,12 @@ class _AddPersonalEventState extends State<AddPersonalEvent> {
                     ),
                     DropdownButton<String>(
                       value: selectedMonthString,
-                      style: const TextStyle(color: Colors.white, fontSize: 20),
-                      dropdownColor: Colors.grey.shade900,
+                      style:  TextStyle(color: Constants.inkBlack, fontSize: 20),
+                      dropdownColor: Colors.lightBlueAccent,
                       iconEnabledColor: Colors.transparent,
-                      hint: const Text(
+                      hint:  Text(
                         'Select Hijri Month',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(color: Constants.inkBlack, fontSize: 20),
                       ),
                       items: ClassItemInfo.islamicMonthName.map((String value) {
                         return DropdownMenuItem<String>(
@@ -125,28 +125,28 @@ class _AddPersonalEventState extends State<AddPersonalEvent> {
                     ),
                     TextFormField(
                       controller: controller,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        hintStyle: TextStyle(color: Colors.white),
+                      style:  TextStyle(color: Constants.inkBlack),
+                      decoration:  InputDecoration(
+                        hintStyle: TextStyle(color: Constants.inkBlack),
                         focusColor: Colors.yellowAccent,
                         hoverColor: Colors.red,
                         border: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.white,
+                            color: Constants.inkBlack,
                           ),
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.white,
+                            color: Constants.inkBlack,
                           ),
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.white,
+                            color: Constants.inkBlack,
                           ),
                         ),
                         labelText: 'Event Title',
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: TextStyle(color: Constants.inkBlack),
                       ),
                     ),
                     const SizedBox(
@@ -156,28 +156,28 @@ class _AddPersonalEventState extends State<AddPersonalEvent> {
                       controller: controllerDetail,
                       maxLines: 10,
                       minLines: 1,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        hintStyle: TextStyle(color: Colors.white),
+                      style:  TextStyle(color: Constants.inkBlack),
+                      decoration:  InputDecoration(
+                        hintStyle: TextStyle(color: Constants.inkBlack),
                         focusColor: Colors.yellowAccent,
                         hoverColor: Colors.red,
-                        border: UnderlineInputBorder(
+                        border:  UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.white,
+                            color: Constants.inkBlack,
                           ),
                         ),
-                        enabledBorder: UnderlineInputBorder(
+                        enabledBorder:  UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.white,
+                            color: Constants.inkBlack,
                           ),
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.white,
+                            color: Constants.inkBlack,
                           ),
                         ),
                         labelText: 'Event Details',
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: TextStyle(color: Constants.inkBlack),
                       ),
                     ),
                     const SizedBox(

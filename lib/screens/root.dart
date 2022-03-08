@@ -22,8 +22,7 @@ class _RootScreenState extends State<RootScreen> {
 
   static final List<Widget> _pages = <Widget>[
     const Dashboard(),
-    const CalenderHomeScreen(),
-    const Qibla(),
+     Container(),
   ];
 
 
@@ -40,6 +39,7 @@ class _RootScreenState extends State<RootScreen> {
         index: _selectedIndex,
         children: _pages,
       ),
+    /*
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: CColors.green_main,
         fixedColor: Colors.white,
@@ -71,6 +71,8 @@ class _RootScreenState extends State<RootScreen> {
 
         ],
       ),
+    */
+
     );
   }
 }

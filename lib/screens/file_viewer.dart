@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:bohra_calender/model/monthly_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:http/http.dart';
 import 'package:just_audio/just_audio.dart';
@@ -10,18 +13,39 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 
+import 'day_detail.dart';
+
 class FileViewer extends StatefulWidget {
+  final bool nabiNaNaam;
+
   final Files fileItem;
 
-  FileViewer({Key? key, required this.fileItem}) : super(key: key);
+  final List<Files>? fileItems;
+
+  final bool isAlhamdo;
+
+
+  final MonthlyData? data;
+
+
+  const FileViewer(
+      {Key? key, required this.fileItem, this.data, this.nabiNaNaam = false,this.fileItems,this.isAlhamdo = false})
+      : super(key: key);
 
   @override
   State<FileViewer> createState() => _FileViewerState();
 }
 
 class _FileViewerState extends State<FileViewer> {
- // String? kUrl1 = 'https://download.samplelib.com/mp3/sample-15s.mp3';
+  // String? kUrl1 = 'https://download.samplelib.com/mp3/sample-15s.mp3';
   String? localFilePath;
+
+  Future<ByteData> loadAsset() async {
+    String name = 'assets/audio/Nabi na Naam.mp3';
+//nabi na naam.pdf
+    return await rootBundle.load('sounds/music.mp3');
+  }
+
 
   var audio = AudioPlayer();
 
@@ -31,8 +55,8 @@ class _FileViewerState extends State<FileViewer> {
   void dispose() {
     super.dispose();
     if (_timer != null) {
-      this._timer!.cancel();
-      this._timer = null;
+      _timer!.cancel();
+      _timer = null;
 
       audio.stop();
       audio.dispose();
@@ -45,10 +69,9 @@ class _FileViewerState extends State<FileViewer> {
     }
 
     _timer = Timer.periodic(
-        Duration(
+        const Duration(
           seconds: 1,
         ), (timer) {
-      print("Yeah, this line is printed after 3 seconds");
       setState(() {
         progressDuration = audio.position;
 
@@ -59,16 +82,7 @@ class _FileViewerState extends State<FileViewer> {
     });
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    if (Platform.isIOS) {}
-  }
-
   Timer? _timer;
-  int _start = 10;
 
   Duration? progressDuration;
 
@@ -95,7 +109,7 @@ class _FileViewerState extends State<FileViewer> {
       appBar: AppBar(
         title: Text(widget.fileItem.title),
         actions: [
-          if (widget.fileItem.audioUrl.isEmpty) ...[
+          if (widget.fileItem.audioUrl.isEmpty && widget.nabiNaNaam == false) ...[
             Container(),
           ] else if (isLoadingAudio) ...[
             const Padding(
@@ -128,7 +142,23 @@ class _FileViewerState extends State<FileViewer> {
                     isLoadingAudio = true;
                   });
 
-                  totalDuration ??= await audio.setUrl(widget.fileItem.audioUrl);
+                  if(widget.nabiNaNaam) {
+
+                    //loadAsset
+                    totalDuration ??=
+                        await audio.setAsset('assets/audio/Nabi na Naam.mp3');
+
+                  }
+                  else if(widget.fileItem.title == 'Dus Surat'){
+                    totalDuration ??=
+                    await audio.setAsset('assets/audio/dus1.mp3');
+
+                  }
+                  else {
+                    totalDuration ??=
+                    await audio.setUrl(widget.fileItem.audioUrl);
+                  }
+
 
                   setState(() {
                     isLoadingAudio = false;
@@ -199,15 +229,35 @@ class _FileViewerState extends State<FileViewer> {
                 ),
               ),
             ],
-            if (widget.fileItem.pdfUr.contains('.pdf')) ...[
+            if (widget.data != null) ...[
               Expanded(
-                child: const PDF().cachedFromUrl(
-                  widget.fileItem.pdfUr,
-                  placeholder: (double progress) =>
-                      Center(child: Text('$progress %')),
-                  errorWidget: (dynamic error) =>
-                      Center(child: Text(error.toString())),
+                flex: 3,
+                child: buildPdfFromUrl(),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (int i = 1; i < widget.data!.files.length; i++) ...[
+                        FileItem(
+                          name: widget.data!.files[i].title,
+                          onTap: () {},
+                          files: widget.isAlhamdo ? widget.data!.files : null,
+                          hasPDF: widget.data!.files[i].pdfUr.isNotEmpty,
+                          hasAudio: widget.data!.files[i].audioUrl.isNotEmpty,
+                          fileItem: widget.data!.files[i],
+                          verticalGap: 3,
+                          otherColor: i % 2 == 0,
+                          currentIndex: i,
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
+              ),
+            ] else if (widget.fileItem.pdfUr.contains('.pdf') || widget.nabiNaNaam) ...[
+              Expanded(
+                child:  buildPdfFromUrl(),
               ),
             ] else ...[
               Expanded(
@@ -221,5 +271,18 @@ class _FileViewerState extends State<FileViewer> {
         ),
       ),
     );
+  }
+
+  Widget buildPdfFromUrl() {
+    if(widget.nabiNaNaam){
+      return const PDF().fromAsset('assets/audio/nabi na naam.pdf');
+    }
+    return const PDF().cachedFromUrl(
+                widget.fileItem.pdfUr,
+                placeholder: (double progress) =>
+                    Center(child: Text('$progress %')),
+                errorWidget: (dynamic error) =>
+                    Center(child: Text(error.toString())),
+              );
   }
 }

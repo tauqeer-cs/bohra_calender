@@ -99,9 +99,9 @@ SPEC CHECKSUMS:
   audio_session: 7f73f390c62f0bddd99f52e5ece24285ff5e7881
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_compass: 2ca3af071360bb111aaf6c4c6e05683323b2ecdd
-  flutter_filereader: 0caefb23b8c96deca7c3679d3e61bfd8111a7d11
-  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
+  flutter_filereader: 1829499c90504339cf1c17b679f37dd5d4582d36
+  flutter_local_notifications: 43fdfcbc97270d5e385684c868967778cd755bb4
+  flutter_native_timezone: 15c1000553cf64a943db1533b0df6a216f48c096
   flutter_pdfview: 83a970556086f3a10b016a0a8b8c985c2ed81fcc
   flutter_qiblah: 234ce8bf10cd757d5ed9a018697ee2d9c4b48ecc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a

@@ -17,7 +17,21 @@ class Constants {
   fit: BoxFit.cover,
   ));
 
-  static var backgroundPatternTopColor = const Color.fromRGBO(237, 243, 217, 1);
+  //background: rgba(246, 242, 212, 1);
+  ///  static var backgroundPatternTopColor = const Color.fromRGBO(237, 243, 217, 1);//      237, 243, 217, 1.0);
+  static var backgroundPatternTopColor = const Color.fromRGBO(246, 243, 212, 1);//      237, 243, 217, 1.0);
+//backgroundPatternTopColor2
+//  static var backgroundPatternTopColor = const Color.fromRGBO(243, 243, 230, 1);//      237, 243, 217, 1.0);
+  static var borderGray = const Color.fromRGBO(108, 112, 112, 1);
 
-  //background: rgba(237, 243, 217, 1);
+  static var iconBlack = const Color.fromRGBO(48, 52, 55, 1);
+
+  static var inkBlack = const Color.fromRGBO(9, 10, 10, 1);
+
+  static var ickGray = const Color.fromRGBO(114, 119, 122, 1);
+
+
+
+
+//background: rgba(237, 243, 217, 1);
 }

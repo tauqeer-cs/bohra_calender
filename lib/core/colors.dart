@@ -7,7 +7,18 @@ class CColors {
   static const green_main = Color.fromRGBO(9, 140, 127, 1);
   static const green_main2 = Color.fromRGBO(32, 178, 170, 1);
 
-  static const green_main3 = Color.fromRGBO(41, 150, 23, 1);
+  //  ///background: rgba(17, 166, 91, 1);
+  static const green_main3 = Color.fromRGBO(17, 166, 91, 1);
+
+  static const green_buttons= Color.fromRGBO(1, 160, 80, 1);
+
+  static const light_green = Color.fromRGBO(173, 209, 116, 1);
+
+
+  static const day_green = Color.fromRGBO(24, 158, 191, 1.0);
+
+  //173 209 116
+
 
   static const light_gray_color = Color.fromRGBO(232, 240, 240, 1);
 

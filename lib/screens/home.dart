@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'day_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class CalenderHomeScreen extends StatefulWidget {
-  const CalenderHomeScreen({Key? key}) : super(key: key);
+  final List<MonthlyData> completeMonthData;
+
+  const CalenderHomeScreen({Key? key, required this.completeMonthData})
+      : super(key: key);
 
   @override
   _CalenderHomeScreenState createState() => _CalenderHomeScreenState();
@@ -26,7 +28,7 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
   List<MonthlyData> monthData = [];
 
   void loadData() async {
-    monthData = await dataService.getEventsWithFiles();
+    monthData = widget.completeMonthData;
 
     calenderInfoItem = ClassItemInfo.makeCurrentMonthObject(monthData);
     setState(() {
@@ -55,8 +57,7 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
       appBar: AppBar(
         title: const Text('Calender'),
       ),
-      body: Container(
-        decoration: Constants.backgroundPAttern,
+      body: SafeArea(
         child: Container(
           color: Constants.backgroundPatternTopColor,
           child: Padding(
@@ -68,7 +69,9 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 8,),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       Transform(
                         transform: Matrix4.translationValues(0, 4.0, 0.0),
                         child: Align(
@@ -78,7 +81,6 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                 ? calenderInfoItem!.monthName
                                 : '',
                             style: const TextStyle(
-                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),
@@ -107,22 +109,18 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                         calenderInfoItem!.monthItems;
                                   });
                                 }
-                              } else if(monthIndex > 0) {
+                              } else if (monthIndex > 0) {
                                 if (calenderInfoItem != null) {
-
-
-
                                   calenderInfoItem =
-                                      ClassItemInfo.makeMonthData(monthIndex,monthData);
-
+                                      ClassItemInfo.makeMonthData(
+                                          monthIndex, monthData);
 
                                   setState(() {
                                     calssItemInfo =
                                         calenderInfoItem!.monthItems;
                                   });
                                 }
-                              }
-                              else {
+                              } else {
                                 if (calenderInfoItem != null) {
                                   monthIndex = 0;
 
@@ -140,12 +138,11 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                   });
                                 }
                               }
-
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_back_ios,
                               size: 28,
-                              color: Colors.white,
+                              color: Constants.inkBlack,
                             ),
                           ),
                           Text(
@@ -153,7 +150,6 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                 ? calenderInfoItem!.previousMonthName
                                 : '',
                             style: const TextStyle(
-                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
@@ -166,7 +162,6 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                 ? calenderInfoItem!.nextMonthName
                                 : '',
                             style: const TextStyle(
-                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
@@ -193,12 +188,9 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                 }
                               } else {
                                 if (calenderInfoItem != null) {
-
-
-
                                   calenderInfoItem =
-                                      ClassItemInfo.makeMonthData(monthIndex,monthData);
-
+                                      ClassItemInfo.makeMonthData(
+                                          monthIndex, monthData);
 
                                   setState(() {
                                     calssItemInfo =
@@ -207,10 +199,10 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                 }
                               }
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_forward_ios,
+                              color: Constants.inkBlack,
                               size: 28,
-                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -458,11 +450,48 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                           ),
                         ],
                       ],
+                      if (calssItemInfo.last.monthNo == 9) ...[
+                        Expanded(
+                          child: Container(),
+                        ),
+                        buildNabiNaNaam(),
+                        const SizedBox(
+                          height: 16,
+                          child: Text(
+                            'Click on a Hijri Date to get details of the day',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ] else ...[
+                        Expanded(
+                          child: Container(),
+                        ),
+                        const Text(
+                          'Click on a Hijri Date to get details of the day',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
                     ],
                   ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildNabiNaNaam() {
+    return FileItem(
+      name: 'Nabi na Naam',
+      onTap: () {},
+      fileItem: Files(),
+      hasPDF: true,
+      hasAudio: true,
+      isNabiNaNaam: true,
     );
   }
 }
@@ -486,7 +515,7 @@ class DateItem extends StatelessWidget {
           style: TextStyle(
             color: Colors.green.shade900,
             fontWeight: FontWeight.w600,
-            fontSize: 16,
+            fontSize: 15,
           ),
         ),
         Expanded(
@@ -526,12 +555,9 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
-
       onTap: () {
         //calenderItem
         if (calenderItem != null) {
-
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -540,13 +566,15 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
               ),
             ),
           );
-
         }
       },
       child: Container(
         decoration: BoxDecoration(
           color: color(),
-          border: Border.all(color: colorColor(), width: borderWidth()),
+          border: Border.all(
+            color: colorColor(),
+            width: borderWidth(),
+          ),
           borderRadius: const BorderRadius.all(
             Radius.circular(10.0),
           ),
@@ -577,7 +605,7 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
         return 2;
       }
     }
-    return 0;
+    return 1;
   }
 
   Color colorColor() {
@@ -589,7 +617,7 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
         return Colors.green.shade900;
       }
     }
-    return Colors.transparent;
+    return Colors.grey.shade700;
   }
 
   Color color() {
@@ -600,10 +628,11 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
           return calenderItem!.data!.first.backgroundColor;
         }
       }
-      return CColors.light_gray_color;
+      return Colors.white;
     } else if (darkGreen) {
       return CColors.green_main3;
     }
-    return CColors.green_main2;
+
+    return CColors.day_green;
   }
 }

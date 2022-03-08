@@ -1,7 +1,7 @@
 import 'package:location/location.dart';
 
 class _LocationService {
-  Future<List<String>?> getLocationMapData() async {
+  Future<List<String>?> getLocationMapData({required Function givePermission}) async {
     Location location = Location();
 
     bool _serviceEnabled;
@@ -20,6 +20,9 @@ class _LocationService {
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
+        //permission denied code
+        givePermission.call();
+
         return null;
       }
     }

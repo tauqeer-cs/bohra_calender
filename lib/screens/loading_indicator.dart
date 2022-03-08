@@ -17,25 +17,22 @@ class LoadingIndicator extends StatelessWidget {
             child: Container(),
           ),
 
-          FaIcon(
+          const FaIcon(
             FontAwesomeIcons.locationArrow,
-            color: Colors.white,
             size: 50,
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          CircularProgressIndicator(
-            color: Colors.white,
+          const CircularProgressIndicator(
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
-          Text(
+          const Text(
             'Loading Qibla Direction.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
@@ -43,11 +40,11 @@ class LoadingIndicator extends StatelessWidget {
           Expanded(
             child: Container(),
           ),
-          Text(
+          const Text(
             'If your location services are off then please turn it on so that we can get correct Qibla direction.',
             textAlign: TextAlign.center,
           ),
-          SizedBox(
+          const SizedBox(
             height: 32,
           ),
         ],

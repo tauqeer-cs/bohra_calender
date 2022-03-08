@@ -166,6 +166,9 @@ class Files {
   Files.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
+    if(title == '') {
+
+    }
     fileName = json['file_name'];
     lastUpdate = json['last_update'];
     fileUrl = json['file_url'];
@@ -177,7 +180,7 @@ class Files {
       pdfUr = fileUrl;
     } else if (fileUrl.contains('mp3') ||
         fileUrl.contains('m4a') ||
-        fileUrl.contains('wav')) {
+        fileUrl.contains('wav') || fileUrl.contains('.amr')) {
       audioUrl = fileUrl;
     }
     else {
@@ -186,12 +189,12 @@ class Files {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = this.id;
     data['title'] = this.title;
     data['file_name'] = this.fileName;
     data['last_update'] = this.lastUpdate;
-    data['file_url'] = this.fileUrl;
+    data['file_url'] = fileUrl;
 
     return data;
   }

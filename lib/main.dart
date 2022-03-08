@@ -6,27 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   tz.initializeTimeZones();
 
-
-
-
- // await Hive.openBox<PersonalEvent>('personal_event');
-
-
+  // await Hive.openBox<PersonalEvent>('personal_event');
 
   runZoned(() async {
     await objectBoxService.initialize();
 
-     runApp(const MyApp());
+    runApp(const MyApp());
   });
-
-
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +31,20 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        appBarTheme: const AppBarTheme(color:  Color.fromRGBO(162, 200, 177, 1.0)),
+          fontFamily: 'PlayfairDisplay',
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(50, 149, 55, 1),
+          ), // 1
+          color: Color.fromRGBO(162, 200, 177, 1.0),
+          titleTextStyle: TextStyle(
+            color: Color.fromRGBO(50, 149, 55, 1),
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+
+          // background: rgba(50, 149, 55, 1);
+        ),
       ),
       home: const RootScreen(),
     );

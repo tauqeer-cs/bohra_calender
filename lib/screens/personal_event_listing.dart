@@ -1,3 +1,4 @@
+import 'package:bohra_calender/core/colors.dart';
 import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/services/objectbox_service.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +53,9 @@ class _PersonalEventListingState extends State<PersonalEventListing>
                 loadData();
               }
             },
-            child: const Text(
+            child:  Text(
               'Add Event',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Constants.inkBlack),
             ),
           ),
         ],
@@ -196,8 +197,8 @@ class PersonalListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   personalEvent.title,
-                  style: const TextStyle(
-                      color: Colors.white,
+                  style:  TextStyle(
+                      color: Constants.inkBlack,
                       fontWeight: FontWeight.w600,
                       fontSize: 22),
                 ),
@@ -219,8 +220,8 @@ class PersonalListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   personalEvent.details,
-                  style: const TextStyle(
-                      color: Colors.white,
+                  style:  TextStyle(
+                      color: Constants.inkBlack,
                       fontWeight: FontWeight.w600,
                       fontSize: 22),
                 ),
@@ -241,16 +242,16 @@ class PersonalListItem extends StatelessWidget {
               ),
               IconButton(
                 onPressed: deleteTapped,
-                icon: const Icon(
+                icon:  Icon(
                   Icons.close,
-                  color: Colors.white,
+                  color: Constants.inkBlack,
                   size: 32,
                 ),
               ),
             ],
           ),
           const Divider(
-            color: Colors.white,
+            color: Colors.grey,
           ),
         ],
       ),

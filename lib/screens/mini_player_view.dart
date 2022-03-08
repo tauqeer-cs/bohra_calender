@@ -7,15 +7,22 @@ import 'package:just_audio/just_audio.dart';
 
 class MiniPlayerView extends StatefulWidget {
   final Files fileItem;
+  final List<Files>? fileItems;
 
-  const MiniPlayerView({Key? key, required this.fileItem}) : super(key: key);
+  final int itemIndex;
+
+
+   const MiniPlayerView({Key? key, required this.fileItem,this.fileItems, this.itemIndex = 1}) : super(key: key);
 
   @override
-  State<MiniPlayerView> createState() => _MiniPlayerViewState();
+  State<MiniPlayerView> createState() => MiniPlayerViewState();
 }
 
-class _MiniPlayerViewState extends State<MiniPlayerView> {
+class MiniPlayerViewState extends State<MiniPlayerView> {
   Duration? progressDuration;
+
+
+  int currentIndex = 1;
 
   int totalSecond = 0;
   var audio = AudioPlayer();
@@ -23,43 +30,76 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
   Duration? totalDuration;
   bool isPlaying = false;
 
-  String? kUrl1 = 'https://download.samplelib.com/mp3/sample-15s.mp3';
   String? localFilePath;
 
   Timer? _timer;
-  int _start = 10;
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+
+      audio.stop();
+      audio.dispose();
+    }
+  }
 
   void startTimer(int totalSeconds) {
-
-    if(_timer != null) {
+    if (_timer != null) {
       _timer!.cancel();
     }
+    _timer = Timer.periodic(
+        const Duration(
+          seconds: 1,
+        ), (timer) {
 
-    _timer =  Timer.periodic(Duration(seconds: 1 ,), (timer) {
-      print("Yeah, this line is printed after 3 seconds");
+
       setState(() {
-
         progressDuration = audio.position;
 
-        if(audio.position.inSeconds == audio.duration!.inSeconds) {
+        if (audio.position.inSeconds == audio.duration!.inSeconds && isPlaying ) {
+
 
           isPlaying = false;
+
+
+          if(widget.fileItems != null){
+
+            if(widget.fileItems!.length == (currentIndex+1)) {
+
+              return;
+
+            }
+            currentIndex = currentIndex +1;
+
+
+            progressDuration = null;
+            currentIndex = currentIndex +1;
+
+            setPlayer();
+          }
 
         }
       });
     });
-
-
-
   }
-
 
   bool isLoadingAudio = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    currentIndex = widget.itemIndex;
+
+
+  }
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      insetPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+      insetPadding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
       backgroundColor: Colors.black12,
       content: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -78,7 +118,9 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 8,),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       Row(
                         children: [
                           const SizedBox(
@@ -88,7 +130,7 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                widget.fileItem.title,
+                                buildTitle(),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,
@@ -106,6 +148,9 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
                               ),
                               iconSize: 28,
                               onPressed: () async {
+                                audio.stop();
+                                audio.dispose();
+
                                 Navigator.pop(context);
                               },
                             ),
@@ -140,7 +185,6 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
                                   ),
                                   const Text(
                                     'Mohammed Shk Zohair Mukaddam (Hafiz-ul-Quran)',
-
                                   ),
                                 ],
                               ),
@@ -154,20 +198,20 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
                       const SizedBox(
                         height: 8,
                       ),
-
                       Container(
                         color: Colors.grey.shade700,
                         width: double.infinity,
                         child: Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           child: Column(
                             children: [
                               const SizedBox(
                                 height: 8,
                               ),
                               ProgressBar(
-                                timeLabelTextStyle: const TextStyle(color: Colors.white),
+                                timeLabelTextStyle:
+                                    const TextStyle(color: Colors.white),
                                 progress: progressDuration != null
                                     ? progressDuration!
                                     : const Duration(milliseconds: 0),
@@ -182,73 +226,37 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
                                 barHeight: 3.0,
                                 thumbRadius: 5.0,
                                 onSeek: (duration) {
-
                                   audio.seek(duration);
 
-                                  if(audio.playing) {
+                                  if (audio.playing) {
                                     setState(() {
                                       isPlaying = true;
                                     });
-
                                   }
                                 },
                               ),
-
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 2,),
+                      const SizedBox(
+                        height: 2,
+                      ),
                       GestureDetector(
-                        child: Image.asset(
-                          isPlaying
-                              ? 'assets/images/pause.png'
-                              : 'assets/images/play.png',
-                          height: 40,
-                        ),
-                        onTap: () async {
+                        child: isLoadingAudio
+                            ? const CircularProgressIndicator()
+                            : Image.asset(
+                                isPlaying
+                                    ? 'assets/images/pause.png'
+                                    : 'assets/images/play.png',
+                                height: 40,
+                              ),
+                        onTap: ()  {
 
-                          if(isLoadingAudio){
-
-                            return;
-
-                          }
-
-                          if (isPlaying) {
-                            setState(() {
-                              isPlaying = false;
-                            });
-
-                            audio.pause();
-                          } else {
-
-                            setState(() {
-                              isLoadingAudio = true;
-                            });
-
-                            totalDuration ??= await audio.setUrl(kUrl1!);
-
-                            setState(() {
-                              isLoadingAudio = false;
-                            });
-
-                            if (totalDuration != null) {
-                              totalSecond = totalDuration!.inSeconds;
-                            }
-
-                            audio.play();
-
-                            startTimer(1);
-                            setState(() {
-                              isPlaying = true;
-                            });
-                          }
+                          setPlayer();
 
                         },
-
                       ),
-
-
                     ],
                   ),
                 ),
@@ -261,5 +269,70 @@ class _MiniPlayerViewState extends State<MiniPlayerView> {
         ),
       ),
     );
+  }
+
+
+  void setPlayer() async {
+    if (isLoadingAudio) {
+      return;
+    }
+    if (isPlaying) {
+
+      setState(() {
+        isPlaying = false;
+      });
+
+      audio.pause();
+
+    } else {
+      setState(() {
+        isLoadingAudio = true;
+      });
+
+      if(widget.fileItems != null) {
+
+
+
+        audio = AudioPlayer();
+
+
+        totalDuration =
+        await audio.setUrl(widget.fileItems![currentIndex].audioUrl);
+
+      }
+      else {
+        totalDuration ??=
+        await audio.setUrl(widget.fileItem.audioUrl);
+      }
+
+
+
+
+
+      setState(() {
+        isLoadingAudio = false;
+      });
+
+      if (totalDuration != null) {
+        totalSecond = totalDuration!.inSeconds;
+      }
+
+      audio.play();
+
+      startTimer(1);
+      setState(() {
+        isPlaying = true;
+      });
+
+    }
+
+  }
+  String buildTitle() {
+
+    if(widget.fileItems != null){
+      return widget.fileItems![currentIndex].title;
+    }
+    return widget.fileItem.title;
+
   }
 }

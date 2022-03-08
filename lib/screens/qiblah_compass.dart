@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' show pi;
 
 import 'package:bohra_calender/core/colors.dart';
+import 'package:bohra_calender/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,52 +30,50 @@ class _QiblahCompassState extends State<QiblahCompass> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: CColors.green_main,
-        image: DecorationImage(
-          image: AssetImage('assets/images/pattern.png'),
-          fit: BoxFit.cover,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Find Qibla'
         ),
       ),
-
-      child: Container(
-        color: CColors.green_main.withOpacity(0.9),
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(8.0),
-        child: StreamBuilder(
-          stream: stream,
-          builder: (context, AsyncSnapshot<LocationStatus> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingIndicator();
-            }
-            if (snapshot.data!.enabled == true) {
-              switch (snapshot.data!.status) {
-                case LocationPermission.always:
-                case LocationPermission.whileInUse:
-                  return QiblahCompassWidget();
-
-                case LocationPermission.denied:
-                  return LocationErrorWidget(
-                    error: "Location service permission denied",
-                    callback: _checkLocationStatus,
-                  );
-                case LocationPermission.deniedForever:
-                  return LocationErrorWidget(
-                    error: "Location service Denied Forever !",
-                    callback: _checkLocationStatus,
-                  );
-
-                default:
-                  return Container();
+      body: Container(
+        color: Constants.backgroundPatternTopColor,
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: StreamBuilder(
+            stream: stream,
+            builder: (context, AsyncSnapshot<LocationStatus> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingIndicator();
               }
-            } else {
-              return LocationErrorWidget(
-                error: "Please enable Location service",
-                callback: _checkLocationStatus,
-              );
-            }
-          },
+              if (snapshot.data!.enabled == true) {
+                switch (snapshot.data!.status) {
+                  case LocationPermission.always:
+                  case LocationPermission.whileInUse:
+                    return QiblahCompassWidget();
+
+                  case LocationPermission.denied:
+                    return LocationErrorWidget(
+                      error: "Location service permission denied",
+                      callback: _checkLocationStatus,
+                    );
+                  case LocationPermission.deniedForever:
+                    return LocationErrorWidget(
+                      error: "Location service Denied Forever !",
+                      callback: _checkLocationStatus,
+                    );
+
+                  default:
+                    return Container();
+                }
+              } else {
+                return LocationErrorWidget(
+                  error: "Please enable Location service",
+                  callback: _checkLocationStatus,
+                );
+              }
+            },
+          ),
         ),
       ),
     );

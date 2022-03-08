@@ -62,7 +62,7 @@ dependencies:
   flutter_local_notifications: ^9.2.0
   timezone: ^0.8.0
   flutter_filereader: ^3.0.0
-  scroll_to_index: ^2.1.1
+  animated_radial_menu: ^0.0.1
 
 
 dev_dependencies:
@@ -80,7 +80,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/app-icon.jpg"
+  image_path: "assets/icons/logo.jpg"
 
 
 
@@ -89,10 +89,30 @@ flutter:
 
   uses-material-design: true
 
+  fonts:
+    - family: Number
+      fonts:
+        - asset: assets/fonts/Hubballi-Regular.ttf
+    - family: Arabic
+      fonts:
+        - asset: assets/fonts/noorehira.ttf
+    - family: PlayfairDisplay
+      fonts:
+        - asset: assets/fonts/PlayfairDisplay-Regular.ttf
+        - asset: assets/fonts/PlayfairDisplay-Medium.ttf
+          weight: 600
+        - asset: assets/fonts/PlayfairDisplay-SemiBold.ttf
+          weight: 700
+        - asset: assets/fonts/PlayfairDisplay-Bold.ttf
+          weight: 800
+        - asset: assets/fonts/PlayfairDisplay-ExtraBold.ttf
+          weight: 900
+
   assets:
     - assets/
     - assets/images/
-
+    - assets/icons/
+    - assets/audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

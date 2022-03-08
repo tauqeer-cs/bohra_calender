@@ -9,7 +9,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class _DataServic {
   Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/public_key.txt');
@@ -19,7 +18,8 @@ class _DataServic {
     return await rootBundle.loadString('assets/secret_key.txt');
   }
 
-  Future<List<MonthlyData>> getEventsWithFiles({bool accessSavedObject = false}) async {
+  Future<List<MonthlyData>> getEventsWithFiles(
+      {bool accessSavedObject = false}) async {
     String pK = await loadAsset();
     String sK = await loadAsset2();
     final queryParameters = {
@@ -30,28 +30,24 @@ class _DataServic {
     String url = 'https://merrycode.com/node/bohra-calendar/events';
     final prefs = await SharedPreferences.getInstance();
 
-    if(accessSavedObject) {
+    if (accessSavedObject) {
       final String? alreadtString = prefs.getString('objectSaved');
 
-      if(alreadtString != null) {
+      if (alreadtString != null) {
         var responseDateList = jsonDecode(alreadtString);
 
         List<MonthlyData> tmpMonthlyList = [];
-        for(var currentItem in responseDateList) {
+        for (var currentItem in responseDateList) {
           MonthlyData monthItem = MonthlyData.fromJson(currentItem);
           tmpMonthlyList.add(monthItem);
         }
 
         return tmpMonthlyList;
-
-        print(responseDateList);
-
       }
-
     }
 
-
-    var response = await dio.post(url,
+    var response = await dio.post(
+      url,
       options: Options(headers: {
         HttpHeaders.contentTypeHeader: "application/json",
       }),
@@ -62,9 +58,8 @@ class _DataServic {
 
     await prefs.setString("objectSaved", stringEncode);
 
-
     List<MonthlyData> monthlyList = [];
-    for(var currentItem in response.data) {
+    for (var currentItem in response.data) {
       MonthlyData monthItem = MonthlyData.fromJson(currentItem);
       monthlyList.add(monthItem);
     }
@@ -76,22 +71,17 @@ class _DataServic {
     String pK = await loadAsset();
     String sK = await loadAsset2();
     // "month" : -1
-    final queryParameters = {
-      'public_key': pK,
-      'secret_key': sK,
-       'month' : '-1'
-    };
+    final queryParameters = {'public_key': pK, 'secret_key': sK, 'month': '-1'};
     Dio dio = Dio();
     String url = 'https://merrycode.com/node/bohra-calendar/events/month';
 
-
-    var response = await dio.post(url,
+    var response = await dio.post(
+      url,
       options: Options(headers: {
         HttpHeaders.contentTypeHeader: "application/json",
       }),
       data: jsonEncode(queryParameters),
     );
-
 
     var stringEncode = jsonEncode(response.data);
 
@@ -100,12 +90,10 @@ class _DataServic {
     print(response.data);
 
     List<MonthlyData> monthlyList = [];
-    for(var currentItem in response.data) {
+    for (var currentItem in response.data) {
       MonthlyData monthItem = MonthlyData.fromJson(currentItem);
       monthlyList.add(monthItem);
     }
-
-
 
     return monthlyList;
   }

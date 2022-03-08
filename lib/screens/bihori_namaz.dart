@@ -3,6 +3,7 @@ import 'package:bohra_calender/model/monthly_data.dart';
 import 'package:bohra_calender/screens/washeq_counter.dart';
 import 'package:flutter/material.dart';
 
+import 'day_detail.dart';
 import 'extra_name_listing.dart';
 
 class BihoriNamazView extends StatefulWidget {
@@ -36,7 +37,7 @@ class _BihoriNamazViewState extends State<BihoriNamazView> {
                   child: ListView.builder(
                     itemBuilder: (context, index) {
 
-                      return ExtraNamazItem(data: widget.data,hideTitle: true);
+                      return ExtraNamazItem(data: widget.data,hideTitle: true , isBihori: true,);
                     },
                     itemCount: 1,
                   ),
@@ -44,43 +45,6 @@ class _BihoriNamazViewState extends State<BihoriNamazView> {
                 const SizedBox(
                   height: 4,
                 ),
-                const Divider(color: Colors.white,),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  WasheqCounterView(files: [],),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      child: const Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Washeq counter',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
 
                 const Divider(color: Colors.white,),
 

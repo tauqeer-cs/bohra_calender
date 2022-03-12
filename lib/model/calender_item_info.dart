@@ -54,6 +54,10 @@ class ClassItemInfo {
       washerLimit = 24;
       return true;
     }
+    else if (monthNo == 12 && day == 9) {
+      washerLimit = 24;
+      return true;
+    }
     return false;
   }
 

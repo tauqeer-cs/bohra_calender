@@ -262,6 +262,22 @@ class PersonalEvent {
   bool alreadySynced = false;
 
   String get hijriMonthString {
-    return ClassItemInfo.islamicMonthName[hijriMonth];
+    return getDayOfMonthSuffix(hijriDay) + ' ' + ClassItemInfo.islamicMonthName[hijriMonth];
   }
+
+  String getDayOfMonthSuffix(int dayNum) {
+
+    if(dayNum >= 11 && dayNum <= 13) {
+      return 'th';
+    }
+
+    switch(dayNum % 10) {
+      case 1: return dayNum.toString() + 'st';
+      case 2: return dayNum.toString() + 'nd';
+      case 3: return dayNum.toString() + 'rd';
+      default: return dayNum.toString() +  'th';
+    }
+  }
+
+
 }

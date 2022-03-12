@@ -55,7 +55,7 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calender'),
+        title: const Text('Calendar'),
       ),
       body: SafeArea(
         child: Container(
@@ -529,7 +529,7 @@ class DateItem extends StatelessWidget {
             style: TextStyle(
               color: Colors.green.shade900,
               fontWeight: FontWeight.w400,
-              fontSize: calenderItem!.normalDayNo.length == 2 ? 14 : 12,
+              fontSize: calenderItem!.normalDayNo.length == 2 ? 13 : 10,
             ),
           ),
         ),
@@ -551,7 +551,6 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
       {Key? key, this.darkGreen = false, this.text = '', this.calenderItem})
       : super(key: key);
 
-  ////
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -599,10 +598,10 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
   double borderWidth() {
     if (calenderItem != null) {
       if (calenderItem!.normalDayNo == 'Today') {
-        return 3;
+        return 2;
       } else if (calenderItem!.dayString == 'Sun' ||
           calenderItem!.dayString == 'Sat') {
-        return 2;
+        return 1.5;
       }
     }
     return 1;
@@ -622,7 +621,6 @@ class MakeRoundedBoxForCalender extends StatelessWidget {
 
   Color color() {
     if (calenderItem != null) {
-      //light_gray_color
       if (calenderItem!.data != null) {
         if (calenderItem!.data!.first.color_tag.isNotEmpty) {
           return calenderItem!.data!.first.backgroundColor;

@@ -1,5 +1,6 @@
 import 'package:bohra_calender/core/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class MonthlyData {
   int id = 0;
@@ -35,7 +36,7 @@ class MonthlyData {
       backgroundColor = CColors.blue_inside;
     }
     else if (color_tag == 'white') {
-      backgroundColor = CColors.light_gray_color;
+      backgroundColor = Colors.white;
     }
     else if (color_tag == 'green' || color_tag == 'orange') {
       //light_red

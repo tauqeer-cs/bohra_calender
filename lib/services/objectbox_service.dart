@@ -8,10 +8,7 @@ class _ObjectBoxService {
 
   Future<void> initialize() async {
     final appDocDir = await getApplicationDocumentsDirectory();
-
-      store = openStore(directory: appDocDir.path);
-
-
+      store = await openStore(directory: appDocDir.path);
       print('object');
       
   }

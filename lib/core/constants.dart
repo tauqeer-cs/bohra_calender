@@ -19,7 +19,7 @@ class Constants {
 
   //background: rgba(246, 242, 212, 1);
   ///  static var backgroundPatternTopColor = const Color.fromRGBO(237, 243, 217, 1);//      237, 243, 217, 1.0);
-  static var backgroundPatternTopColor = const Color.fromRGBO(246, 243, 212, 1);//      237, 243, 217, 1.0);
+  static var backgroundPatternTopColor = const Color.fromRGBO(252, 252, 233, 1);//      237, 243, 217, 1.0);
 //backgroundPatternTopColor2
 //  static var backgroundPatternTopColor = const Color.fromRGBO(243, 243, 230, 1);//      237, 243, 217, 1.0);
   static var borderGray = const Color.fromRGBO(108, 112, 112, 1);

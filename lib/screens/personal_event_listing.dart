@@ -100,13 +100,13 @@ class _PersonalEventListingState extends State<PersonalEventListing>
                                 color: const Color.fromRGBO(0, 179, 134, 1.0),
                               ),
                               DialogButton(
-                                child: Text(
+                                child: const Text(
                                   "Cancel",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
                                 onPressed: () => Navigator.pop(context),
-                                gradient: LinearGradient(colors: [
+                                gradient: const LinearGradient(colors: [
                                   Color.fromRGBO(116, 116, 191, 1.0),
                                   Color.fromRGBO(52, 138, 199, 1.0)
                                 ]),
@@ -119,37 +119,7 @@ class _PersonalEventListingState extends State<PersonalEventListing>
 
                           if(!areas[index].alreadySynced) {
 
-                            /*
-                            String eventName = '';
 
-                          if (calenderItem.data == null) {
-                            return;
-                          }
-                          for (var currentItem in calenderItem.data!) {
-                            if (eventName.isEmpty) {
-                              eventName = currentItem.title;
-                            } else {
-                              eventName = eventName + ' ' + currentItem.title;
-                            }
-                          }
-
-                          final Event event = Event(
-                            title: eventName,
-                            startDate: calenderItem.normalDate,
-                            endDate: calenderItem.normalDate
-                                .add(const Duration(days: 1, hours: 1)),
-                            iosParams: const IOSParams(
-                              reminder: Duration(days: 1, hours: -2),
-                            ),
-                            androidParams: const AndroidParams(
-                              emailInvites: [], // on Android, you can add invite emails to your event.
-                            ),
-                          );
-
-                          bool check = await Add2Calendar.addEvent2Cal(event);
-
-
-                            */
                           }
 
                         },
@@ -204,7 +174,7 @@ class PersonalListItem extends StatelessWidget {
                 ),
               ),
               Text(
-                personalEvent.hijriMonthString,
+      personalEvent.hijriMonthString,
                 style: TextStyle(
                     color: Colors.grey.shade400,
                     fontWeight: FontWeight.w600,

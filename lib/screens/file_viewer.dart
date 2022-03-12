@@ -103,11 +103,12 @@ class _FileViewerState extends State<FileViewer> {
 
   int totalSecond = 0;
 
+  //nabiNaNaam
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.fileItem.title),
+        title: Text(buildTitle()),
         actions: [
           if (widget.fileItem.audioUrl.isEmpty && widget.nabiNaNaam == false) ...[
             Container(),
@@ -149,7 +150,7 @@ class _FileViewerState extends State<FileViewer> {
                         await audio.setAsset('assets/audio/Nabi na Naam.mp3');
 
                   }
-                  else if(widget.fileItem.title == 'Dus Surat'){
+                  else if(buildTitle() == 'Dus Surat'){
                     totalDuration ??=
                     await audio.setAsset('assets/audio/dus1.mp3');
 
@@ -271,6 +272,15 @@ class _FileViewerState extends State<FileViewer> {
         ),
       ),
     );
+  }
+
+  String buildTitle() {
+
+    if(this.widget.nabiNaNaam) {
+      return 'Nabi na Naam';
+    }
+    return widget.fileItem.title;
+
   }
 
   Widget buildPdfFromUrl() {

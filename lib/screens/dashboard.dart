@@ -17,6 +17,7 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'bihori_namaz.dart';
 import 'day_detail.dart';
 import 'events_list.dart';
@@ -34,7 +35,6 @@ class Dashboard extends StatefulWidget {
 
 //<AppLifecycleReactor>
 class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
-
   List<MonthlyData>? otherData;
 
   bool gettingLocation = true;
@@ -124,7 +124,66 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     );
 
     if (monthlyData.isEmpty) {
-      return Container();
+      return Container(
+        color: Colors.white,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: Container(
+                  //   height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Constants.backgroundPatternTopColor,
+                    boxShadow: [
+                      BoxShadow(color: Constants.borderGray, spreadRadius: 2),
+                    ],
+                  ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Icon(
+                            FontAwesomeIcons.calendar,
+                            color: Constants.inkBlack,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'No Event Today',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Constants.inkBlack,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
     return Container(
       color: Colors.white,
@@ -134,7 +193,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
         child: Column(
           children: [
             const Text(
-              'Todays Events',
+              "Today's Events",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
@@ -142,10 +201,14 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
             ),
             for (int i = 0; i < monthlyData.length; i++) ...[
               GestureDetector(
-                onTap: (){
-
+                onTap: () {
                   try {
-                    var response  = ClassItemInfo.makeCurrentMonthObject(completeMonthData).monthItems.firstWhere((e) => e.monthNo == _today.hMonth && e.dayNo == _today.hDay.toString());
+                    var response =
+                        ClassItemInfo.makeCurrentMonthObject(completeMonthData)
+                            .monthItems
+                            .firstWhere((e) =>
+                                e.monthNo == _today.hMonth &&
+                                e.dayNo == _today.hDay.toString());
 
                     Navigator.push(
                       context,
@@ -155,15 +218,9 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                         ),
                       ),
                     );
-                  }
-                  catch(e){
-
+                  } catch (e) {
                     print('');
-
                   }
-
-
-
                 },
                 child: Padding(
                   padding: i == 0
@@ -207,7 +264,9 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                                       color: Constants.inkBlack,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                const SizedBox(height: 4,),
+                                const SizedBox(
+                                  height: 4,
+                                ),
                                 Text(
                                   monthlyData[i].title,
                                   textAlign: TextAlign.left,
@@ -494,7 +553,6 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
 
 //    getTimes();
     loadData();
-
   }
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -510,7 +568,6 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
       lblIshaTime = '';
 
   AppLifecycleState? _notification;
-
 
   Future<void> setTimes(List<DateTime> result) async {
     lblSahori = DateFormat('hh:mm a').format(result.first);
@@ -584,7 +641,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
-          'assets/images/bismillah.png',
+          'assets/images/bismillah-black.png',
           height: 44,
         ),
       ),
@@ -664,83 +721,80 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                             },
                             imageName: 'event_icon',
                           ),
-
                           buildPersonalEventItem(context),
-
-
                         ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        buildRow(
-                            context,
-                            PrayerItems(
-                              title: 'Pray Bihori Namaz',
-                              onTap: () {
-
-                                var bihoriNamaz = otherData!.firstWhere((e) => e.title == 'Bihori Namaz');
-
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BihoriNamazView(
-                                      data: bihoriNamaz,
-                                    ),
-                                  ),
-                                );
-
-                              },
-                              imageName: 'bihori_icon',
-                            ),
-                            PrayerItems(
-                              title: 'Pray Extra Namaz',
-                              onTap: () {
-
-                                if(otherData != null) {
-
-                                  var otherToSend = otherData!.firstWhere((e) => e.title == 'Other Namaz');
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>  ExtraNamazListing(isOther: true,monthlyData: otherToSend,),
-                                    ),
-                                  );
-                                }
-
-
-                              },
-                              imageName: 'other_namaz',
-                            ),                            PrayerItems(
-                          title: 'Recite Duas',
-                          onTap: () {
-
-
-                            if(otherData != null) {
-
-                              var otherToSend = otherData!.where((e) => e.title != 'Other Namaz' && e.title != 'Bihori Namaz').toList();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>  ExtraNamazListing(isDuas: true,monthlyListData: otherToSend,),
-                                ),
-                              );
-                            }
-
-
-                          },
-                          imageName: 'recite_duas',
-                        ),
-                            ),
                         const SizedBox(
                           height: 16,
                         ),
                         buildRow(
                           context,
-                          buildPersonalEventItem(context,tasbeeh: true),
-                            buildNamazTimingItem(context),
-                          buildQiblaCompassitem(context),
+                          PrayerItems(
+                            title: 'Pray Bihori Namaz',
+                            onTap: () {
+                              var bihoriNamaz = otherData!
+                                  .firstWhere((e) => e.title == 'Bihori Namaz');
 
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BihoriNamazView(
+                                    data: bihoriNamaz,
+                                  ),
+                                ),
+                              );
+                            },
+                            imageName: 'bihori_icon',
+                          ),
+                          PrayerItems(
+                            title: 'Pray Extra Namaz',
+                            onTap: () {
+                              if (otherData != null) {
+                                var otherToSend = otherData!.firstWhere(
+                                    (e) => e.title == 'Other Namaz');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExtraNamazListing(
+                                      isOther: true,
+                                      monthlyData: otherToSend,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            imageName: 'recite_duas',
+                          ),
+                          PrayerItems(
+                            title: 'Recite Duas',
+                            onTap: () {
+                              if (otherData != null) {
+                                var otherToSend = otherData!
+                                    .where((e) =>
+                                        e.title != 'Other Namaz' &&
+                                        e.title != 'Bihori Namaz')
+                                    .toList();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExtraNamazListing(
+                                      isDuas: true,
+                                      monthlyListData: otherToSend,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            imageName: 'other_namaz',
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        buildRow(
+                          context,
+                          buildPersonalEventItem(context, tasbeeh: true),
+                          buildNamazTimingItem(context),
+                          buildQiblaCompassitem(context),
                         ),
                       ],
                     ),
@@ -800,8 +854,43 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
 
                 */
                 getTodaysEvent(),
-                const SizedBox(
-                  height: 8,
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Divider(
+                    color: Colors.blueGrey,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(),
+                    ),
+                    TextButton(
+                      onPressed: () async =>
+                          await launch("https://wa.me/+447795215010?text=Hi"),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:  const [
+
+                          Text(
+                            'Contact Us',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          Image(
+                            image: AssetImage(
+                              'assets/icons/whatsApp.png',
+                            ),
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 32,
@@ -818,14 +907,12 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     return PrayerItems(
       title: 'Check Namaz Time',
       onTap: () {
-
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => const PrayersTimeView(),
           ),
         );
-
       },
       imageName: 'namaz_timings',
     );
@@ -848,17 +935,19 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     );
   }
 
-  PrayerItems buildPersonalEventItem(BuildContext context, {bool tasbeeh = false}) {
-    if(tasbeeh) {
+  PrayerItems buildPersonalEventItem(BuildContext context,
+      {bool tasbeeh = false}) {
+    if (tasbeeh) {
       return PrayerItems(
         title: 'Do Tasbeeh',
         onTap: () {
           //const ();
 
+          //..Tasbeeh
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>  const Tasbeeh(),
+              builder: (context) => const TasbeehView(),
             ),
           );
         },
@@ -867,7 +956,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     }
     //tasbeeh.png
     return PrayerItems(
-      title: '+ Personal Events',
+      title: 'Add Personal Events',
       onTap: () {
         //const ();
 
@@ -882,7 +971,8 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     );
   }
 
-  Row buildRowWithTwo(BuildContext context , PrayerItems item1 , PrayerItems item2){
+  Row buildRowWithTwo(
+      BuildContext context, PrayerItems item1, PrayerItems item2) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -906,11 +996,10 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
           flex: 75,
           child: Container(),
         ),
-
       ],
     );
-
   }
+
   Row buildRow(BuildContext context, PrayerItems item1, PrayerItems item2,
       PrayerItems item3) {
     return Row(
@@ -948,8 +1037,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     );
   }
 
-
-  /*
+/*
     void getTimes() async {
     List<String>? resultLocation = await locationService.getLocationMapData();
 
@@ -1057,7 +1145,7 @@ class PrayerItems extends StatelessWidget {
                 style: const TextStyle(
                     color: Colors.black,
                     height: 1.2, // the height between text, default is null
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w700),
               ),
             ),
@@ -1067,5 +1155,3 @@ class PrayerItems extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,0 +1,62 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5256458540762162001",
+      "lastPropertyId": "7:6607104171707915729",
+      "name": "PersonalEvent",
+      "properties": [
+        {
+          "id": "1:7762551733390490815",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7475725982095857901",
+          "name": "idNumber",
+          "type": 6
+        },
+        {
+          "id": "3:3343686257403520576",
+          "name": "hijriDay",
+          "type": 6
+        },
+        {
+          "id": "4:7989307506066003745",
+          "name": "hijriMonth",
+          "type": 6
+        },
+        {
+          "id": "5:3819403646063336126",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "6:4156167819389687079",
+          "name": "details",
+          "type": 9
+        },
+        {
+          "id": "7:6607104171707915729",
+          "name": "alreadySynced",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:5256458540762162001",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

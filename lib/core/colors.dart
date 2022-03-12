@@ -8,21 +8,24 @@ class CColors {
   static const green_main2 = Color.fromRGBO(32, 178, 170, 1);
 
   //  ///background: rgba(17, 166, 91, 1);
-  static const green_main3 = Color.fromRGBO(17, 166, 91, 1);
+  //rgb(0, 102, 51)
+  static const green_main3 = Color.fromRGBO(0, 102, 51, 1);
 
   static const green_buttons= Color.fromRGBO(1, 160, 80, 1);
 
   static const light_green = Color.fromRGBO(173, 209, 116, 1);
 
 
-  static const day_green = Color.fromRGBO(24, 158, 191, 1.0);
+  static const day_green = Color.fromRGBO(40, 171, 159, 1.0);
 
+  //rgb(40, 171, 159)
   //173 209 116
 
 
-  static const light_gray_color = Color.fromRGBO(232, 240, 240, 1);
 
-  static const blue_inside = Color.fromRGBO(0, 204, 204, 1);
+  static const light_gray_color = Color.fromRGBO(232, 240, 240, 1);
+//rgb(190, 215, 237)
+  static const blue_inside = Color.fromRGBO(190, 215, 237, 1);
 
   //            if (monthValue == 1 && dateValue == 10) {
   //            else if (((monthValue == 2 && dateValue == 20) || (monthValue == 2 && dateValue == 28))) {

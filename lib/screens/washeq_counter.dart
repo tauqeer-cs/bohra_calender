@@ -248,27 +248,27 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Alhamdo (14)',
+                                          'Alhamdo (14 times)',
                                           style: buildTextStyleSelected(
                                               isActive(index)),
                                         ),
                                         Text(
-                                          'Oul Howa allho ahad (14)',
+                                          'Oul Howa allho ahad (14 times)',
                                           style: buildTextStyleSelected(
                                               isActive(index)),
                                         ),
                                         Text(
-                                          'Qui a' 'uzo bay rabbil falag (14)',
+                                          'Qui a' 'uzo bay rabbil falag (14 times)',
                                           style: buildTextStyleSelected(
                                               isActive(index)),
                                         ),
                                         Text(
-                                          'Qul a' 'uzo bay rab bin nas (14)',
+                                          'Qul a' 'uzo bay rab bin nas (14 times)',
                                           style: buildTextStyleSelected(
                                               isActive(index)),
                                         ),
                                         Text(
-                                          'Ayat ul Kursi (1)',
+                                          'Ayat ul Kursi (1 time)',
                                           style: buildTextStyleSelected(
                                               isActive(index)),
                                         ),
@@ -281,10 +281,85 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                           ),
                         );
                       },
-                      itemCount: 7,
+                      itemCount: 14,
                     ),
                   ),
-                ] else ...[
+                ]
+                else if(widget.isRamadanLast) ... [
+
+                /*  WasheqListItem(
+                    files: waseqFile[0],
+                    isActive: true,
+                    index: 0,
+                  ),*/
+
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 3, horizontal: 4),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: isActive(index)
+                                      ? Colors.black
+                                      : Colors.grey,
+                                  width: 1.4),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 16),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      (index + 1).toString(),
+                                      textAlign: TextAlign.center,
+                                      style: buildTextStyleSelected(
+                                        isActive(index),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Alhamdo (1 time)',
+                                          style: buildTextStyleSelected(
+                                              isActive(index)),
+                                        ),
+                                        Text(
+                                          'Oul Howa allho ahad (10 times)',
+                                          style: buildTextStyleSelected(
+                                              isActive(index)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      itemCount: 10,
+                    ),
+                  ),
+                ]
+                else ...[
                   Expanded(
                     child: SizedBox(
                       height: double.infinity,
@@ -311,115 +386,115 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                 ),
                 Container(
                   color: Colors.blue,
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          if (0 == salamDone) {
-                            return;
-                          }
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            if (0 == salamDone) {
+                              return;
+                            }
 
-                          setState(() {
-                            salamDone = salamDone - 1;
-                          });
-                          scollToPos();
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: FaIcon(
-                                FontAwesomeIcons.minus,
-                                color: Colors.white,
-                                size: 26,
+                            setState(() {
+                              salamDone = salamDone - 1;
+                            });
+                            scollToPos();
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.minus,
+                                  color: Colors.white,
+                                  size: 26,
+                                ),
                               ),
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            '$salamDone SALAM',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 28,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          if (salamLimit == salamDone) {
-                            Alert(
-                                context: context,
-                                title: "Masha-Allah",
-                                desc:
-                                "You have already completed this prayer")
-                                .show();
-
-                            return;
-                          }
-                          setState(() {
-                            salamDone = salamDone + 1;
-                          });
-
-                          scollToPos();
-
-                          if (salamLimit == salamDone) {
-                            Alert(
-                                context: context,
-                                title: "Masha-Allah",
-                                desc: "Prayer completed")
-                                .show();
-
-                            return;
-                          }
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: FaIcon(
-                                FontAwesomeIcons.plus,
-                                color: Colors.white,
-                                size: 26,
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
+                            decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.white,
                               ),
-                              borderRadius: BorderRadius.circular(30)),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              '$salamDone  SALAM',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            if (salamLimit == salamDone) {
+                              Alert(
+                                  context: context,
+                                  title: 'Washeq Completed',)
+                                  .show();
+
+                              return;
+                            }
+                            setState(() {
+                              salamDone = salamDone + 1;
+                            });
+
+                            scollToPos();
+
+                            if (salamLimit == salamDone) {
+                              Alert(
+                                  context: context,
+                                  title: 'Washeq Completed',
+                                  )
+                                  .show();
+
+                              return;
+                            }
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.plus,
+                                  color: Colors.white,
+                                  size: 26,
+                                ),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.white,
+                                ),
+                                borderRadius: BorderRadius.circular(30)),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                      ],
+                    ),
                   ),
-                  height: 100,
                   width: double.infinity,
                 ),
 
@@ -457,9 +532,9 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
   }
 
   bool isActive(int index) {
-    if(this.isShaban) {
+    if(this.isShaban ) {
 
-      return salamDone == index;
+     // return salamDone == index;
 
     }
     bool one = (salamDone * 2 == index);

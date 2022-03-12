@@ -95,200 +95,46 @@ class DayDetail extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              if (calenderItem.isWasheqDay &&
-                                  calenderItem.dayNo == '30' &&
-                                  calenderItem.monthNo == 9 && 1 == 2) ...[
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                WasheqButton(
-                                  title: 'Washeq Counter 10 Rakat',
-                                  onTap: () {
-                                    var files = calenderItem.data!
-                                        .firstWhere(
-                                            (e) => e.title.contains('Washeq'))
-                                        .files;
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => WasheqCounterView(
-                                          calenderItem: calenderItem,
-                                          isRamadanLast: true,
-                                          files: files,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                WasheqButton(
-                                  title: 'Washeq Counter 24 Rakat',
-                                  onTap: () {
-                                    var files = calenderItem.data!
-                                        .firstWhere(
-                                            (e) => e.title.contains('Washeq'))
-                                        .files;
-
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => WasheqCounterView(
-                                          calenderItem: calenderItem,
-                                          files: files,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                              ] else if (calenderItem.isWasheqDay) ...[
-
-
-                                if(1 == 2) ... [
-                                  const SizedBox(
-                                    height: 16,
-                                  ),
-                                  WasheqButton(
-                                    onTap: () {
-                                      var files = calenderItem.data!
-                                          .firstWhere((e) =>
-                                      e.title.contains(
-                                          possibleWasheq.first) ||
-                                          e.title.contains(
-                                              possibleWasheq.last) ||
-                                          e.title
-                                              .contains(possibleWasheq[1]) ||
-                                          e.title
-                                              .contains(possibleWasheq[2]) ||
-                                          e.title
-                                              .contains(possibleWasheq[3]) ||
-                                          e.title
-                                              .contains(possibleWasheq[4]) ||
-                                          e.title
-                                              .contains(possibleWasheq[5]) ||
-                                          e.title
-                                              .contains(possibleWasheq[6]) ||
-                                          e.title
-                                              .contains(possibleWasheq[7]) ||
-                                          e.title
-                                              .contains(possibleWasheq[8]) ||
-                                          e.title.contains(possibleWasheq[9]))
-                                          .files;
-
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => WasheqCounterView(
-                                            calenderItem: calenderItem,
-                                            files: files,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                              ],
                               for (int i = 0;
                                   i < calenderItem.data!.length;
                                   i++) ...[
 
-                                if (calenderItem.data![i].title
-                                    .contains(possibleWasheq.first) ||
-                                    calenderItem.data![i].title
-                                        .contains(possibleWasheq.last) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[1]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[2]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[3]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[4]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[5]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[6]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[7]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[8]) ||
-                                    calenderItem.data![i].title.contains(possibleWasheq[9]))
-                                  ...[
-                                    if(2 == 3) ... [
-                                      WasheqButton(
-                                        onTap: () {
-                                          var files = calenderItem.data!
-                                              .firstWhere((e) =>
-                                          e.title.contains(
-                                              possibleWasheq.first) ||
-                                              e.title.contains(
-                                                  possibleWasheq.last) ||
-                                              e.title
-                                                  .contains(possibleWasheq[1]) ||
-                                              e.title
-                                                  .contains(possibleWasheq[2]) ||
-                                              e.title
-                                                  .contains(possibleWasheq[3]) ||
-                                              e.title
-                                                  .contains(possibleWasheq[4]) ||
-                                              e.title
-                                                  .contains(possibleWasheq[5]) ||
-                                              e.title
-                                                  .contains(possibleWasheq[6]) ||
-                                              e.title
-                                                  .contains(possibleWasheq[7]) ||
-                                              e.title
-                                                  .contains(possibleWasheq[8]) ||
-                                              e.title.contains(possibleWasheq[9]))
-                                              .files;
+                                    if(calenderItem.data![i].title.contains('***')) ... [
 
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => WasheqCounterView(
-                                                calenderItem: calenderItem,
-                                                files: files,
-                                              ),
+                                    ] else ... [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 2, vertical: 8),
+                                        child: Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 8),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              calenderItem.data![i].title,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Constants.inkBlack,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20),
                                             ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-
-                                  ] else ... [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 2, vertical: 8),
-                                    child: Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          calenderItem.data![i].title,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Constants.inkBlack,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 20),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  if ((i + 1) != calenderItem.data!.length) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16),
-                                      child: Divider(
-                                        color: Constants.ickGray,
-                                        height: 4,
-                                      ),
-                                    ),
-                                  ],
+                                      if ((i + 1) != calenderItem.data!.length) ...[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: Divider(
+                                            color: Constants.ickGray,
+                                            height: 4,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
 
-                                ],
 
 
 
@@ -354,7 +200,7 @@ class DayDetail extends StatelessWidget {
                                         calenderItem.monthNo == 9) ...[
 
 
-                                          if('5Salam/10 Rakats Washeqcounter' == current.title) ... [
+                                          if('5Salam/10 Rakats Washeqcounter***' == current.title) ... [
                                             Padding(
                                               padding: const EdgeInsets.symmetric(vertical: 8),
                                               child: WasheqButton(
@@ -362,7 +208,7 @@ class DayDetail extends StatelessWidget {
                                                 onTap: () {
                                                   var files = calenderItem.data!
                                                       .firstWhere(
-                                                          (e) => e.title == '5Salam/10 Rakats Washeqcounter')
+                                                          (e) => e.title == '5Salam/10 Rakats Washeqcounter***')
                                                       .files;
 
                                                   Navigator.push(
@@ -378,7 +224,7 @@ class DayDetail extends StatelessWidget {
                                                 },
                                               ),
                                             ),
-                                          ] else if('12Salam/24 Rakats Washeqcounter' == current.title) ... [
+                                          ] else if('12Salam/24 Rakats Washeqcounter***' == current.title) ... [
 
                                             const SizedBox(height: 8,),
                                             WasheqButton(
@@ -386,7 +232,7 @@ class DayDetail extends StatelessWidget {
                                               onTap: () {
                                                 var files = calenderItem.data!
                                                     .firstWhere(
-                                                        (e) => e.title == '12Salam/24 Rakats Washeqcounter')
+                                                        (e) => e.title == '12Salam/24 Rakats Washeqcounter***')
                                                     .files;
 
                                                 Navigator.push(
@@ -481,6 +327,44 @@ class DayDetail extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
+                  if(calenderItem.monthNo == 7) ... [
+
+
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TasbeehView(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: CColors.green_buttons,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        child: const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Tasbee',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
                   GestureDetector(
                     onTap: () async {
                       String eventName = '';
@@ -534,43 +418,8 @@ class DayDetail extends StatelessWidget {
                     ),
                   ),
 
-                  if(calenderItem.monthNo == 7) ... [
-                    const SizedBox(
-                      height: 8,
-                    ),
 
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TasbeehView(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: CColors.green_buttons,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                        ),
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
-                        child: const Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Tasbee',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+
 
                 ],
               ),

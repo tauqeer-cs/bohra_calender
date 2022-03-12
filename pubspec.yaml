@@ -63,6 +63,7 @@ dependencies:
   timezone: ^0.8.0
   flutter_filereader: ^3.0.0
   animated_radial_menu: ^0.0.1
+  url_launcher: ^6.0.20
 
 
 dev_dependencies:
@@ -80,7 +81,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/logo.jpg"
+  image_path: "assets/icons/app-icon.jpg"
 
 
 

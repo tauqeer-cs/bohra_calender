@@ -100,25 +100,25 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  add_2_calendar: e9d68636aed37fb18e12f5a3d74c2e0589487af0
-  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  add_2_calendar: f8afc31ac769bbd6807dfa6800aaf9ef66d4965a
+  audio_session: 2624df5d96be4fb169b372058e5bdc9dec1308b2
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
-  flutter_filereader: 0caefb23b8c96deca7c3679d3e61bfd8111a7d11
-  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
-  flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
-  flutter_qiblah: f69eeb708d127a2634073ab1f27771c979928f50
+  flutter_compass: 9761b888e13bb8adcc691047ea65e92578ae7507
+  flutter_filereader: 1829499c90504339cf1c17b679f37dd5d4582d36
+  flutter_local_notifications: 43fdfcbc97270d5e385684c868967778cd755bb4
+  flutter_native_timezone: 15c1000553cf64a943db1533b0df6a216f48c096
+  flutter_pdfview: da075627e3b7064f6a70a6a356c8037e83047563
+  flutter_qiblah: fb369e8fc51722d3379f86d097f5c4d6650bfd06
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
-  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
-  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
+  geolocator_apple: 16db7cd82929ff0bd814e6e623334d07586aacc3
+  just_audio: 708facb7f50a8d7d0a36922c35f0acc79a1fe72d
+  location: 14159dff482de87eb2e0c3a9f234eca65ad7decb
   ObjectBox: a181cc5fb47e0a6ec60754d34dc49f40dc17829e
   objectbox_flutter_libs: 511c59b863bc45abc7f6f338499e4a50e9aa5f1d
-  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
-  shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
-  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  path_provider_ios: 96a7201fdcb8f77cde5cc0483eb8e367c4e96f90
+  shared_preferences_ios: 630e2cced843b3abd3a3e76e41ddb14d5922a3e2
+  sqflite: 751aeb5fc00be922b2db0d8122cdcad770a99f35
+  url_launcher_ios: d781c9bb1ea61de4930b6945b67ac31481fba40e
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 

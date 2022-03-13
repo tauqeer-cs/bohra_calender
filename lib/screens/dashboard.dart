@@ -943,11 +943,11 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
         onTap: () {
           //const ();
 
-          //..Tasbeeh
+          //..TasbeehView
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const TasbeehView(),
+              builder: (context) => const Tasbeeh(),
             ),
           );
         },

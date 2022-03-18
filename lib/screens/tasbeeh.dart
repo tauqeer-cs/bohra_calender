@@ -11,17 +11,99 @@ class Tasbeeh extends StatefulWidget {
 }
 
 class _TasbeehState extends State<Tasbeeh> {
-  int _value = 0;
+  int _value = 999;
 
   bool isGoal33 = true;
   bool isGoald100 = false;
   bool isGoal1000 = false;
+  bool isGoal4166 = false;
 
+  double get fontSizeToShow {
+    if(_value > 99 && _value < 1000) {
+      return 54;
+    }
+    else if(_value > 999) {
+      return 40;
+    }
+    return 70;
+
+  }
   int selectedTasbeeh = 0;
 
-  List<String> tasbeehTexts = ['بِسْمِ ٱللَّٰهِ','صلوات','يا الي','يا الي','يا الي','يا الي'];
-  List<String> tasbeehSubTexts = ['Bis-Millah','Salwat','Ya Ali','Example','Example','Example'];
-  List<String> rowTitles = ['بِسْمِ ٱللَّٰهِ','صلوات','يا الي','يا الي','يا الي','يا الي',];
+  List<String> tasbeehTexts = [
+    'بِسْمِ ٱللَّٰهِ',
+    'اللّهُمّ صَلّ عَلَى مُحَمّدٍ وَعلىٰ آلِ مُحَمّدٍ كَمَا صَلّيْتَ وَبَارَكْتَ عَلَى إبْرَاهِيمَ وَعلىٰ آلِ إبْرَاهِيمَ إنّكَ حَمِيدٌ مَجِيدٌ',
+    'يا الي',
+    'سُبْحَانَ ٱللَّٰه',
+    'ٱلْحَمْدُ لِلَّٰه',
+    'ٱللَّٰهُ أَكْبَرُ',
+    'أَسْتَغْفِرُ ٱللَّٰه',
+    'لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ',
+    'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِالله',
+    'ربِّ اغفِرْ لي وتُبْ عليَّ إنَّك أنت التَّوَّابُ الرَّحيمُ',
+    'اللَّهُمَّ اغْفِرْ لِي وَارْحَمْنِي وَاهْدِنِي وَعَافِنِي وَارْزُقْنِي',
+    'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ'
+  ];
+  List<String> tasbeehSubTexts = [
+    'Bismillah',
+    'Salawat',
+    'Ya Ali',
+    'Subhanallah',
+    'Alhamdulillah',
+    'Allahu Akbar',
+    'Astaghfirullah',
+    'Their is no Lord except You , glory be to You. I was one of the Transgressors',
+    'There is no power nor strength except by God.',
+    'Need english',
+    ' Need English',
+        ' Need English',
+  ];
+  List<String> rowTitles = [
+    'بِسْمِ ٱللَّٰه',
+    'صلوات',
+    'يا الي',
+    'سُبْحَانَ ٱللَّٰه',
+    'ٱلْحَمْدُ لِلَّٰه',
+    'ٱللَّٰهُ أَكْبَرُ',
+    'أَسْتَغْفِرُ ٱللَّٰه',
+    'لَا إِلَهَ إِلَّا أَنْتَ',
+    'لَا حَوْلَ',
+    'ربِّ اغفِرُْ',
+    'اللَّهُمَّ اغْفِرْ',
+    'رَبَّنَا'
+  ];
+
+  List<double> sizedEng = [
+    32,
+    20,
+    32,
+    32,
+    32,
+    32,
+    32,
+    18,
+    22,
+    20,
+    20,
+    20,
+    20,
+  ];
+
+  List<double> sizedArabic = [
+    48,
+    20,
+    48,
+    48,
+    48,
+    48,
+    48,
+    24,
+    30,
+    24,
+    20,
+    20,
+    20,
+  ];
 
 
   @override
@@ -70,16 +152,18 @@ class _TasbeehState extends State<Tasbeeh> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.black,
-                          width:  2 ,
+                          width: 2,
                         ),
                         color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 3,
                             blurRadius: 9,
-                            offset: const Offset(0, 3), // changes position of shadow
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
                           ),
                         ],
                       ),
@@ -90,19 +174,26 @@ class _TasbeehState extends State<Tasbeeh> {
                           const SizedBox(
                             height: 12,
                           ),
-                           Text(
-                            tasbeehTexts[selectedTasbeeh],
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(fontFamily: 'Arabic', fontSize: 48),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              tasbeehTexts[selectedTasbeeh],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontFamily: 'Arabic',
+                                  fontSize: sizedArabic[selectedTasbeeh]),
+                            ),
                           ),
                           Expanded(
                             child: Container(),
                           ),
-                           Text(
-                             tasbeehSubTexts[selectedTasbeeh],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 24),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              tasbeehSubTexts[selectedTasbeeh],
+                              textAlign: TextAlign.center,
+                              style:  TextStyle(fontSize: sizedEng[selectedTasbeeh]),
+                            ),
                           ),
                           SizedBox(
                             height: 12,
@@ -111,58 +202,64 @@ class _TasbeehState extends State<Tasbeeh> {
                       ),
                     ),
                   ),
-                  Expanded(child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for(int i = 0 ; i < rowTitles.length ; i++) ... [
-
-                            GestureDetector(
-                              onTap: (){
-                                setState(() {
-                                  selectedTasbeeh = i;
-
-                                });
-
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width:  2 ,
-                                  ),
-                                  color: selectedTasbeeh == i  ? CColors.green_main : Colors.white,
-                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 9,
-                                      offset: const Offset(0, 3), // changes position of shadow
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            for (int i = 0; i < rowTitles.length; i++) ...[
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedTasbeeh = i;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 2,
                                     ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 12),
-                                  child: Text(
-                                    rowTitles[i] , style: TextStyle(
-                                    color: selectedTasbeeh == i ? Colors.white : Colors.black ,
-                                      fontFamily: 'Arabic'
+                                    color: selectedTasbeeh == i
+                                        ? CColors.green_main
+                                        : Colors.white,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 9,
+                                        offset: const Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 12),
+                                    child: Text(
+                                      rowTitles[i],
+                                      style: TextStyle(
+                                          color: selectedTasbeeh == i
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontFamily: 'Arabic'),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-
-                            SizedBox(width: 8,),
-
+                              SizedBox(
+                                width: 8,
+                              ),
                             ],
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),),
+                  ),
                   const Text(
                     'Set Goal',
                     style: TextStyle(
@@ -184,6 +281,7 @@ class _TasbeehState extends State<Tasbeeh> {
                             onTap: () {
                               isGoal33 = true;
                               isGoald100 = false;
+                              isGoal4166 = false;
 
                               setState(() {
                                 isGoal1000 = false;
@@ -192,21 +290,18 @@ class _TasbeehState extends State<Tasbeeh> {
                             isSelected: isGoal33,
                           ),
                         ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-
 
                         const SizedBox(
                           width: 8,
                         ),
-
                         Expanded(
                           child: GoalButton(
                             number: '100',
                             onTap: () {
                               isGoal33 = false;
                               isGoald100 = true;
+                              isGoal4166 = false;
+
                               setState(() {
                                 isGoal1000 = false;
                               });
@@ -223,6 +318,8 @@ class _TasbeehState extends State<Tasbeeh> {
                             onTap: () {
                               isGoal33 = false;
                               isGoald100 = false;
+                              isGoal4166 = false;
+
                               setState(() {
                                 isGoal1000 = true;
                               });
@@ -230,10 +327,30 @@ class _TasbeehState extends State<Tasbeeh> {
                             isSelected: isGoal1000,
                           ),
                         ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+
+                        Expanded(
+                          child: GoalButton(
+                            number: '4166',
+                            onTap: () {
+                              isGoal33 = false;
+                              isGoald100 = false;
+                              isGoal4166 = true;
+
+                              setState(() {
+                                isGoal1000 = false;
+                              });
+                            },
+                            isSelected: isGoal4166,
+                          ),
+                        ),
+
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
@@ -274,13 +391,18 @@ class _TasbeehState extends State<Tasbeeh> {
                               setState(() {
                                 _value = 0;
                               });
-
                             } else if (_value == 100 && isGoald100) {
                               HapticFeedback.vibrate();
                               setState(() {
                                 _value = 0;
                               });
                             } else if (_value == 1000 && isGoal1000) {
+                              HapticFeedback.vibrate();
+                              setState(() {
+                                _value = 0;
+                              });
+                            }
+                            else if (_value == 1000 && isGoal4166) {
                               HapticFeedback.vibrate();
                               setState(() {
                                 _value = 0;
@@ -296,19 +418,19 @@ class _TasbeehState extends State<Tasbeeh> {
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(60),
                                   ),
-                                  color: Colors.black.withAlpha(60),
+                                  color: Colors.black.withAlpha(90),
                                 ),
                                 child: const Image(
                                   image: AssetImage('assets/images/thumb.png'),
                                 ),
                               ),
-                              Positioned.fill(
+                              const Positioned.fill(
                                 child: Center(
                                   child: Text(
-                                    _value.toString(),
-                                    style: const TextStyle(
+                                    '',
+                                    style: TextStyle(
                                       fontFamily: 'Number',
-                                      color: Colors.white,
+                                      color: Colors.yellowAccent,
                                       fontSize: 70,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -321,7 +443,17 @@ class _TasbeehState extends State<Tasbeeh> {
                       ),
                       Expanded(
                         flex: 4,
-                        child: Container(),
+                        child: Center(
+                          child: Text(
+                            _value.toString(),
+                            style:  TextStyle(
+                              fontFamily: 'Number',
+                              color: Colors.black,
+                              fontSize: fontSizeToShow,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),

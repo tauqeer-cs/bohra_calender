@@ -27,7 +27,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       lblZawaal = '',
       lblZoharTiming = '';
 
-  String lblMagribTiming = '', lblIshaTime = '';
+  String lblMagribTiming = '', lblIshaTime = '' , lblNisfulailTime = '';
 
   bool sihoriNotification = false;
 
@@ -43,6 +43,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     asrEndNotification = prefs.getBool('asr') ?? false;
     magribNotification = prefs.getBool('magrib') ?? false;
     ishaEndNotification = prefs.getBool('isha_end') ?? false;
+    niftUlLailNotification = prefs.getBool('nisf_end') ?? false;
 
 
 
@@ -82,6 +83,8 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       lblAsrTiming = "-";
       lblMagribTiming = "-";
       lblIshaTime = "-";
+      lblNisfulailTime = '-';
+
 
       if (prefs.getDouble('lat') != null) {
         double lT = 0.0, lG = 0.0;
@@ -139,6 +142,8 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     lblAsrTiming = DateFormat('hh:mm a').format(result[5]);
 
     lblIshaTime = DateFormat('hh:mm a').format(result[7]);
+    lblNisfulailTime = DateFormat('hh:mm a').format(result[8]);
+
 
     if (checkIsNextPrayer(result[0])) {
       nextPrayerText =
@@ -400,6 +405,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     }
 
     DateTime ishaEnd = zawalDate.add(const Duration(hours: 12));
+    DateTime nasfus = zawalDate.add(const Duration(hours: 12));
 
     return [
       curentSohoriTime,
@@ -409,7 +415,8 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       zoharEndDate,
       asrEndDate,
       lblSunsetTime,
-      ishaEnd
+      ishaEnd,
+      nasfus
     ];
   }
 
@@ -435,7 +442,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     return "$hours:$minutes"; //[NSString stringWithFormat:@"%d:%@",hours,[NSString stringWithFormat:@"%d",minutes]];
   }
 
-  bool magribNotification = false, ishaEndNotification = false;
+  bool magribNotification = false, ishaEndNotification = false , niftUlLailNotification = false;
 
   bool fajrNotification = false,
       zawaalNotification = false,
@@ -534,6 +541,17 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
             title: 'Isha End',
             body: 'Isha Time has ended');
       }
+
+
+      if (niftUlLailNotification) {
+        var difference = result[8].compareTo(DateTime.now());
+        NoticiationApi.showTimedNotification(
+            scheduledDate: DateTime(dateObject.year, dateObject.month,
+                dateObject.day, result[8].hour, result[8].minute),
+            title: 'Nist ul Layl End',
+            body: 'Nist ul Layl time ended');
+      }
+
     }
     /*
     lblSahori = DateFormat('hh:mm a').format(result.first);
@@ -719,7 +737,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
                             onTap: asrNotTapped),
                         PrayerItem(
                           name: 'Asr End',
-                          time: lblMagribTiming,
+                          time: lblAsrTiming,
                           icon: 'asr_end',
                           isNotificationOn: magribNotification,
                           onTap: magribNot,
@@ -732,7 +750,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
                           onTap: magribNot,
                         ),
                         PrayerItem(
-                          name: 'Isha End',
+                          name: 'Isha End/Nisf-ul-Layl',
                           time: lblIshaTime,
                           icon: 'isha_end',
                           isNotificationOn: ishaEndNotification,
@@ -881,7 +899,9 @@ class PrayerItem extends StatelessWidget {
               const SizedBox(
                 width: 16,
               ),
-              Text(time),
+              Text(time , style: const TextStyle(
+                fontFamily: 'Number'
+              ),),
               const SizedBox(
                 width: 16,
               ),

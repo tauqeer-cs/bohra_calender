@@ -137,27 +137,34 @@ class _EventsListingState extends State<EventsListing> {
                                 children: [
                                   for (String currentName
                                       in dataToShow[index].eventName) ...[
-                                    Container(
-                                      height: 1,
-                                      width: double.infinity,
-                                      color: Colors.blueAccent,
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                                      child: Text(
-                                        currentName,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 14,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
+
+
+                                        if(!currentName.contains('***')) ... [
+
+                                          Container(
+                                            height: 1,
+                                            width: double.infinity,
+                                            color: Colors.blueAccent,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                                            child: Text(
+                                              currentName,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 14,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+
+                                        ],
+
                                   ],
                                 ],
                               ),

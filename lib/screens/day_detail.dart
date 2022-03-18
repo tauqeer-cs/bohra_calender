@@ -4,6 +4,7 @@ import 'package:bohra_calender/core/colors.dart';
 import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/model/calender_item_info.dart';
 import 'package:bohra_calender/model/monthly_data.dart';
+import 'package:bohra_calender/screens/tasbeeh.dart';
 import 'package:bohra_calender/screens/tasbeeh_view.dart';
 import 'package:bohra_calender/screens/washeq_counter.dart';
 import 'package:flutter/material.dart';
@@ -179,6 +180,8 @@ class DayDetail extends StatelessWidget {
                               const SizedBox(
                                 height: 16,
                               ),
+
+
                               for (MonthlyData current
                                   in calenderItem.data!) ...[
                                 if (current.title
@@ -250,6 +253,55 @@ class DayDetail extends StatelessWidget {
                                           ],
 
                                     ] else ... [
+
+
+
+                                      if(calenderItem.monthNo == 9 && calenderItem.dayNo == '29') ... [
+
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 8),
+                                          child: WasheqButton(
+                                            title: 'Wada ni Namaz',
+                                            onTap: () {
+                                              var files = calenderItem.data!
+                                                  .firstWhere((e) =>
+                                              e.title.contains(
+                                                  possibleWasheq.first) ||
+                                                  e.title.contains(
+                                                      possibleWasheq.last) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[1]) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[2]) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[3]) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[4]) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[5]) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[6]) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[7]) ||
+                                                  e.title
+                                                      .contains(possibleWasheq[8]) ||
+                                                  e.title.contains(possibleWasheq[9]))
+                                                  .files;
+
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => WasheqCounterView(
+                                                    calenderItem: calenderItem,
+                                                    files: files,
+                                                    wadaNiNamaz: true,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                       Padding(
                                         padding: const EdgeInsets.symmetric(vertical: 8),
                                         child: WasheqButton(
@@ -292,7 +344,6 @@ class DayDetail extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-
                                   ]
                                 else ...[
                                   for (Files currentFile in current.files) ...[
@@ -335,7 +386,7 @@ class DayDetail extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const TasbeehView(),
+                            builder: (context) => const Tasbeeh(),
                           ),
                         );
                       },
@@ -373,11 +424,18 @@ class DayDetail extends StatelessWidget {
                         return;
                       }
                       for (var currentItem in calenderItem.data!) {
-                        if (eventName.isEmpty) {
-                          eventName = currentItem.title;
-                        } else {
-                          eventName = eventName + ' ' + currentItem.title;
+                        if(currentItem.title.contains('***')) {
+
                         }
+                        else {
+                          if (eventName.isEmpty) {
+                            eventName = currentItem.title;
+                          } else {
+                            eventName = eventName + ' ' + currentItem.title;
+                          }
+
+                        }
+
                       }
 
                       final Event event = Event(
@@ -543,7 +601,6 @@ class FileItem extends StatelessWidget {
                 builder: (BuildContext context) {
                   return MiniPlayerView(
                     fileItem: fileItem,
-
                   );
                 },
               );

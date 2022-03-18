@@ -72,7 +72,7 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
               return;
 
             }
-            currentIndex = currentIndex +1;
+            //currentIndex = currentIndex +1;
 
 
             progressDuration = null;
@@ -222,7 +222,7 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
                                 progressBarColor: Colors.red,
                                 baseBarColor: Colors.brown,
                                 bufferedBarColor: Colors.yellow,
-                                thumbColor: Colors.green,
+                                thumbColor: const Color.fromRGBO(255, 184, 28, 1),
                                 barHeight: 3.0,
                                 thumbRadius: 5.0,
                                 onSeek: (duration) {

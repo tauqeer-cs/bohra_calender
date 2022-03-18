@@ -15,12 +15,14 @@ class WasheqCounterView extends StatefulWidget {
 
   final bool isRamadanLast;
   final List<Files> files;
+  final bool wadaNiNamaz;
 
   const WasheqCounterView(
       {Key? key,
       this.calenderItem,
-        this.isTahajud = false,
+      this.isTahajud = false,
       this.isRamadanLast = false,
+      this.wadaNiNamaz = false,
       required this.files})
       : super(key: key);
 
@@ -29,7 +31,6 @@ class WasheqCounterView extends StatefulWidget {
 }
 
 class _WasheqCounterViewState extends State<WasheqCounterView> {
-
   int salamDone = 0;
   int salamLimit = 14;
 
@@ -58,6 +59,11 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
       } else {
         if (widget.isRamadanLast) {
           widget.calenderItem!.washerLimit = 10;
+
+          salamLimit = (widget.calenderItem!.washerLimit / 2).floor();
+        }
+        if (widget.wadaNiNamaz) {
+          widget.calenderItem!.washerLimit = 2;
 
           salamLimit = (widget.calenderItem!.washerLimit / 2).floor();
         } else {
@@ -151,7 +157,7 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                 const SizedBox(
                   height: 4,
                 ),
-                if(1 == 2) ... [
+                if (1 == 2) ...[
                   Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -162,13 +168,10 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                           fontSize: 22),
                     ),
                   ),
-
                   const SizedBox(
                     height: 8,
                   ),
-
                 ],
-
                 if (1 == 2) ...[
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -193,12 +196,25 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                     ),
                   ),
                 ],
-
-
                 const SizedBox(
                   height: 16,
                 ),
-                if (isShaban) ...[
+                if (widget.isTahajud) ...[
+                  const Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 24),
+                        child: Text(
+                          'Tahajood Namaz Counter',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 26,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ] else if (isShaban) ...[
                   WasheqListItem(
                     files: waseqFile[0],
                     isActive: true,
@@ -247,31 +263,20 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          'Alhamdo (14 times)',
-                                          style: buildTextStyleSelected(
-                                              isActive(index)),
-                                        ),
-                                        Text(
-                                          'Oul Howa allho ahad (14 times)',
-                                          style: buildTextStyleSelected(
-                                              isActive(index)),
-                                        ),
-                                        Text(
-                                          'Qui a' 'uzo bay rabbil falag (14 times)',
-                                          style: buildTextStyleSelected(
-                                              isActive(index)),
-                                        ),
-                                        Text(
-                                          'Qul a' 'uzo bay rab bin nas (14 times)',
-                                          style: buildTextStyleSelected(
-                                              isActive(index)),
-                                        ),
-                                        Text(
-                                          'Ayat ul Kursi (1 time)',
-                                          style: buildTextStyleSelected(
-                                              isActive(index)),
-                                        ),
+                                        buildTextWitnTimes(
+                                            'Alhamdo', index, 14),
+                                        buildTextWitnTimes(
+                                            'Qul Howa allho ahad', index, 14),
+                                        buildTextWitnTimes(
+                                            'Qul Auzo birabbil falaq',
+                                            index,
+                                            14),
+                                        buildTextWitnTimes(
+                                            'Qul Auzo bay rab bin nas',
+                                            index,
+                                            14),
+                                        buildTextWitnTimes(
+                                            'Ayat ul Kursi', index, 1),
                                       ],
                                     ),
                                   ),
@@ -284,15 +289,7 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                       itemCount: 14,
                     ),
                   ),
-                ]
-                else if(widget.isRamadanLast) ... [
-
-                /*  WasheqListItem(
-                    files: waseqFile[0],
-                    isActive: true,
-                    index: 0,
-                  ),*/
-
+                ] else if (widget.isRamadanLast) ...[
                   const SizedBox(
                     height: 16,
                   ),
@@ -334,18 +331,11 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                                     padding: const EdgeInsets.all(4.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          'Alhamdo (1 time)',
-                                          style: buildTextStyleSelected(
-                                              isActive(index)),
-                                        ),
-                                        Text(
-                                          'Oul Howa allho ahad (10 times)',
-                                          style: buildTextStyleSelected(
-                                              isActive(index)),
-                                        ),
+                                        buildTextWitnTimes('Alhamdo', index, 1),
+                                        buildTextWitnTimes(
+                                            'Qul Howa allho ahad', index, 10),
                                       ],
                                     ),
                                   ),
@@ -358,8 +348,130 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                       itemCount: 10,
                     ),
                   ),
-                ]
-                else ...[
+                ] else if (widget.wadaNiNamaz) ...[
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 3, horizontal: 4),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: isActive(index)
+                                      ? Colors.black
+                                      : Colors.grey,
+                                  width: 1.4),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 16),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      (index + 1).toString(),
+                                      textAlign: TextAlign.center,
+                                      style: buildTextStyleSelected(
+                                        isActive(index),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        buildTextWitnTimes('Alhamdo', index, 0),
+                                        buildTextWitnTimes(
+                                            'Qul huwal laahu ahad', index, 10),
+                                        buildTextWitnTimes(
+                                            'Qul Auzo birabbil falaq',
+                                            index,
+                                            7),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      itemCount: 2,
+                    ),
+                  ),
+                ] else if (widget.calenderItem != null &&
+                    widget.calenderItem!.monthNo == 9 &&
+                    widget.calenderItem!.dayNo == '22') ...[
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 3, horizontal: 4),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: isActive(index)
+                                      ? Colors.black
+                                      : Colors.grey,
+                                  width: 1.4),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 16),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      (index + 1).toString(),
+                                      textAlign: TextAlign.center,
+                                      style: buildTextStyleSelected(
+                                        isActive(index),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      buildTextWitnTimes('', index, 0),
+                                      buildTextWitnTimes(
+                                          'Alhamdo + Inna Anzalnho', index, 0),
+                                      buildTextWitnTimes('', index, 0),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      itemCount: 10,
+                    ),
+                  ),
+                ] else ...[
                   Expanded(
                     child: SizedBox(
                       height: double.infinity,
@@ -430,12 +542,29 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                         ),
                         Expanded(
                           child: Center(
-                            child: Text(
-                              '$salamDone  SALAM',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 28,
+                            child: RichText(
+                              text: TextSpan(
+                                text: '',
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: salamDone.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Number',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 26,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text: ' SALAM',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'PlayfairDisplay',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 26,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -446,10 +575,17 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                         TextButton(
                           onPressed: () async {
                             if (salamLimit == salamDone) {
-                              Alert(
+                              if (widget.wadaNiNamaz) {
+                                Alert(
                                   context: context,
-                                  title: 'Washeq Completed',)
-                                  .show();
+                                  title: 'Namaz Completed',
+                                ).show();
+                              } else {
+                                Alert(
+                                  context: context,
+                                  title: 'Washeq Completed',
+                                ).show();
+                              }
 
                               return;
                             }
@@ -459,12 +595,16 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
 
                             scollToPos();
 
-                            if (salamLimit == salamDone) {
+                            if (widget.wadaNiNamaz) {
                               Alert(
-                                  context: context,
-                                  title: 'Washeq Completed',
-                                  )
-                                  .show();
+                                context: context,
+                                title: 'Namaz Completed',
+                              ).show();
+                            } else if (salamLimit == salamDone) {
+                              Alert(
+                                context: context,
+                                title: 'Washeq Completed',
+                              ).show();
 
                               return;
                             }
@@ -497,7 +637,6 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                   ),
                   width: double.infinity,
                 ),
-
               ],
             ),
           ),
@@ -506,11 +645,49 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
     );
   }
 
-  TextStyle buildTextStyleSelected(bool isActive) {
+  Widget buildTextWitnTimes(String text, int index, int numberOftimes) {
+    return RichText(
+      text: TextSpan(
+        text: '',
+        children: <TextSpan>[
+          TextSpan(
+            text: text + (numberOftimes == 0 ? '' : ' ('),
+            style: buildTextStyleSelected(
+              isActive(index),
+            ),
+          ),
+          if (numberOftimes > 0) ...[
+            TextSpan(
+              text: numberOftimes.toString() +
+                  ' ' +
+                  (numberOftimes == 1 ? 'time' : 'times'),
+              style: numberSmallerText(
+                isActive(index),
+              ),
+            ),
+            TextSpan(
+              text: ')',
+              style: buildTextStyleSelected(isActive(index)),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  TextStyle buildTextStyleSelected(bool isActive, {bool smaller = false}) {
     return TextStyle(
       color: !isActive ? Colors.grey : Constants.inkBlack,
       fontWeight: FontWeight.w600,
-      fontSize: 20,
+      fontFamily: 'PlayfairDisplay',
+      fontSize: smaller ? 17 : 18,
+    );
+  }
+
+  TextStyle numberSmallerText(bool isActive) {
+    return TextStyle(
+      color: !isActive ? Colors.grey : Constants.inkBlack,
+      fontSize: 15,
     );
   }
 
@@ -532,9 +709,8 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
   }
 
   bool isActive(int index) {
-    if(this.isShaban ) {
-
-     // return salamDone == index;
+    if (this.isShaban) {
+      // return salamDone == index;
 
     }
     bool one = (salamDone * 2 == index);
@@ -544,7 +720,12 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
   }
 
   String headerText() {
-    if (widget.calenderItem != null) {
+    if(widget.isTahajud){
+      return 'Tajajood Counter';
+    }
+    if (widget.wadaNiNamaz) {
+      return 'Wada ni Namaz';
+    } else if (widget.calenderItem != null) {
       return 'Washeq Counter';
     }
 

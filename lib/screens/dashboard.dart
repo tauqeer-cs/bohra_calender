@@ -200,89 +200,93 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                   fontWeight: FontWeight.w700),
             ),
             for (int i = 0; i < monthlyData.length; i++) ...[
-              GestureDetector(
-                onTap: () {
-                  try {
-                    var response =
-                        ClassItemInfo.makeCurrentMonthObject(completeMonthData)
-                            .monthItems
-                            .firstWhere((e) =>
-                                e.monthNo == _today.hMonth &&
-                                e.dayNo == _today.hDay.toString());
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DayDetail(
-                          calenderItem: response,
+              if(!monthlyData[i].title.contains('***')) ... [
+                GestureDetector(
+                  onTap: () {
+                    try {
+                      var response =
+                      ClassItemInfo.makeCurrentMonthObject(completeMonthData)
+                          .monthItems
+                          .firstWhere((e) =>
+                      e.monthNo == _today.hMonth &&
+                          e.dayNo == _today.hDay.toString());
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DayDetail(
+                            calenderItem: response,
+                          ),
                         ),
-                      ),
-                    );
-                  } catch (e) {
-                    print('');
-                  }
-                },
-                child: Padding(
-                  padding: i == 0
-                      ? const EdgeInsets.all(16.0)
-                      : const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Container(
-                    //   height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Constants.backgroundPatternTopColor,
-                      boxShadow: [
-                        BoxShadow(color: Constants.borderGray, spreadRadius: 2),
-                      ],
-                    ),
-
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 4),
-                            child: Icon(
-                              FontAwesomeIcons.calendar,
-                              color: Constants.inkBlack,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${_today.hDay} ${ClassItemInfo.islamicMonthName[_today.hMonth]}',
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: Constants.inkBlack,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  monthlyData[i].title,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: Constants.ickGray,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
+                      );
+                    } catch (e) {
+                      print('');
+                    }
+                  },
+                  child: Padding(
+                    padding: i == 0
+                        ? const EdgeInsets.all(16.0)
+                        : const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Container(
+                      //   height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Constants.backgroundPatternTopColor,
+                        boxShadow: [
+                          BoxShadow(color: Constants.borderGray, spreadRadius: 2),
                         ],
+                      ),
+
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: Icon(
+                                FontAwesomeIcons.calendar,
+                                color: Constants.inkBlack,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${_today.hDay} ${ClassItemInfo.islamicMonthName[_today.hMonth]}',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Constants.inkBlack,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    monthlyData[i].title,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: Constants.ickGray,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
+
             ]
           ],
         ),
@@ -719,7 +723,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                                 ),
                               );
                             },
-                            imageName: 'event_icon',
+                            imageName: 'personal_event',
                           ),
                           buildPersonalEventItem(context),
                         ),
@@ -954,7 +958,6 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
         imageName: 'tasbeeh',
       );
     }
-    //tasbeeh.png
     return PrayerItems(
       title: 'Add Personal Events',
       onTap: () {
@@ -967,7 +970,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
           ),
         );
       },
-      imageName: 'personal_event',
+      imageName: 'event_icon',
     );
   }
 

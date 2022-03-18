@@ -1,7 +1,9 @@
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:bohra_calender/core/colors.dart';
 import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/services/objectbox_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hijri/hijri_calendar.dart';
 
 import 'add_personal_event.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -53,7 +55,7 @@ class _PersonalEventListingState extends State<PersonalEventListing>
                 loadData();
               }
             },
-            child:  Text(
+            child: Text(
               'Add Event',
               style: TextStyle(color: Constants.inkBlack),
             ),
@@ -114,14 +116,47 @@ class _PersonalEventListingState extends State<PersonalEventListing>
                             ],
                           ).show();
                         },
-                        syncTapped: () {
+                        syncTapped: () async {
+                          if (!areas[index].alreadySynced) {
+                            var currentOne = areas[index];
 
+                            var _today = HijriCalendar.now();
 
-                          if(!areas[index].alreadySynced) {
+                            var normalDate = DateTime.now();
+                            int lastI = 0;
+                            for (int i = 1; i < 365; i++) {
+                              if (_today.hMonth == areas[index].hijriMonth &&
+                                  _today.hDay == areas[index].hijriDay) {
+                                i = 366;
 
+                                break;
+                              }
 
+                              _today = HijriCalendar.fromDate(
+                                DateTime.now().add(
+                                  Duration(days: i),
+                                ),
+                              );
+
+                              lastI = i;
+                            }
+                            normalDate = normalDate.add(Duration(days: lastI));
+
+                            final Event event = Event(
+                              title: areas[index].title,
+                              startDate: normalDate,
+                              endDate: normalDate
+                                  .add(const Duration(days: 1, hours: 1)),
+                              iosParams: const IOSParams(
+                                reminder: Duration(days: 1, hours: -2),
+                              ),
+                              androidParams: const AndroidParams(
+                                emailInvites: [], // on Android, you can add invite emails to your event.
+                              ),
+                            );
+
+                            bool check = await Add2Calendar.addEvent2Cal(event);
                           }
-
                         },
                       );
                     }),
@@ -167,18 +202,18 @@ class PersonalListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   personalEvent.title,
-                  style:  TextStyle(
+                  style: TextStyle(
                       color: Constants.inkBlack,
                       fontWeight: FontWeight.w600,
-                      fontSize: 22),
+                      fontSize: 20),
                 ),
               ),
               Text(
-      personalEvent.hijriMonthString,
+                personalEvent.hijriMonthString,
                 style: TextStyle(
                     color: Colors.grey.shade400,
                     fontWeight: FontWeight.w600,
-                    fontSize: 22),
+                    fontSize: 18),
               ),
             ],
           ),
@@ -190,10 +225,10 @@ class PersonalListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   personalEvent.details,
-                  style:  TextStyle(
+                  style: TextStyle(
                       color: Constants.inkBlack,
                       fontWeight: FontWeight.w600,
-                      fontSize: 22),
+                      fontSize: 18),
                 ),
               ),
               const SizedBox(
@@ -212,7 +247,7 @@ class PersonalListItem extends StatelessWidget {
               ),
               IconButton(
                 onPressed: deleteTapped,
-                icon:  Icon(
+                icon: Icon(
                   Icons.close,
                   color: Constants.inkBlack,
                   size: 32,

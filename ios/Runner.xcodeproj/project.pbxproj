@@ -359,7 +359,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = G3LD2SE47A;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -498,7 +498,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = G3LD2SE47A;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -527,7 +527,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = G3LD2SE47A;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";

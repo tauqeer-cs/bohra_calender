@@ -42,7 +42,6 @@ class _FileViewerState extends State<FileViewer> {
 
   Future<ByteData> loadAsset() async {
     String name = 'assets/audio/Nabi na Naam.mp3';
-//nabi na naam.pdf
     return await rootBundle.load('sounds/music.mp3');
   }
 
@@ -212,7 +211,7 @@ class _FileViewerState extends State<FileViewer> {
                         progressBarColor: Colors.red,
                         baseBarColor: Colors.brown,
                         bufferedBarColor: Colors.yellow,
-                        thumbColor: Colors.green,
+                        thumbColor: const Color.fromRGBO(255, 184, 28, 1),
                         barHeight: 3.0,
                         thumbRadius: 5.0,
                         onSeek: (duration) {

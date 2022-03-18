@@ -44,13 +44,12 @@ class ClassItemInfo {
     } else if ((monthNo == 9 && day == 16) ||
         (monthNo == 9 && day == 18) ||
         (monthNo == 9 && day == 20) ||
-        (monthNo == 9 && day == 22) ||
         (monthNo == 9 && day == 30)) {
       washerLimit = 24;
 
       return true;
     }
-    else if        (monthNo == 9 && day == 29) {
+    else if  (monthNo == 9 && (day == 29 || day == 22)) {
       washerLimit = 10;
       return true;
 

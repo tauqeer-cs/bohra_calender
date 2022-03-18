@@ -11,7 +11,7 @@ class Tasbeeh extends StatefulWidget {
 }
 
 class _TasbeehState extends State<Tasbeeh> {
-  int _value = 999;
+  int _value = 0;
 
   bool isGoal33 = true;
   bool isGoald100 = false;
@@ -52,11 +52,11 @@ class _TasbeehState extends State<Tasbeeh> {
     'Alhamdulillah',
     'Allahu Akbar',
     'Astaghfirullah',
-    'Their is no Lord except You , glory be to You. I was one of the Transgressors',
-    'There is no power nor strength except by God.',
-    'Need english',
-    ' Need English',
-        ' Need English',
+    'Laillaha illa aanta subhanaka innie kunto minzzalemiun',
+    'Lahawla walakuwata illah billah.',
+    'Rabbe aagfirli watub alayha ennaka aanta twwabur rahim',
+    'Allahumag firli warhamni wahadeni waagfiuni wazukni',
+        'Rabbana antenatal fi Duniya hasanatun wafil aakherate hasanatun wakena azzabun nar',
   ];
   List<String> rowTitles = [
     'بِسْمِ ٱللَّٰه',
@@ -110,7 +110,7 @@ class _TasbeehState extends State<Tasbeeh> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasbeeh'),
+        title: const Text('Tasbee'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

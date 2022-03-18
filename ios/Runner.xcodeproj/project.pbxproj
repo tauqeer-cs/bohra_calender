@@ -356,10 +356,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Asmi Ali (G3LD2SE47A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Asmi Ali (G3LD2SE47A)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G3LD2SE47A;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -369,9 +369,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bohracalender2;
+				MARKETING_VERSION = 5.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazygeeks.bohracal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bohratextdev;
+				PROVISIONING_PROFILE_SPECIFIER = BohraLive;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -495,10 +496,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Asmi Ali (G3LD2SE47A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Asmi Ali (G3LD2SE47A)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G3LD2SE47A;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -508,9 +509,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bohracalender2;
+				MARKETING_VERSION = 5.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazygeeks.bohracal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bohratextdev;
+				PROVISIONING_PROFILE_SPECIFIER = BohraLive;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -524,10 +526,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Asmi Ali (CV6RSX8D2R)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Asmi Ali (G3LD2SE47A)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Asmi Ali (G3LD2SE47A)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G3LD2SE47A;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -537,9 +539,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bohracalender2;
+				MARKETING_VERSION = 5.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lazygeeks.bohracal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = bohratextdev;
+				PROVISIONING_PROFILE_SPECIFIER = BohraLive;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -127,7 +127,7 @@ class ClassItemInfo {
         }
         difference = difference - _today.lengthOfMonth;
       }
-      if (monthDifference <= -2) {
+      if (monthDifference <= -2 && 1 == 2) {
         difference = difference - _today.lengthOfMonth + 1;
       } else {
         _today =

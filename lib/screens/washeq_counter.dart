@@ -729,7 +729,7 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
       return 'Washeq Counter';
     }
 
-    return 'Tasbeeh Counter';
+    return 'Tasbee Counter';
   }
 
   String buildIslamicDayFullString() {

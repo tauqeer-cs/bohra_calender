@@ -96,6 +96,10 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             onPressed: () {
+                              if(monthIndex < -5){
+
+                                return;
+                              }
                               monthIndex = monthIndex - 1;
 
                               if (monthIndex == 0) {
@@ -121,21 +125,20 @@ class _CalenderHomeScreenState extends State<CalenderHomeScreen> {
                                   });
                                 }
                               } else {
+
                                 if (calenderInfoItem != null) {
-                                  monthIndex = 0;
 
-                                  return;
+                                  if (calenderInfoItem != null) {
+                                    calenderInfoItem =
+                                        ClassItemInfo.makeMonthData(
+                                            monthIndex, monthData);
 
-                                  calenderInfoItem =
-                                      ClassItemInfo.previousMonth(
-                                          calenderInfoItem!.monthItems
-                                              .firstWhere(
-                                                  (e) => e.dayNo == '1'));
+                                    setState(() {
+                                      calssItemInfo =
+                                          calenderInfoItem!.monthItems;
+                                    });
+                                  }
 
-                                  setState(() {
-                                    calssItemInfo =
-                                        calenderInfoItem!.monthItems;
-                                  });
                                 }
                               }
                             },

@@ -16,7 +16,7 @@ class _TasbeehViewState extends State<TasbeehView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasbeeh'),
+        title: const Text('Tasbee'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

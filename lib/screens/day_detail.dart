@@ -5,13 +5,10 @@ import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/model/calender_item_info.dart';
 import 'package:bohra_calender/model/monthly_data.dart';
 import 'package:bohra_calender/screens/tasbeeh.dart';
-import 'package:bohra_calender/screens/tasbeeh_view.dart';
 import 'package:bohra_calender/screens/washeq_counter.dart';
 import 'package:flutter/material.dart';
-import 'counter_screen.dart';
 import 'file_viewer.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'mini_player_view.dart';
 
 class DayDetail extends StatelessWidget {

@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 
 import 'day_detail.dart';
+import 'dart:io' show Platform;
 
 class FileViewer extends StatefulWidget {
   final bool nabiNaNaam;
@@ -102,7 +103,6 @@ class _FileViewerState extends State<FileViewer> {
 
   int totalSecond = 0;
 
-  //nabiNaNaam
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,7 +172,6 @@ class _FileViewerState extends State<FileViewer> {
 
                   startTimer(1);
 
-                  //audio.play();
 
                   setState(() {
                     isPlaying = true;
@@ -186,49 +185,52 @@ class _FileViewerState extends State<FileViewer> {
       body: SafeArea(
         child: Column(
           children: [
-            if (totalDuration != null) ...[
-              Container(
-                color: Colors.grey.shade700,
-                width: double.infinity,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      ProgressBar(
-                        timeLabelTextStyle:
-                            const TextStyle(color: Colors.white),
-                        progress: progressDuration != null
-                            ? progressDuration!
-                            : const Duration(milliseconds: 0),
-                        // buffered: Duration(milliseconds: 2000),
-                        total: totalDuration == null
-                            ? const Duration(milliseconds: 20)
-                            : totalDuration!,
-                        progressBarColor: Colors.red,
-                        baseBarColor: Colors.brown,
-                        bufferedBarColor: Colors.yellow,
-                        thumbColor: const Color.fromRGBO(255, 184, 28, 1),
-                        barHeight: 3.0,
-                        thumbRadius: 5.0,
-                        onSeek: (duration) {
-                          audio.seek(duration);
+            if (totalDuration != null || Platform.isAndroid) ...[
+              if(widget.fileItem.audioUrl.isEmpty) ... [
+              ] else ... [
+                Container(
+                  color: Colors.grey.shade700,
+                  width: double.infinity,
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        ProgressBar(
+                          timeLabelTextStyle:
+                          const TextStyle(color: Colors.white),
+                          progress: progressDuration != null
+                              ? progressDuration!
+                              : const Duration(milliseconds: 0),
+                          // buffered: Duration(milliseconds: 2000),
+                          total: totalDuration == null
+                              ? const Duration(milliseconds: 20)
+                              : totalDuration!,
+                          progressBarColor: Colors.red,
+                          baseBarColor: Colors.brown,
+                          bufferedBarColor: Colors.yellow,
+                          thumbColor: const Color.fromRGBO(255, 184, 28, 1),
+                          barHeight: 3.0,
+                          thumbRadius: 5.0,
+                          onSeek: (duration) {
+                            audio.seek(duration);
 
-                          if (audio.playing) {
-                            setState(() {
-                              isPlaying = true;
-                            });
-                          }
-                        },
-                      ),
-                    ],
+                            if (audio.playing) {
+                              setState(() {
+                                isPlaying = true;
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ] ,
             if (widget.data != null) ...[
               Expanded(
                 flex: 3,

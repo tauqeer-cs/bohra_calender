@@ -29,20 +29,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
-  animated_flip_counter:
-    dependency: "direct main"
-    description:
-      name: animated_flip_counter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
-  animated_radial_menu:
-    dependency: "direct main"
-    description:
-      name: animated_radial_menu
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   archive:
     dependency: transitive
     description:
@@ -300,13 +286,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.0"
-  flutter_filereader:
-    dependency: "direct main"
-    description:
-      name: flutter_filereader
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   flutter_launcher_icons:
     dependency: "direct main"
     description:

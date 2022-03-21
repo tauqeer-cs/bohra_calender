@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
+import 'core/constants.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Constants.backgroundPatternTopColor,
           fontFamily: 'PlayfairDisplay',
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(

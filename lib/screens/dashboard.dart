@@ -7,7 +7,6 @@ import 'package:bohra_calender/screens/personal_event_listing.dart';
 import 'package:bohra_calender/screens/prayer_times_view.dart';
 import 'package:bohra_calender/screens/qibla.dart';
 import 'package:bohra_calender/screens/tasbeeh.dart';
-import 'package:bohra_calender/screens/tasbeeh_view.dart';
 import 'package:bohra_calender/services/data_service.dart';
 import 'package:bohra_calender/services/location_service.dart';
 import 'package:flutter/material.dart';
@@ -644,9 +643,11 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(
-          'assets/images/bismillah-black.png',
-          height: 44,
+        title: Center(
+          child: Image.asset(
+            'assets/images/bismillah-black.png',
+            height: 44,
+          ),
         ),
       ),
       body: SafeArea(

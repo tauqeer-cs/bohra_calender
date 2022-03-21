@@ -58,14 +58,13 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
         notes.add('6 Salams /12 Rakats');
       } else {
         if (widget.isRamadanLast) {
-          widget.calenderItem!.washerLimit = 10;
-
-          salamLimit = (widget.calenderItem!.washerLimit / 2).floor();
+         /// widget.calenderItem!.washerLimit = 10;
+          salamLimit = (10 / 2).floor();
         }
-        if (widget.wadaNiNamaz) {
-          widget.calenderItem!.washerLimit = 2;
+        else if (widget.wadaNiNamaz) {
+      //    widget.calenderItem!.washerLimit = 2;
 
-          salamLimit = (widget.calenderItem!.washerLimit / 2).floor();
+          salamLimit = (2 / 2).floor();
         } else {
           salamLimit = (widget.calenderItem!.washerLimit / 2).floor();
         }
@@ -468,7 +467,7 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                           ),
                         );
                       },
-                      itemCount: 10,
+                      itemCount: 20,
                     ),
                   ),
                 ] else ...[
@@ -764,7 +763,7 @@ class WasheqListItem extends StatelessWidget {
           for (Files currentFile in files) ...[
             if (isActive) ...[
               Transform.scale(
-                scale: 1.05,
+                scale: 1.00,
                 child: FileItem(
                   isDisabled: false,
                   verticalGap: 0,
@@ -779,7 +778,7 @@ class WasheqListItem extends StatelessWidget {
               ),
             ] else ...[
               Transform.scale(
-                scale: 0.95,
+                scale: 0.90,
                 child: FileItem(
                   isDisabled: true,
                   verticalGap: 0,

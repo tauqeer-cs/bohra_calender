@@ -1,10 +1,8 @@
 import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:bohra_calender/core/colors.dart';
 import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/services/objectbox_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hijri/hijri_calendar.dart';
-
 import 'add_personal_event.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 

@@ -665,7 +665,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
           color: Constants.backgroundPatternTopColor,
           child: Column(
             children: [
-              SizedBox(height: 40,),
+              const SizedBox(height: 40,),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
@@ -899,8 +899,11 @@ class PrayerItem extends StatelessWidget {
               const SizedBox(
                 width: 16,
               ),
-              Text(time , style: const TextStyle(
-                fontFamily: 'Number'
+              Text(time, style: const TextStyle(
+                fontFamily: 'Number',
+                fontSize: 18,
+                  fontWeight: FontWeight.w600
+
               ),),
               const SizedBox(
                 width: 16,

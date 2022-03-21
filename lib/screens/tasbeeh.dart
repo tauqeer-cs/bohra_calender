@@ -20,12 +20,12 @@ class _TasbeehState extends State<Tasbeeh> {
 
   double get fontSizeToShow {
     if(_value > 99 && _value < 1000) {
-      return 54;
+      return 50;
     }
     else if(_value > 999) {
-      return 40;
+      return 38;
     }
-    return 70;
+    return 66;
 
   }
   int selectedTasbeeh = 0;
@@ -74,19 +74,19 @@ class _TasbeehState extends State<Tasbeeh> {
   ];
 
   List<double> sizedEng = [
-    32,
+    29,
     20,
-    32,
-    32,
-    32,
-    32,
-    32,
+    28,
+    28,
+    28,
+    28,
+    28,
     18,
-    22,
     20,
     20,
     20,
-    20,
+    18,
+    16,
   ];
 
   List<double> sizedArabic = [
@@ -146,9 +146,9 @@ class _TasbeehState extends State<Tasbeeh> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
-                      height: 200,
+                      height: 220,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.black,
@@ -172,7 +172,7 @@ class _TasbeehState extends State<Tasbeeh> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const SizedBox(
-                            height: 12,
+                            height: 8,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -188,15 +188,15 @@ class _TasbeehState extends State<Tasbeeh> {
                             child: Container(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Text(
                               tasbeehSubTexts[selectedTasbeeh],
                               textAlign: TextAlign.center,
-                              style:  TextStyle(fontSize: sizedEng[selectedTasbeeh]),
+                              style:  TextStyle(fontSize: sizedEng[selectedTasbeeh] , fontWeight: FontWeight.normal,fontFamily: 'PlayfairDisplay'),
                             ),
                           ),
-                          SizedBox(
-                            height: 12,
+                          const SizedBox(
+                            height: 8,
                           ),
                         ],
                       ),
@@ -251,7 +251,7 @@ class _TasbeehState extends State<Tasbeeh> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 8,
                               ),
                             ],
@@ -264,12 +264,12 @@ class _TasbeehState extends State<Tasbeeh> {
                     'Set Goal',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
-                    height: 16,
+                  const SizedBox(
+                    height: 12,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -415,10 +415,8 @@ class _TasbeehState extends State<Tasbeeh> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(60),
-                                  ),
                                   color: Colors.black.withAlpha(90),
+                                    shape: BoxShape.circle
                                 ),
                                 child: const Image(
                                   image: AssetImage('assets/images/thumb.png'),

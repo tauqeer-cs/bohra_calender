@@ -1,4 +1,4 @@
-package com.example.bohra_calender
+package com.kmincorp.bohracalendarplus
 
 import io.flutter.embedding.android.FlutterActivity
 

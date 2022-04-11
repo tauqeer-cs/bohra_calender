@@ -166,9 +166,11 @@ class ExtraNamazItem extends StatelessWidget {
               data.files[i].audioUrl.isNotEmpty) ...[
             Column(
               children: [
+                /*
                 const SizedBox(
                   height: 4,
                 ),
+
                 WasheqButton(
                   title: 'Tahajood Namaz Counter',
                   onTap: () {
@@ -183,6 +185,7 @@ class ExtraNamazItem extends StatelessWidget {
                     );
                   },
                 ),
+                */
                 const SizedBox(
                   height: 4,
                 ),
@@ -196,9 +199,12 @@ class ExtraNamazItem extends StatelessWidget {
                   verticalGap: 3,
                   otherColor: i % 2 == 0,
                 ),
+
+
               ],
             ),
           ] else ...[
+
             FileItem(
               data: showOnlyOne ? data : null,
               name: data.files[i].title,
@@ -208,10 +214,10 @@ class ExtraNamazItem extends StatelessWidget {
               fileItem: data.files[i],
               verticalGap: 3,
               otherColor: i % 2 == 0,
-              shouldContinueAudio:
-                  data.title.contains('Alhamdo-Laukshemo'),
-
+              shouldContinueAudio: data.title.contains('Alhamdo-Laukshemo'),
             ),
+
+
           ],
         ],
         const SizedBox(

@@ -11,8 +11,9 @@ class MiniPlayerView extends StatefulWidget {
 
   final int itemIndex;
 
-
-   const MiniPlayerView({Key? key, required this.fileItem,this.fileItems, this.itemIndex = 1}) : super(key: key);
+  const MiniPlayerView(
+      {Key? key, required this.fileItem, this.fileItems, this.itemIndex = 1})
+      : super(key: key);
 
   @override
   State<MiniPlayerView> createState() => MiniPlayerViewState();
@@ -21,6 +22,7 @@ class MiniPlayerView extends StatefulWidget {
 class MiniPlayerViewState extends State<MiniPlayerView> {
   Duration? progressDuration;
 
+  double speed = 1.0;
 
   int currentIndex = 1;
 
@@ -54,33 +56,24 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
         const Duration(
           seconds: 1,
         ), (timer) {
-
-
       setState(() {
         progressDuration = audio.position;
 
-        if (audio.position.inSeconds == audio.duration!.inSeconds && isPlaying ) {
-
-
+        if (audio.position.inSeconds == audio.duration!.inSeconds &&
+            isPlaying) {
           isPlaying = false;
 
-
-          if(widget.fileItems != null){
-
-            if(widget.fileItems!.length == (currentIndex+1)) {
-
+          if (widget.fileItems != null) {
+            if (widget.fileItems!.length == (currentIndex + 1)) {
               return;
-
             }
             //currentIndex = currentIndex +1;
 
-
             progressDuration = null;
-            currentIndex = currentIndex +1;
+            currentIndex = currentIndex + 1;
 
             setPlayer();
           }
-
         }
       });
     });
@@ -93,9 +86,8 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
     super.initState();
 
     currentIndex = widget.itemIndex;
-
-
   }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -222,7 +214,8 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
                                 progressBarColor: Colors.red,
                                 baseBarColor: Colors.brown,
                                 bufferedBarColor: Colors.yellow,
-                                thumbColor: const Color.fromRGBO(255, 184, 28, 1),
+                                thumbColor:
+                                    const Color.fromRGBO(255, 184, 28, 1),
                                 barHeight: 3.0,
                                 thumbRadius: 5.0,
                                 onSeek: (duration) {
@@ -242,20 +235,81 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
                       const SizedBox(
                         height: 2,
                       ),
-                      GestureDetector(
-                        child: isLoadingAudio
-                            ? const CircularProgressIndicator()
-                            : Image.asset(
-                                isPlaying
-                                    ? 'assets/images/pause.png'
-                                    : 'assets/images/play.png',
-                                height: 40,
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          GestureDetector(
+                            child: const Icon(
+                                    Icons.fast_rewind_outlined,
+                                    color: Color.fromRGBO(255, 184, 28, 1),
+                                  ),
+                            onTap: () {
+                              if (isLoadingAudio) {
+                                return;
+                              }
+
+
+                              setState(() {
+                                speed = speed - 0.25;
+                              });
+                              audio.setSpeed(speed);
+
+                            },
+                          ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                          GestureDetector(
+                            child: isLoadingAudio
+                                ? const CircularProgressIndicator()
+                                : Image.asset(
+                                    isPlaying
+                                        ? 'assets/images/pause.png'
+                                        : 'assets/images/play.png',
+                                    height: 40,
+                                  ),
+                            onTap: () {
+                              if (isLoadingAudio) {
+                                return;
+                              }
+                              setPlayer();
+                            },
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                '$speed',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
                               ),
-                        onTap: ()  {
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (isLoadingAudio) {
+                                return;
+                              }
+                              setState(() {
+                                speed = speed + 0.25;
+                              });
+                              this.audio.setSpeed(speed);
 
-                          setPlayer();
-
-                        },
+                            },
+                            child: isLoadingAudio
+                                ? Container()
+                                : const Icon(
+                                    Icons.fast_forward_outlined,
+                                    color: Color.fromRGBO(255, 184, 28, 1),
+                                  ),
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -271,43 +325,29 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
     );
   }
 
-
   void setPlayer() async {
     if (isLoadingAudio) {
       return;
     }
     if (isPlaying) {
-
       setState(() {
         isPlaying = false;
       });
 
       audio.pause();
-
     } else {
       setState(() {
         isLoadingAudio = true;
       });
 
-      if(widget.fileItems != null) {
-
-
-
+      if (widget.fileItems != null) {
         audio = AudioPlayer();
 
-
         totalDuration =
-        await audio.setUrl(widget.fileItems![currentIndex].audioUrl);
-
+            await audio.setUrl(widget.fileItems![currentIndex].audioUrl);
+      } else {
+        totalDuration ??= await audio.setUrl(widget.fileItem.audioUrl);
       }
-      else {
-        totalDuration ??=
-        await audio.setUrl(widget.fileItem.audioUrl);
-      }
-
-
-
-
 
       setState(() {
         isLoadingAudio = false;
@@ -323,16 +363,13 @@ class MiniPlayerViewState extends State<MiniPlayerView> {
       setState(() {
         isPlaying = true;
       });
-
     }
-
   }
-  String buildTitle() {
 
-    if(widget.fileItems != null){
+  String buildTitle() {
+    if (widget.fileItems != null) {
       return widget.fileItems![currentIndex].title;
     }
     return widget.fileItem.title;
-
   }
 }

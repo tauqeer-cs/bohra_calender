@@ -268,7 +268,7 @@ class PersonalEvent {
   String getDayOfMonthSuffix(int dayNum) {
 
     if(dayNum >= 11 && dayNum <= 13) {
-      return 'th';
+      return dayNum.toString() + 'th';
     }
 
     switch(dayNum % 10) {

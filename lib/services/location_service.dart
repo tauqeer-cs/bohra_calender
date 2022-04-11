@@ -28,20 +28,9 @@ class _LocationService {
     }
 
     _locationData = await location.getLocation();
-
-    print(_locationData);
-
-
-
-
     return [_locationData.latitude.toString(),_locationData.longitude.toString()];
-
-
-
   }
 }
-
-
 
 final locationService = _LocationService();
 

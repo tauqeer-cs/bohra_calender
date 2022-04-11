@@ -1,4 +1,3 @@
-import 'package:bohra_calender/core/colors.dart';
 import 'package:bohra_calender/core/constants.dart';
 import 'package:bohra_calender/model/date_service.dart';
 import 'package:bohra_calender/services/location_service.dart';
@@ -6,12 +5,11 @@ import 'package:bohra_calender/services/notification_service.dart';
 import 'package:daylight/daylight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_icons/weather_icons.dart';
-
+import '../views/prayer_item.dart';
 import 'dashboard.dart';
+import 'package:geocoding/geocoding.dart';
 
 class PrayersTimeView extends StatefulWidget {
   const PrayersTimeView({Key? key}) : super(key: key);
@@ -27,7 +25,9 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       lblZawaal = '',
       lblZoharTiming = '';
 
-  String lblMagribTiming = '', lblIshaTime = '' , lblNisfulailTime = '';
+  int addDayLightSavingTime = 0;
+
+  String lblMagribTiming = '', lblIshaTime = '', lblNisfulailTime = '';
 
   bool sihoriNotification = false;
 
@@ -36,7 +36,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
   void getInitialState() async {
     final prefs = await SharedPreferences.getInstance();
     sihoriNotification = prefs.getBool('sihori') ?? false;
-    fajrNotification =  prefs.getBool('fajr') ?? false;
+    fajrNotification = prefs.getBool('fajr') ?? false;
     sunriseNotification = prefs.getBool('sunrise') ?? false;
     zawaalNotification = prefs.getBool('zawaal') ?? false;
     zuhrEndNotification = prefs.getBool('zuhr_end') ?? false;
@@ -44,11 +44,9 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     magribNotification = prefs.getBool('magrib') ?? false;
     ishaEndNotification = prefs.getBool('isha_end') ?? false;
     niftUlLailNotification = prefs.getBool('nisf_end') ?? false;
-
-
-
-
+    isDaylight = prefs.getBool('daylight') ?? false;
   }
+
   @override
   void initState() {
     super.initState();
@@ -61,14 +59,20 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
   bool locationNotFound = false;
   String lblAsrTiming = '';
   bool noLocationPermissionDisabled = false;
+  double lT = 0.0, lG = 0.0;
+
+  bool addHalfAnHourtoTime = false;
+
+  Placemark? _placemark;
 
   void getTimes() async {
-    List<String>? resultLocation =
-        await locationService.getLocationMapData(givePermission: () {
-      setState(() {
-        noLocationPermissionDisabled = true;
-      });
-    });
+    List<String>? resultLocation = await locationService.getLocationMapData(
+      givePermission: () {
+        setState(() {
+          noLocationPermissionDisabled = true;
+        });
+      },
+    );
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -85,21 +89,41 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       lblIshaTime = "-";
       lblNisfulailTime = '-';
 
-
       if (prefs.getDouble('lat') != null) {
-        double lT = 0.0, lG = 0.0;
         latit = lT;
 
         long = lG;
 
         locationNotFound = false;
 
+        bool? tmp = prefs.getBool('halfHourAdd');
+        if (tmp != null) {
+          addHalfAnHourtoTime = true;
+        } else {
+          addHalfAnHourtoTime = false;
+        }
         var result = await getNamazTimesWithLatLong(DateTime.now(), lT, lG);
         await setTimes(result);
       }
       return;
     }
 
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        double.parse(resultLocation.first), double.parse(resultLocation[1]));
+
+    if (placemarks.isNotEmpty) {
+      if (placemarks.first.country == 'India') {
+        _placemark = placemarks.first;
+        //        _placemark = placemarks.first;
+
+        if (DateTime.now().timeZoneName == 'PKT') {
+          addHalfAnHourtoTime = true;
+          prefs.setBool('halfHourAdd', true);
+        } else {
+          addHalfAnHourtoTime = false;
+        }
+      }
+    }
     noLocationPermissionDisabled = false;
 
     latit = double.parse(resultLocation.first);
@@ -143,7 +167,6 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
 
     lblIshaTime = DateFormat('hh:mm a').format(result[7]);
     lblNisfulailTime = DateFormat('hh:mm a').format(result[8]);
-
 
     if (checkIsNextPrayer(result[0])) {
       nextPrayerText =
@@ -205,12 +228,6 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     int zoharHours = (ZoharEndValue / 60.0).floor();
     zoharHours = (zoharHours / 60.0).floor();
 
-    /*
-        double sunriseValues = sunsetRise.localSunrise.hour * 60 * 60 + sunsetRise.localSunrise.minute * 60 + sunsetRise.localSunrise.second;
-    double ZoharEndValue = sunriseValues - nightGhari ;
-    int zoharHours = ZoharEndValue/60.0;
-    zoharHours = zoharHours/ 60.0;
-    * */
     return "$zoharHours:${getMinutesFromTime(ZoharEndValue)}";
   }
 
@@ -351,7 +368,6 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
 
     DateTime curentSohoriTime =
         DateClass.makeDateFromString(dayString, dateStringFormat);
-    //NSDate * curentSohoriTime = [DateFormatter makeDataFromString:dayString withDateFormate:dateStringFormat];
 
     if (sunsetRise.sunrise!.toLocal().second > 2) {
       curentSohoriTime = curentSohoriTime.add(Duration(minutes: 1));
@@ -407,6 +423,29 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     DateTime ishaEnd = zawalDate.add(const Duration(hours: 12));
     DateTime nasfus = zawalDate.add(const Duration(hours: 12));
 
+    if (isDaylight) {
+      curentSohoriTime = curentSohoriTime.add(const Duration(hours: -1));
+      newFajrTime = newFajrTime.add(const Duration(hours: -1));
+      lblSunriseTime = lblSunriseTime.add(const Duration(hours: -1));
+      zawalDate = zawalDate.add(const Duration(hours: -1));
+      zoharEndDate = zoharEndDate.add(const Duration(hours: -1));
+      asrEndDate = asrEndDate = asrEndDate.add(const Duration(hours: 1));
+      lblSunsetTime = lblSunsetTime.add(const Duration(hours: -1));
+      ishaEnd = ishaEnd.add(const Duration(hours: -1));
+      nasfus = nasfus.add(const Duration(hours: -1));
+    }
+    if (addHalfAnHourtoTime) {
+      curentSohoriTime = curentSohoriTime.add(const Duration(minutes: 30));
+      newFajrTime = newFajrTime.add(const Duration(minutes: 30));
+      lblSunriseTime = lblSunriseTime.add(const Duration(minutes: 30));
+      zawalDate = zawalDate.add(const Duration(minutes: 30));
+      zoharEndDate = zoharEndDate.add(const Duration(minutes: 30));
+      asrEndDate = asrEndDate = asrEndDate.add(const Duration(minutes: 30));
+      lblSunsetTime = lblSunsetTime.add(const Duration(minutes: 30));
+      ishaEnd = ishaEnd.add(const Duration(minutes: 30));
+      nasfus = nasfus.add(const Duration(minutes: 30));
+    }
+
     return [
       curentSohoriTime,
       newFajrTime,
@@ -442,7 +481,9 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     return "$hours:$minutes"; //[NSString stringWithFormat:@"%d:%@",hours,[NSString stringWithFormat:@"%d",minutes]];
   }
 
-  bool magribNotification = false, ishaEndNotification = false , niftUlLailNotification = false;
+  bool magribNotification = false,
+      ishaEndNotification = false,
+      niftUlLailNotification = false;
 
   bool fajrNotification = false,
       zawaalNotification = false,
@@ -461,7 +502,7 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       if (sihoriNotification) {
         var difference = result[0].compareTo(DateTime.now());
 
-        if(difference > 0) {
+        if (difference > 0) {
           NoticiationApi.showTimedNotification(
               scheduledDate: DateTime(
                 dateObject.year,
@@ -473,7 +514,6 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
               title: 'Sihori',
               body: 'Sihori time has started');
         }
-
       }
 
       if (fajrNotification) {
@@ -481,14 +521,13 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
 
         var difference = result[1].compareTo(DateTime.now());
 
-        if(difference > 0){
+        if (difference > 0) {
           NoticiationApi.showTimedNotification(
               scheduledDate: DateTime(dateObject.year, dateObject.month,
                   dateObject.day, result[1].hour, result[1].minute),
               title: 'Fajr',
               body: 'Time to pray fajr');
         }
-
       }
 
       if (sunriseNotification) {
@@ -534,36 +573,13 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       if (ishaEndNotification) {
         var difference = result[7].compareTo(DateTime.now());
 
-
         NoticiationApi.showTimedNotification(
             scheduledDate: DateTime(dateObject.year, dateObject.month,
                 dateObject.day, result[7].hour, result[7].minute),
             title: 'Isha End',
             body: 'Isha Time has ended');
       }
-
-
-      if (niftUlLailNotification) {
-        var difference = result[8].compareTo(DateTime.now());
-        NoticiationApi.showTimedNotification(
-            scheduledDate: DateTime(dateObject.year, dateObject.month,
-                dateObject.day, result[8].hour, result[8].minute),
-            title: 'Nist ul Layl End',
-            body: 'Nist ul Layl time ended');
-      }
-
     }
-    /*
-    lblSahori = DateFormat('hh:mm a').format(result.first);
-    lblFajarTiming = DateFormat('hh:mm a')
-        .format(result[1]); //formatter stringFromDate:timings[1]];
-    lblSunrise = DateFormat('hh:mm a').format(result[2]);
-    lblZawaal = DateFormat('hh:mm a').format(result[3]);
-    lblZoharTiming = DateFormat('hh:mm a').format(result[4]);
-    lblAsrTiming = DateFormat('hh:mm a').format(result[5]);
-
-    lblIshaTime = DateFormat('hh:mm a').format(result[7]);
-     */
 
     print('');
   }
@@ -581,7 +597,6 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
       prefs.setBool('fajr', true);
     }
     setNoticiationsItems();
-
   }
 
   Future<void> sunriseTapped() async {
@@ -596,6 +611,8 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     setState(() {
       sunriseNotification = !sunriseNotification;
     });
+
+    setNoticiationsItems();
   }
 
   Future<void> zawaalNotTapped() async {
@@ -610,20 +627,23 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     } else {
       prefs.setBool('zawaal', true);
     }
+    setNoticiationsItems();
   }
 
   Future<void> asrNotTapped() async {
     final prefs = await SharedPreferences.getInstance();
 
-    if (sunriseNotification) {
+    if (asrEndNotification) {
       prefs.setBool('asr', true);
     } else {
       prefs.setBool('asr', true);
     }
 
     setState(() {
-      sunriseNotification = !sunriseNotification;
+      asrEndNotification = !asrEndNotification;
     });
+
+    setNoticiationsItems();
   }
 
   Future<void> zohrEndNot() async {
@@ -638,6 +658,8 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     } else {
       prefs.setBool('zuhr_end', true);
     }
+
+    setNoticiationsItems();
   }
 
   Future<void> magribNot() async {
@@ -652,7 +674,11 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
     } else {
       prefs.setBool('magrib', true);
     }
+
+    setNoticiationsItems();
   }
+
+  bool isDaylight = false;
 
   @override
   Widget build(BuildContext context) {
@@ -665,7 +691,9 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
           color: Constants.backgroundPatternTopColor,
           child: Column(
             children: [
-              const SizedBox(height: 40,),
+              const SizedBox(
+                height: 32,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
@@ -734,13 +762,13 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
                             time: lblZoharTiming,
                             icon: 'zuhr_end',
                             isNotificationOn: zuhrEndNotification,
-                            onTap: asrNotTapped),
+                            onTap: zohrEndNot),
                         PrayerItem(
                           name: 'Asr End',
                           time: lblAsrTiming,
                           icon: 'asr_end',
-                          isNotificationOn: magribNotification,
-                          onTap: magribNot,
+                          isNotificationOn: asrEndNotification,
+                          onTap: asrNotTapped,
                         ),
                         PrayerItem(
                           name: 'Magrib',
@@ -773,19 +801,6 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
                         const SizedBox(
                           height: 12,
                         ),
-                        /*
-                        IconButton(
-                          icon: Icon(showingMore
-                              ? FontAwesomeIcons.angleDown
-                              : FontAwesomeIcons.angleUp), //angleUp
-                          iconSize: 24,
-                          onPressed: () {
-                            setState(() {
-                              showingMore = !showingMore;
-                            });
-                          },
-                        ),
-                      */
                       ],
                     ),
                   ),
@@ -794,149 +809,65 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
               Expanded(
                 child: Container(),
               ),
+
+              if (1 == 2) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Adjust the time for daylight saving:',
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Checkbox(
+                        value: isDaylight,
+                        onChanged: (bool? value) async {
+                          if (value != null) {
+                            setState(() {
+                              isDaylight = value;
+
+                              if (isDaylight) {
+                                addDayLightSavingTime = 1;
+                              } else {
+                                addDayLightSavingTime = 0;
+                              }
+                            });
+
+                            //      if (prefs.getDouble('lat') != null) {
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.setBool('daylight', isDaylight);
+                          }
+
+                          var result = await getNamazTimesWithLatLong(
+                              DateTime.now(), latit, long);
+                          await setTimes(result);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+//
+              //  ;
+
+//    ;
+
+              if (_placemark != null) ...[
+                if (_placemark!.country == 'India') ...[
+                  Text(
+                      '${_placemark!.locality} with your phone timezone set to ' +
+                          DateTime.now().timeZoneName),
+                ],
+              ],
+              //isDaylight
+              const SizedBox(
+                height: 4,
+              ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-/*
-              if (locationNotFound) ...[
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 4),
-                            child: Text(
-                              'Location Not Found',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              'Please enable location service so that app can get proper prayer times for you',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ] else ...[
-                const SizedBox(
-                  height: 16,
-                ),
-                if (nextPrayerText.isNotEmpty) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      nextPrayerText,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ],
-              ],
- */
-
-class PrayerItem extends StatelessWidget {
-  final String icon;
-  final String time;
-  final String name;
-  final bool isNotificationOn;
-
-  final VoidCallback onTap;
-
-  const PrayerItem({
-    Key? key,
-    required this.icon,
-    required this.time,
-    required this.name,
-    required this.onTap,
-    this.isNotificationOn = true,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Image.asset(
-                "assets/icons/$icon.png",
-                width: 24,
-              ),
-
-              const SizedBox(
-                width: 16,
-              ),
-              Expanded(
-                child: Text(name),
-              ),
-              //const Icon(Icons.notifications_off_outlined ),
-              const SizedBox(
-                width: 16,
-              ),
-              Text(time, style: const TextStyle(
-                fontFamily: 'Number',
-                fontSize: 18,
-                  fontWeight: FontWeight.w600
-
-              ),),
-              const SizedBox(
-                width: 16,
-              ),
-              if (isNotificationOn) ...[
-                GestureDetector(
-                  onTap: onTap,
-                  child: const ImageIcon(
-                    AssetImage("assets/icons/bell_on.png"),
-                    color: CColors.green_main,
-                  ),
-                ),
-              ] else ...[
-                GestureDetector(
-                  onTap: onTap,
-                  child: const ImageIcon(
-                    AssetImage("assets/icons/bell-off.png"),
-                    color: CColors.green_main,
-                  ),
-                ),
-              ],
-              const SizedBox(
-                width: 4,
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 1,
-          ),
-          const Divider(
-            color: Colors.black,
-          ),
-        ],
       ),
     );
   }

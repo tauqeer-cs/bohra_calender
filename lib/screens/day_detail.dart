@@ -7,6 +7,7 @@ import 'package:bohra_calender/model/monthly_data.dart';
 import 'package:bohra_calender/screens/tasbeeh.dart';
 import 'package:bohra_calender/screens/washeq_counter.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'file_viewer.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'mini_player_view.dart';
@@ -449,6 +450,16 @@ class DayDetail extends StatelessWidget {
                       );
 
                       bool check = await Add2Calendar.addEvent2Cal(event);
+
+                      if(!check){
+                        Alert(
+                            context: context,
+                            title:'Error while syncing',
+                            desc: 'Please check if you have given us access to your calender.'
+                        ).show();
+
+                      }
+
                     },
                     child: Container(
                       decoration: const BoxDecoration(

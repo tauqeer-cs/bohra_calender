@@ -154,6 +154,16 @@ class _PersonalEventListingState extends State<PersonalEventListing>
                             );
 
                             bool check = await Add2Calendar.addEvent2Cal(event);
+                            print('Done');
+
+                            if(!check){
+                              Alert(
+                                context: context,
+                                title:'Error while syncing',
+                                desc: 'Please check if you have given us access to your calender.'
+                              ).show();
+
+                            }
                           }
                         },
                       );
@@ -211,7 +221,7 @@ class PersonalListItem extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.grey.shade400,
                     fontWeight: FontWeight.w600,
-                    fontSize: 18),
+                    fontSize: 16),
               ),
             ],
           ),

@@ -273,14 +273,30 @@ class ClassItemInfo {
   }
 
   static String nextMonthName(DateTime objectToUse) {
-    DateTime dateObject = objectToUse.add(const Duration(days: 1));
+    int no  = 1;
+
+
+    if(objectToUse.day == 30 && objectToUse.month == 6){
+      no = 0;
+
+    }
+    //objectToUse.day;
+
+    DateTime dateObject = objectToUse.add(Duration(days: no));
     return monthsNameEnglishShort[dateObject.month] +
         ' ' +
         dateObject.year.toString().substring(2);
   }
 
   static String previousMonthName(DateTime objectToUse) {
-    DateTime dateObject = objectToUse.add(const Duration(days: -1));
+
+    int no = -1;
+
+    if(objectToUse.day == 1) {
+    //  no = 0;
+
+    }
+    DateTime dateObject = objectToUse.add(Duration(days: no));
 
     return monthsNameEnglishShort[dateObject.month] +
         ' ' +

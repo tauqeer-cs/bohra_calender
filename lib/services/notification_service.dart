@@ -10,7 +10,7 @@ class NoticiationApi {
     return const NotificationDetails(
         android: AndroidNotificationDetails('channel id', 'channel name',
             channelDescription: 'Detail', importance: Importance.max),
-        iOS: IOSNotificationDetails());
+        iOS: IOSNotificationDetails(sound: 'notification_sound.wav'));
   }
 
   static void cancelAll() {

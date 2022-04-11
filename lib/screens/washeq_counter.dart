@@ -582,7 +582,7 @@ class _WasheqCounterViewState extends State<WasheqCounterView> {
                               } else {
                                 Alert(
                                   context: context,
-                                  title: 'Washeq Completed',
+                                  title: this.widget.isTahajud ? 'Tahajood Namaz Completed' : 'Washeq Completed',
                                 ).show();
                               }
 

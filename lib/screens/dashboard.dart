@@ -41,15 +41,20 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
   bool locationNotFound = false;
 
   String get todayIslamicDate {
-    var _today = HijriCalendar.now();
-    return _today.hDay.toString() +
+
+    _today ??= HijriCalendar.fromDate(
+        DateTime.now().add(
+          Duration(days: addExtraDaysToCheck),
+        ),
+      );
+    return _today!.hDay.toString() +
         ' ' +
-        _today.longMonthName +
+        _today!.longMonthName +
         ' ' +
-        _today.hYear.toString();
+        _today!.hYear.toString();
   }
 
-  /*
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     setState(() {
@@ -62,7 +67,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
 
    // loadData();
   }
-*/
+
 
   String get todayNormalDate {
     return DateFormat('EEEE d MMM yyyy').format(DateTime.now());
@@ -74,6 +79,8 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
   List<MonthlyData> completeMonthData = [];
 
   int addExtraDaysToCheck = 0;
+
+  HijriCalendar? _today;
 
   void loadData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -92,14 +99,14 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
         await dataService.getEventsWithFiles(accessSavedObject: false);
     completeMonthData = monthData;
 
-    var _today = HijriCalendar.fromDate(
+      _today = HijriCalendar.fromDate(
       DateTime.now().add(
         Duration(days: addExtraDaysToCheck),
       ),
-    ); //;.add(Duration(days: 9)));
+    );
 
     var response = monthData
-        .where((e) => e.month == _today.hMonth && e.day == _today.hDay)
+        .where((e) => e.month == _today!.hMonth && e.day == _today!.hDay)
         .toList();
 
     if (response.isNotEmpty) {
@@ -116,11 +123,12 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
   }
 
   Widget getTodaysEvent() {
-    var _today = HijriCalendar.fromDate(
-      DateTime.now().add(
-        Duration(days: addExtraDaysToCheck),
-      ),
-    );
+    _today ??= HijriCalendar.fromDate(
+        DateTime.now().add(
+          Duration(days: addExtraDaysToCheck),
+        ),
+      );
+
 
     if (monthlyData.isEmpty) {
       return Container(
@@ -208,8 +216,8 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                       ClassItemInfo.makeCurrentMonthObject(completeMonthData)
                           .monthItems
                           .firstWhere((e) =>
-                      e.monthNo == _today.hMonth &&
-                          e.dayNo == _today.hDay.toString());
+                      e.monthNo == _today!.hMonth &&
+                          e.dayNo == _today!.hDay.toString());
 
                       Navigator.push(
                         context,
@@ -259,7 +267,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${_today.hDay} ${ClassItemInfo.islamicMonthName[_today.hMonth]}',
+                                    '${_today!.hDay} ${ClassItemInfo.islamicMonthName[_today!.hMonth]}',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         color: Constants.inkBlack,
@@ -293,258 +301,9 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     );
   }
 
-  Future<DateTime> getNextDaySihoriTime(
-      DateTime date, double lat, double longitude) async {
-    String dateStringFormat = "MM dd yyyy HH:mm";
 
-    latit = lat;
-    longitude = longitude;
 
-    final String currentTimeZone =
-        await FlutterNativeTimezone.getLocalTimezone();
 
-    var berlin = DaylightLocation(lat, longitude);
-    final berlinCalculator = DaylightCalculator(berlin);
-
-    DaylightResult sunsetRise =
-        berlinCalculator.calculateForDay(DateTime.now(), Zenith.official);
-    final secondsBetweenDuration =
-        sunsetRise.sunset!.difference(sunsetRise.sunrise!.toLocal());
-
-    var secondsBetween = secondsBetweenDuration.inSeconds / 12.0;
-
-    double dayGhari = secondsBetween;
-    double nightGhari = (120.0 * 60) - dayGhari;
-
-    if (nightGhari < 0) {
-      nightGhari = nightGhari * -1;
-    }
-
-    var sohoriTimeString =
-        "${sunsetRise.sunrise!.toLocal().hour}:${sunsetRise.sunrise!.toLocal().minute}";
-
-    String currentDateString = "${date.month} ${date.day} ${date.year}";
-
-    String dayString = "$currentDateString $sohoriTimeString";
-
-    DateTime curentSohoriTime =
-        DateClass.makeDateFromString(dayString, dateStringFormat);
-    //NSDate * curentSohoriTime = [DateFormatter makeDataFromString:dayString withDateFormate:dateStringFormat];
-
-    if (sunsetRise.sunrise!.toLocal().second > 2) {
-      curentSohoriTime = curentSohoriTime.add(Duration(minutes: 1));
-    }
-
-    String lblSunriseString =
-        "${sunsetRise.sunrise!.toLocal().hour}:${sunsetRise.sunrise!.toLocal().minute}";
-
-    lblSunriseString = "$currentDateString $lblSunriseString";
-
-    DateTime lblSunriseTime =
-        DateClass.makeDateFromString(lblSunriseString, dateStringFormat);
-
-    /*
-    I have to check this logic later
-    if (sunsetRise.sunrise!.second > 2) {
-      curentSohoriTime = curentSohoriTime.add(Duration(minutes: 1));
-    }*/
-
-    curentSohoriTime = lblSunriseTime.subtract(const Duration(minutes: 75));
-
-    return curentSohoriTime;
-  }
-
-  Future<List<DateTime>> getNamazTimesWithLatLong(
-      DateTime date, double lat, double longitude) async {
-    String dateStringFormat = "MM dd yyyy HH:mm";
-
-    latit = lat;
-    longitude = longitude;
-
-    final String currentTimeZone =
-        await FlutterNativeTimezone.getLocalTimezone();
-
-    var berlin = DaylightLocation(lat, longitude);
-    final berlinCalculator = DaylightCalculator(berlin);
-
-    DaylightResult sunsetRise =
-        berlinCalculator.calculateForDay(DateTime.now(), Zenith.official);
-    final secondsBetweenDuration =
-        sunsetRise.sunset!.difference(sunsetRise.sunrise!.toLocal());
-
-    var secondsBetween = secondsBetweenDuration.inSeconds / 12.0;
-
-    double dayGhari = secondsBetween;
-    double nightGhari = (120.0 * 60) - dayGhari;
-
-    if (nightGhari < 0) {
-      nightGhari = nightGhari * -1;
-    }
-
-    var sohoriTimeString =
-        "${sunsetRise.sunrise!.toLocal().hour}:${sunsetRise.sunrise!.toLocal().minute}";
-
-    String currentDateString = "${date.month} ${date.day} ${date.year}";
-
-    String dayString = "$currentDateString $sohoriTimeString";
-
-    DateTime curentSohoriTime =
-        DateClass.makeDateFromString(dayString, dateStringFormat);
-    //NSDate * curentSohoriTime = [DateFormatter makeDataFromString:dayString withDateFormate:dateStringFormat];
-
-    if (sunsetRise.sunrise!.toLocal().second > 2) {
-      curentSohoriTime = curentSohoriTime.add(Duration(minutes: 1));
-    }
-
-    String lblSunriseString =
-        "${sunsetRise.sunrise!.toLocal().hour}:${sunsetRise.sunrise!.toLocal().minute}";
-
-    lblSunriseString = "$currentDateString $lblSunriseString";
-
-    DateTime lblSunriseTime =
-        DateClass.makeDateFromString(lblSunriseString, dateStringFormat);
-
-    curentSohoriTime = lblSunriseTime.subtract(const Duration(minutes: 75));
-
-    String newFajr = getFajrTime(sunsetRise, nightGhari);
-
-    newFajr =
-        "$currentDateString $newFajr"; //[NSString stringWithFormat:@"%@ %@",currentDateString,newFajr];
-    DateTime newFajrTime =
-        DateClass.makeDateFromString(newFajr, dateStringFormat);
-    String zawalString = getZawaaalTimeWithEDSunriseSet(sunsetRise);
-
-    zawalString = "$currentDateString $zawalString";
-
-    DateTime zawalDate =
-        DateClass.makeDateFromString(zawalString, dateStringFormat);
-
-    String zoharEndString = getZoharEndTime(sunsetRise, dayGhari);
-
-    zoharEndString =
-        "$currentDateString $zoharEndString"; //[NSString stringWithFormat:@"%@ %@",currentDateString,zoharEndString];
-
-    DateTime zoharEndDate =
-        DateClass.makeDateFromString(zoharEndString, dateStringFormat);
-
-    String asrEndString = getAsrEndTime(sunsetRise, dayGhari);
-    asrEndString = "$currentDateString $asrEndString";
-    DateTime asrEndDate = DateClass.makeDateFromString(asrEndString,
-        dateStringFormat); //[DateFormatter makeDataFromString:asrEndString withDateFormate:dateStringFormat];
-
-    String lblSetString =
-        "${sunsetRise.sunset!.toLocal().hour}:${sunsetRise.sunset!.toLocal().minute}";
-    lblSetString = "$currentDateString $lblSetString";
-
-    DateTime lblSunsetTime =
-        DateClass.makeDateFromString(lblSetString, dateStringFormat);
-
-    if (sunsetRise.sunset!.toLocal().second > 1) {
-      lblSunsetTime = lblSunsetTime.add(Duration(minutes: 1));
-    }
-
-    DateTime ishaEnd = zawalDate.add(Duration(hours: 12));
-
-    return [
-      curentSohoriTime,
-      newFajrTime,
-      lblSunriseTime,
-      zawalDate,
-      zoharEndDate,
-      asrEndDate,
-      lblSunsetTime,
-      ishaEnd
-    ];
-  }
-
-  String getAsrEndTime(DaylightResult sunsetRiseT, double dayGhari) {
-    double ZoharEndValue = getZawaaalValue(sunsetRiseT) + (dayGhari * 4);
-    int zoharHours = (ZoharEndValue / 60.0).floor();
-    zoharHours = (zoharHours / 60.0).floor();
-    int minutes = getMinutesFromTime(ZoharEndValue);
-    int hours = (ZoharEndValue / 60).floor();
-    hours = (hours / 60).floor();
-    double seconds = ZoharEndValue - (hours * 60 * 60);
-    seconds = seconds - (minutes * 60);
-    return "$zoharHours:$minutes";
-  }
-
-  String getZoharEndTime(DaylightResult sunsetRiseT, double dayGhari) {
-    double ZoharEndValue = getZawaaalValue(sunsetRiseT) + (dayGhari * 2);
-
-    int zoharHours = (ZoharEndValue / 60.0).floor();
-    zoharHours = (zoharHours / 60.0).floor();
-
-    int minutes = getMinutesFromTime(ZoharEndValue);
-
-    int hours = (ZoharEndValue / 60).floor();
-    hours = (hours / 60).floor();
-
-    double seconds = ZoharEndValue - (hours * 60 * 60);
-
-    seconds = seconds - (minutes * 60);
-
-    return "$zoharHours:$minutes"; //[NSString stringWithFormat:@"%d:%d",zoharHours,minutes];
-  }
-
-  double getZawaaalValue(DaylightResult sunsetRiseT) {
-    double sunsetValues = sunsetRiseT.sunset!.toLocal().hour * 60 * 60 +
-        sunsetRiseT.sunset!.toLocal().minute * 60 +
-        sunsetRiseT.sunset!.toLocal().second.toDouble();
-    double sunriseValues = sunsetRiseT.sunrise!.toLocal().hour * 60 * 60 +
-        sunsetRiseT.sunrise!.toLocal().minute * 60 +
-        sunsetRiseT.sunrise!.toLocal().second.toDouble();
-    return sunriseValues + ((sunsetValues - sunriseValues) / 2.0);
-  }
-
-  String getZawaaalTimeWithEDSunriseSet(DaylightResult sunsetRiseT) {
-    double sunsetValues = sunsetRiseT.sunset!.toLocal().hour * 60 * 60 +
-        sunsetRiseT.sunset!.toLocal().minute * 60 +
-        sunsetRiseT.sunset!.toLocal().second.toDouble();
-
-    double sunriseValues = sunsetRiseT.sunrise!.toLocal().hour * 60 * 60 +
-        sunsetRiseT.sunrise!.toLocal().minute * 60 +
-        sunsetRiseT.sunrise!.toLocal().second.toDouble();
-
-    double zawaal = sunriseValues + ((sunsetValues - sunriseValues) / 2);
-
-    int hours = (zawaal / 60).floor();
-    hours = (hours / 60).floor();
-
-    double seconds = zawaal - (hours * 60 * 60);
-    int minutes = getMinutesFromTime(zawaal);
-
-    seconds = seconds - (minutes * 60);
-
-    return "$hours:$minutes"; //[NSString stringWithFormat:@"%d:%@",hours,[NSString stringWithFormat:@"%d",minutes]];
-  }
-
-  String getFajrTime(DaylightResult sunsetRiseT, double nightGhari) {
-    double sunriseValues = sunsetRiseT.sunrise!.toLocal().hour * 60.0 * 60.0 +
-        sunsetRiseT.sunrise!.toLocal().minute * 60.0 +
-        sunsetRiseT.sunrise!.toLocal().second;
-    double ZoharEndValue = sunriseValues - nightGhari;
-    int zoharHours = (ZoharEndValue / 60.0).floor();
-    zoharHours = (zoharHours / 60.0).floor();
-
-    /*
-        double sunriseValues = sunsetRise.localSunrise.hour * 60 * 60 + sunsetRise.localSunrise.minute * 60 + sunsetRise.localSunrise.second;
-    double ZoharEndValue = sunriseValues - nightGhari ;
-    int zoharHours = ZoharEndValue/60.0;
-    zoharHours = zoharHours/ 60.0;
-    * */
-    return "$zoharHours:${getMinutesFromTime(ZoharEndValue)}";
-  }
-
-  int getMinutesFromTime(double zawaal) {
-    double minutes = zawaal / 60.0;
-    double hoursToShow = minutes / 60.0;
-    double floatMinute = 60.0 * (hoursToShow - (hoursToShow).floorToDouble());
-
-    int newMinute = (floatMinute).floor();
-
-    return newMinute;
-  }
 
   void setupNot() async {}
 
@@ -572,56 +331,6 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
 
   AppLifecycleState? _notification;
 
-  Future<void> setTimes(List<DateTime> result) async {
-    lblSahori = DateFormat('hh:mm a').format(result.first);
-    lblFajarTiming = DateFormat('hh:mm a')
-        .format(result[1]); //formatter stringFromDate:timings[1]];
-    lblSunrise = DateFormat('hh:mm a').format(result[2]);
-    lblZawaal = DateFormat('hh:mm a').format(result[3]);
-    lblZoharTiming = DateFormat('hh:mm a').format(result[4]);
-    lblAsrTiming = DateFormat('hh:mm a').format(result[5]);
-
-    lblIshaTime = DateFormat('hh:mm a').format(result[7]);
-
-    if (checkIsNextPrayer(result[0])) {
-      nextPrayerText =
-          'Sihori Time is at ${DateFormat('hh:mm a').format(result.first)}';
-    } else if (checkIsNextPrayer(result[1])) {
-      nextPrayerText =
-          'Fajr Time is at ${DateFormat('hh:mm a').format(result[1])}';
-    } else if (checkIsNextPrayer(result[2])) {
-      nextPrayerText =
-          'Sunrise Time is at ${DateFormat('hh:mm a').format(result[2])}';
-    } else if (checkIsNextPrayer(result[3])) {
-      nextPrayerText =
-          'Zawaal Time is at ${DateFormat('hh:mm a').format(result[3])}';
-    } else if (checkIsNextPrayer(result[4])) {
-      nextPrayerText =
-          'Zawaal End is at ${DateFormat('hh:mm a').format(result[4])}';
-    } else if (checkIsNextPrayer(result[5])) {
-      nextPrayerText =
-          'Asr End is at ${DateFormat('hh:mm a').format(result[5])}';
-    } else if (checkIsNextPrayer(result[6])) {
-      nextPrayerText =
-          'Magrib is at ${DateFormat('hh:mm a').format(result[6])}';
-    } else if (checkIsNextPrayer(result[7])) {
-      nextPrayerText =
-          'Isha End is at ${DateFormat('hh:mm a').format(result[7])}';
-    } else {
-      var dateObj = await getNextDaySihoriTime(
-          DateTime.now().add(Duration(days: 1)), latit, long);
-
-      nextPrayerText =
-          'Sihori Time is at ${DateFormat('hh:mm a').format(dateObj)}';
-
-      // curentSohoriTime();
-
-    }
-
-    setState(() {
-      lblMagribTiming = DateFormat('hh:mm a').format(result[6]);
-    });
-  }
 
   bool checkIsNextPrayer(DateTime datetime) {
     if (datetime.hour == DateTime.now().hour) {
@@ -1041,54 +750,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
     );
   }
 
-/*
-    void getTimes() async {
-    List<String>? resultLocation = await locationService.getLocationMapData();
 
-    final prefs = await SharedPreferences.getInstance();
-
-    if (resultLocation == null) {
-      locationNotFound = true;
-
-      lblSahori = '-';
-      lblFajarTiming = '-';
-      lblSunrise = '-';
-      lblZawaal = '-';
-      lblZoharTiming = '-';
-      lblAsrTiming = "-";
-      lblMagribTiming = "-";
-      lblIshaTime = "-";
-
-      if (prefs.getDouble('lat') != null) {
-
-        double lT = 0.0, lG = 0.0;
-        latit = lT;
-
-        long = lG;
-
-        locationNotFound = false;
-
-        var result = await getNamazTimesWithLatLong(DateTime.now(), lT, lG);
-        await setTimes(result);
-      }
-      return;
-    }
-
-    latit = double.parse(resultLocation.first);
-
-    long = double.parse(resultLocation[1]);
-
-    prefs.setDouble('lat', double.parse(resultLocation.first));
-    prefs.setDouble('long', double.parse(resultLocation[1]));
-
-    var result = await getNamazTimesWithLatLong(DateTime.now(),
-        double.parse(resultLocation.first), double.parse(resultLocation[1]));
-    await setTimes(result);
-
-    print('Done');
-  }
-
-   */
 }
 
 class PrayerItems extends StatelessWidget {

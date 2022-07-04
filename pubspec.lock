@@ -772,6 +772,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.3"
+  shamsi_date:
+    dependency: "direct main"
+    description:
+      name: shamsi_date
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -910,6 +917,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  sunrise_sunset_calc:
+    dependency: "direct main"
+    description:
+      name: sunrise_sunset_calc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   syncfusion_flutter_core:
     dependency: transitive
     description:

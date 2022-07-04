@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'monthly_data.dart';
 
+
 class CalenderMonthItem {
   String previousMonthName = '';
   String nextMonthName = '';
@@ -13,6 +14,7 @@ class CalenderMonthItem {
 
   List<ClassItemInfo> monthItems = [];
 }
+
 
 class ClassItemInfo {
   late String dayNo;
@@ -92,6 +94,13 @@ class ClassItemInfo {
       required this.islamicMonth,
       required this.monthNo});
 
+  static HijriCalendar findNextMonthFirst(HijriCalendar givenDay,DateTime dateTime){
+    if(givenDay.hDay == 1) {
+      return givenDay;
+    }
+    return HijriCalendar.fromDate(dateTime.add(const Duration(days: 1)));
+
+  }
   static CalenderMonthItem makeMonthData(
       int monthDifference, List<MonthlyData> monthData) {
     CalenderMonthItem calenderMonthItem = CalenderMonthItem();
@@ -149,6 +158,51 @@ class ClassItemInfo {
     int emptyToAddInEnd = 0;
 
     _today = HijriCalendar.fromDate(objectToUse);
+
+    if(_today.hDay == 30 || _today.hDay == 29 || _today.hDay == 28) {
+      difference = difference + 1;
+
+
+      objectToUse = DateTime.now().add(Duration(days: difference));
+
+       emptyToAddInEnd = 0;
+
+      _today = HijriCalendar.fromDate(objectToUse);
+
+    }
+    else if(_today.hDay == 29) {
+      difference = difference + 1;
+      objectToUse = DateTime.now().add(Duration(days: difference));
+
+       emptyToAddInEnd = 0;
+
+      _today = HijriCalendar.fromDate(objectToUse);
+
+      if(_today.hDay == 30) {
+        difference = difference + 1;
+        objectToUse = DateTime.now().add(Duration(days: difference));
+        emptyToAddInEnd = 0;
+        _today = HijriCalendar.fromDate(objectToUse);
+
+      }
+    }
+    else if(_today.hDay == 28) {
+      difference = difference + 2;
+      objectToUse = DateTime.now().add(Duration(days: difference));
+
+       emptyToAddInEnd = 0;
+
+      _today = HijriCalendar.fromDate(objectToUse);
+
+      if(_today.hDay == 30) {
+        difference = difference + 1;
+        objectToUse = DateTime.now().add(Duration(days: difference));
+        emptyToAddInEnd = 0;
+        _today = HijriCalendar.fromDate(objectToUse);
+
+      }
+
+    }
 
     calenderMonthItem.monthName = islamicMonthName[_today.hMonth];
 
@@ -234,17 +288,14 @@ class ClassItemInfo {
           }
         }
          */
+
       }
 
       _today1 = HijriCalendar.fromDate(objectToUse);
-
       String formattedDate = DateFormat('dd MMM, yyyy')
           .format(objectToUse.add(const Duration(days: -1)));
-
       calenderObject.normalDayFullString = formattedDate;
-
       calenderObject.normalDate = objectToUse;
-
       calenderDays.add(calenderObject);
     }
 

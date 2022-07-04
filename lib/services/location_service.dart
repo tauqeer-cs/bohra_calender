@@ -26,6 +26,9 @@ class _LocationService {
         return null;
       }
     }
+    //return ['28.7041','77.1025'];
+   // return ['23.16899290332625','75.78657699012938'];
+   // return ['19.076','72.8777'];
 
     _locationData = await location.getLocation();
     return [_locationData.latitude.toString(),_locationData.longitude.toString()];

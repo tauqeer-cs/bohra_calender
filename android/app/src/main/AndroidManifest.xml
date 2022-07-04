@@ -16,6 +16,7 @@
         </intent>
     </queries>
 
+
     <application
         android:label="Bohra Calender Plus"
         android:icon="@mipmap/launcher_icon">
@@ -59,4 +60,6 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
+    
 </manifest>

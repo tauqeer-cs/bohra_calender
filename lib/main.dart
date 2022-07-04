@@ -13,11 +13,8 @@ void main() async {
 
   tz.initializeTimeZones();
 
-  // await Hive.openBox<PersonalEvent>('personal_event');
-
   runZoned(() async {
     await objectBoxService.initialize();
-
     runApp(const MyApp());
   });
 }

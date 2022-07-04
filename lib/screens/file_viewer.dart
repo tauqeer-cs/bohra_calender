@@ -335,14 +335,15 @@ class _FileViewerState extends State<FileViewer> {
 
   Widget buildPdfFromUrl() {
     if (widget.nabiNaNaam) {
-      return const PDF().fromAsset('assets/audio/nabi na naam.pdf');
+      if(Platform.isAndroid) {
+        return SfPdfViewer.asset('assets/audio/nabi na naam.pdf');
+      } else {
+        return const PDF().fromAsset('assets/audio/nabi na naam.pdf');
+      }
     }
     if(Platform.isAndroid) {
-
       return SfPdfViewer.network(widget.fileItem.pdfUr);
-
     }
-
 
     return const PDF().cachedFromUrl(
       widget.fileItem.pdfUr,

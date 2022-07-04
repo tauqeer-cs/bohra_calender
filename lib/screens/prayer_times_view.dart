@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../views/prayer_item.dart';
 import 'dashboard.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:sunrise_sunset_calc/sunrise_sunset_calc.dart';
 
 class PrayersTimeView extends StatefulWidget {
   const PrayersTimeView({Key? key}) : super(key: key);
@@ -112,16 +113,30 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
         double.parse(resultLocation.first), double.parse(resultLocation[1]));
 
     if (placemarks.isNotEmpty) {
-      if (placemarks.first.country == 'India') {
-        _placemark = placemarks.first;
-        //        _placemark = placemarks.first;
 
+      setState(() {
+        _placemark = placemarks.first;
+      });
+      if (placemarks.first.country == 'India') {
+
+        setState(() {
+          _placemark = placemarks.first;
+        });
+
+        addHalfAnHourtoTime = true;
+
+        prefs.setBool('halfHourAdd', true);
+
+        
+        /*
         if (DateTime.now().timeZoneName == 'PKT') {
           addHalfAnHourtoTime = true;
           prefs.setBool('halfHourAdd', true);
         } else {
           addHalfAnHourtoTime = false;
-        }
+        }*/
+
+
       }
     }
     noLocationPermissionDisabled = false;
@@ -347,8 +362,19 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
 
     DaylightResult sunsetRise =
         berlinCalculator.calculateForDay(DateTime.now(), Zenith.official);
-    final secondsBetweenDuration =
+    var sunR = sunsetRise.sunrise!.toLocal();
+
+    var secondsBetweenDuration =
         sunsetRise.sunset!.difference(sunsetRise.sunrise!.toLocal());
+
+
+    //here
+    var sunriseSunset = getSunriseSunset(lat, longitude, 1, DateTime.now());
+   // var s5 = sunriseSunset.sunrise.toLocal();
+
+
+   // secondsBetweenDuration =
+     //   sunsetRise.sunset!.difference(sunsetRise.sunrise!);
 
     var secondsBetween = secondsBetweenDuration.inSeconds / 12.0;
 
@@ -854,13 +880,17 @@ class _PrayersTimeViewState extends State<PrayersTimeView> {
 
 //    ;
 
-              if (_placemark != null) ...[
-                if (_placemark!.country == 'India') ...[
-                  Text(
-                      '${_placemark!.locality} with your phone timezone set to ' +
-                          DateTime.now().timeZoneName),
-                ],
+
+            if(_placemark != null) ... [
+              if (_placemark!.country == 'India' || 1 == 1) ...[
+                Text(
+                    '${_placemark!.locality} with your phone timezone set to ' +
+                        DateTime.now().timeZoneName),
               ],
+
+            ],
+
+
               //isDaylight
               const SizedBox(
                 height: 4,

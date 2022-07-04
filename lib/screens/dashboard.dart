@@ -47,9 +47,11 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
           Duration(days: addExtraDaysToCheck),
         ),
       );
+
+
     return _today!.hDay.toString() +
         ' ' +
-        _today!.longMonthName +
+        ClassItemInfo.islamicMonthName[_today!.hMonth] +
         ' ' +
         _today!.hYear.toString();
   }
